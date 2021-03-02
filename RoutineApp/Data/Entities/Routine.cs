@@ -8,9 +8,11 @@ namespace RoutineApp.Data.Entities
 
         public string Name { get; set; } = string.Empty;
 
+        public string UserId { get; set; } = string.Empty;
+
+        public User User { get; set; } = new();
+
+
         public List<Exercise> Exercises { get; set; } = new();
-
-        public List<User> Users { get; set; } = new();
-
     }
 }

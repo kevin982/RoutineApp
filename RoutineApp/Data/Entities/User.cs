@@ -16,6 +16,12 @@ namespace RoutineApp.Data.Entities
 
         public DateTime CreatedOn { get; set; } = new();
 
+        public int Weight { get; set; } = 0;
+
+        public float Height { get; set; } = 0;
+
+        public DateTime BeganToWorkOutOn { get; set; } = new();
+
         public List<Routine> Routines { get; set; } = new();
     }
 }

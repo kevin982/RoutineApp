@@ -8,6 +8,11 @@
 
         public Exercise Exercise { get; set; } = new();
 
+        public string UserId { get; set; } = string.Empty;
+
+        public User User { get; set; } = new User();
+
+
         public float Weight { get; set; } = 0;
 
         public int Repetitions { get; set; } = 0;
