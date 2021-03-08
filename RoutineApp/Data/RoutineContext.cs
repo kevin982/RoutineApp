@@ -16,9 +16,10 @@ namespace RoutineApp.Data
 
         public DbSet<Exercise> Exercises { get; set; }
 
-        public DbSet<ExerciseDetail> ExercisesDatils { get; set; }
-
+        public DbSet<ExerciseDetail> ExerciseDetails { get; set; }
+        
         public DbSet<Image> Images { get; set; }
-
+        
+        public DbSet<Weight> Weights { get; set; }
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RoutineApp.Data;
 using RoutineApp.Data.Entities;
+using RoutineApp.Services.Classes;
+using RoutineApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,8 @@ namespace RoutineApp
             services.AddDbContext<RoutineContext>(options => options.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")));
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<RoutineContext>();
+
+            services.AddScoped<IAccountService, AccountService>();
 
         }
 

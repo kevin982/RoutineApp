@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using RoutineApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace RoutineApp.Data.Entities
 
         public DateTime CreatedOn { get; set; } = new();
 
-        public int Weight { get; set; } = 0;
-
         public float Height { get; set; } = 0;
 
         public DateTime BeganToWorkOutOn { get; set; } = new();
 
         public List<Routine> Routines { get; set; } = new();
+
+        public List<Weight> Weights { get; set; } = new();
+
+ 
     }
 }
