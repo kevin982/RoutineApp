@@ -27,7 +27,7 @@
             if (ViewBag.UserCreated)
             {
                 <div class="alert alert-success" role="alert">
-                    You have created your account successfully!
+                    You have sent you an email to your email address, please confirm go and see it!
                 </div>
             }
 
@@ -35,7 +35,7 @@
         }
         else
         {
-            <div class="alert alert-primary" role="alert">
+            <div class="alert alert-danger" role="alert">
                 <ul>
                     @foreach (var error in ViewBag.Errors)
                     {

@@ -13,5 +13,11 @@ namespace RoutineApp.Data.Entities
         public List<Image> Images { get; set; } = new();
 
         public List<ExerciseDetail> ExerciseDetails { get; set; }
+
+        public List<Routine> Routines { get; set; }
+
+        public string UserId { get; set; } = string.Empty;
+
+        public User User { get; set; } = new User();
     }
 }

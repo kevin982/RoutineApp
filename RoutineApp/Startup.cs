@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RoutineApp.Claims;
 using RoutineApp.Data;
 using RoutineApp.Data.Entities;
 using RoutineApp.Services.Classes;
@@ -33,9 +34,29 @@ namespace RoutineApp
 
             services.AddDbContext<RoutineContext>(options => options.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<RoutineContext>();
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<RoutineContext>().AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+
+                #region Password Configuration
+                options.Password.RequiredLength = Configuration.GetValue<int>("PasswordConfig:RequiredLength");
+                options.Password.RequiredUniqueChars = Configuration.GetValue<int>("PasswordConfig:RequiredUniqueChars");
+                options.Password.RequireDigit = Configuration.GetValue<bool>("PasswordConfig:RequireDigit");
+                options.Password.RequireLowercase = Configuration.GetValue<bool>("PasswordConfig:RequireLowerCase");
+                options.Password.RequireUppercase = Configuration.GetValue<bool>("PasswordConfig:RequireUpperCase");
+                options.Password.RequireNonAlphanumeric = Configuration.GetValue<bool>("PasswordConfig:RequireNonAlphanumeric");
+                #endregion
+
+
+
+                options.SignIn.RequireConfirmedEmail = true;
+            });
 
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+            services.AddScoped<IUserService, UserService>();
 
         }
 

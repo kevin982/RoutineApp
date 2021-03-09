@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RoutineApp.Data;
 
 namespace RoutineApp.Migrations
 {
     [DbContext(typeof(RoutineContext))]
-    partial class RoutineContextModelSnapshot : ModelSnapshot
+    [Migration("20210309171015_NowAnExerciseCanBeLinkedToMultipleRoutines")]
+    partial class NowAnExerciseCanBeLinkedToMultipleRoutines
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,12 +251,7 @@ namespace RoutineApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Exercises");
                 });
@@ -447,13 +444,6 @@ namespace RoutineApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoutineApp.Data.Entities.Exercise", b =>
-                {
-                    b.HasOne("RoutineApp.Data.Entities.User", null)
-                        .WithMany("Exercises")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("RoutineApp.Data.Entities.ExerciseDetail", b =>
                 {
                     b.HasOne("RoutineApp.Data.Entities.Exercise", "Exercise")
@@ -509,8 +499,6 @@ namespace RoutineApp.Migrations
 
             modelBuilder.Entity("RoutineApp.Data.Entities.User", b =>
                 {
-                    b.Navigation("Exercises");
-
                     b.Navigation("Routines");
 
                     b.Navigation("Weights");

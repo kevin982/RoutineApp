@@ -1,0 +1,45 @@
+﻿
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ConfirmEmail</title>
+</head>
+<body>
+
+
+    @{
+        if (ViewBag.Errors.Count == 0)
+        {
+            <h1>We are happy for your confirmation</h1>
+            <p>Thanks for confirming your email address.</p>
+        }
+        else
+        {
+            <h1>We could not confirm your email due to the following causes:</h1>
+
+            <div class="alert alert-danger" role="alert">
+
+                <ul>
+                    @{
+                        foreach (var error in ViewBag.Errors)
+                        {
+                            <li>@error</li>
+                        }
+                    }
+                </ul>
+
+            </div>
+
+        }
+    }
+
+
+
+</body>
+</html>

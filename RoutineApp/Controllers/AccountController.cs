@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RoutineApp.Controllers
 {
 
-    
+
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService = null;
@@ -60,8 +60,54 @@ namespace RoutineApp.Controllers
             return View();
         }
 
+        [HttpGet("Account/ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string id, string token)
+        {
+            ViewBag.Errors = new List<string>();
+
+            var result = await _accountService.ConfirmEmailAsync(id, token);
 
 
+            if (result.Succeeded)
+            {
+                foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+            }
+
+            return View();
+        }
+
+        public IActionResult SignIn()
+        {
+            ViewBag.Succeded = null;
+            return View();
+        }
+
+        [Route("Account/SignIn"), HttpPost]
+        public async Task<IActionResult> SignIn(SignInModel model)
+        {
+            ViewBag.Errors = new List<string>(3);
+            ViewBag.Succeded = null;
+
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.SignIn(model);
+
+                if (!result.Succeeded)
+                {
+                    if (result.IsLockedOut) ViewBag.Errors.Add("You have entered invalid cretendials several times, so you are lockout for 1 hour.");
+                    if (result.IsNotAllowed) ViewBag.Errors.Add("Invalid credentials.");
+                    ViewBag.Succeded = false;
+                }
+                else
+                {
+                    ViewBag.Succeded = true;
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            return View();
+
+        }
 
     }
 }

@@ -10,5 +10,9 @@ namespace RoutineApp.Services.Interfaces
     public interface IAccountService
     {
         Task<IdentityResult> CreateUserAsync(SignUpModel model);
+
+        Task<IdentityResult> ConfirmEmailAsync(string id, string token);
+
+        Task<SignInResult> SignIn(SignInModel model);
     }
 }
