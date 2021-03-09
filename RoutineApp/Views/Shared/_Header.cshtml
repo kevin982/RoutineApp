@@ -1,4 +1,7 @@
-﻿<header>
+﻿@using RoutineApp.Data.Entities
+@inject Microsoft.AspNetCore.Identity.SignInManager<User> _signInManager
+
+<header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Carousel</a>
@@ -10,12 +13,26 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="SignUp">Sing Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" asp-controller="Account" asp-action="SignIn">SignIn</a>
-                    </li>
+
+                    @{
+                        if (_signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="SignOut">SignOut</a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" asp-controller="Account" asp-action="SignUp">Sing Up</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" asp-controller="Account" asp-action="SignIn">SignIn</a>
+                            </li>
+                        }
+                    }
+
                 </ul>
             </div>
         </div>

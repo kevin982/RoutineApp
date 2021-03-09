@@ -67,5 +67,10 @@ namespace RoutineApp.Services.Classes
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
             return result;
         }
+
+        public async Task SignOut()
+        {
+            await _signInManager.SignOutAsync();
+        }
     }
 }

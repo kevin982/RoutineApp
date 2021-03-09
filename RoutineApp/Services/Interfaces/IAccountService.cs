@@ -14,5 +14,7 @@ namespace RoutineApp.Services.Interfaces
         Task<IdentityResult> ConfirmEmailAsync(string id, string token);
 
         Task<SignInResult> SignIn(SignInModel model);
+
+        Task SignOut();
     }
 }

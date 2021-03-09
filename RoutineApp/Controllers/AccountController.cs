@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RoutineApp.Models;
 using RoutineApp.Services.Interfaces;
 using System;
@@ -110,6 +111,13 @@ namespace RoutineApp.Controllers
 
             return View();
 
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SignOut()
+        {
+            await _accountService.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
     }
