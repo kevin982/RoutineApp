@@ -33,6 +33,7 @@ namespace RoutineApp.Models
             {
                 FirstName = this.FistName,
                 LastName = this.LastName,
+                Email = this.Email,
                 Age = this.Age
             };
             return user;

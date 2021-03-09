@@ -12,12 +12,12 @@ namespace RoutineApp.Services.Classes
 {
     public class AccountService:IAccountService
     {
-        private readonly UserManager<UserService> _userManager = null;
-        private readonly SignInManager<UserService> _signInManager = null;
+        private readonly UserManager<User> _userManager = null;
+        private readonly SignInManager<User> _signInManager = null;
         private readonly IEmailService _emailService = null;
 
 
-        public AccountService(UserManager<UserService> userManager, SignInManager<UserService> signInManager,IEmailService emailService)
+        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager,IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,7 +27,7 @@ namespace RoutineApp.Services.Classes
         public async Task<IdentityResult> CreateUserAsync(SignUpModel model)
         {
 
-            UserService user = model.Clone() as UserService;
+            User user = model.Clone() as User;
             user.UserName = model.Email;
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -41,20 +41,19 @@ namespace RoutineApp.Services.Classes
             return result;
         }
 
-        private async Task SendEmailConfirmationAsync(UserService user, string token)
+        private async Task SendEmailConfirmationAsync(User user, string token)
         {
             string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\RoutineApp\\RoutineApp\\Mails\\ConfirmEmail.html";
             string subject = "Email Confirmation";
             List<Attachment> attachments = new();
             List<string> mails = new() { user.Email };
-            List<(string, string)> values = new() { ("Link", string.Format("http:localhost:44384" + $"/Account/ConfirmEmail?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
+            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44384" + $"/ConfirmEmail?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
 
             await _emailService.SendEmailAsync(subject, htmlPath, mails, attachments, values);
         }
 
         public async Task<IdentityResult> ConfirmEmailAsync(string id, string token)
         {
-            token.Replace(" ", "+");
 
             var user = await _userManager.FindByIdAsync(id);
 
@@ -65,7 +64,8 @@ namespace RoutineApp.Services.Classes
 
         public async Task<SignInResult> SignIn(SignInModel model)
         {
-            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+            return result;
         }
     }
 }

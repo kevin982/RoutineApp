@@ -60,17 +60,19 @@ namespace RoutineApp.Controllers
             return View();
         }
 
-        [HttpGet("Account/ConfirmEmail")]
+        [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string id, string token)
         {
             ViewBag.Errors = new List<string>();
 
-            var result = await _accountService.ConfirmEmailAsync(id, token);
-
-
-            if (result.Succeeded)
+            if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(token))
             {
+                token = token.Replace(' ', '+');
+
+                var result = await _accountService.ConfirmEmailAsync(id, token);
+
                 foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+
             }
 
             return View();
@@ -95,7 +97,8 @@ namespace RoutineApp.Controllers
                 if (!result.Succeeded)
                 {
                     if (result.IsLockedOut) ViewBag.Errors.Add("You have entered invalid cretendials several times, so you are lockout for 1 hour.");
-                    if (result.IsNotAllowed) ViewBag.Errors.Add("Invalid credentials.");
+                    if (result.IsNotAllowed) ViewBag.Errors.Add("You are not allowed to signIn, you must confirm your email.");
+                    if (result.IsLockedOut == false && result.IsNotAllowed == false) ViewBag.Errors.Add("Invalid credentials");
                     ViewBag.Succeded = false;
                 }
                 else

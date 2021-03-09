@@ -12,10 +12,10 @@
 @{
     if (ViewBag.Succeded is not null)
     {
-
+    <div class="alert alert-danger">
         <ul>
 
-            @{ 
+            @{
                 foreach (var error in ViewBag.Errors)
                 {
                     <li>@error</li>
@@ -23,9 +23,12 @@
             }
 
         </ul>
-  
+    </div>
+    <hr />
+    
     }
 }
+
 
 
 <div class="row">
@@ -48,7 +51,7 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="SignIn" class="btn btn-primary" />
             </div>
         </form>
     </div>
