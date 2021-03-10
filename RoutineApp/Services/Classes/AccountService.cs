@@ -15,13 +15,14 @@ namespace RoutineApp.Services.Classes
         private readonly UserManager<User> _userManager = null;
         private readonly SignInManager<User> _signInManager = null;
         private readonly IEmailService _emailService = null;
+        private readonly IUserService _userService = null;
 
-
-        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager,IEmailService emailService)
+        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager,IEmailService emailService, IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
+            _userService = userService;
         }
 
         public async Task<IdentityResult> CreateUserAsync(SignUpModel model)
@@ -62,15 +63,22 @@ namespace RoutineApp.Services.Classes
             return result;
         }
 
-        public async Task<SignInResult> SignIn(SignInModel model)
+        public async Task<SignInResult> SignInAsync(SignInModel model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
             return result;
         }
 
-        public async Task SignOut()
+        public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model)
+        {
+            User user = await _userManager.FindByIdAsync(_userService.GetUserId());
+
+            return await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
         }
     }
 }

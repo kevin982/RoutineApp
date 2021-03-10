@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace RoutineApp.Controllers
 {
 
-
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService = null;
@@ -22,7 +22,6 @@ namespace RoutineApp.Controllers
 
 
 
-        [Route("Account/SignUp")]
         public IActionResult SignUp()
         {
             ViewBag.Errors = new List<string>();
@@ -30,7 +29,7 @@ namespace RoutineApp.Controllers
             return View();
         }
 
-        [Route("Account/SignUp"), HttpPost]
+        [HttpPost]
         public async Task<IActionResult> SignUp(SignUpModel model)
         {
 
@@ -85,7 +84,7 @@ namespace RoutineApp.Controllers
             return View();
         }
 
-        [Route("Account/SignIn"), HttpPost]
+        [HttpPost]
         public async Task<IActionResult> SignIn(SignInModel model)
         {
             ViewBag.Errors = new List<string>(3);
@@ -93,7 +92,7 @@ namespace RoutineApp.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _accountService.SignIn(model);
+                var result = await _accountService.SignInAsync(model);
 
                 if (!result.Succeeded)
                 {
@@ -113,12 +112,42 @@ namespace RoutineApp.Controllers
 
         }
 
+        
         [Authorize]
         public async Task<IActionResult> SignOut()
         {
-            await _accountService.SignOut();
+            await _accountService.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost, Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            ViewBag.Errors = new List<string>();
+
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.ChangePasswordAsync(model);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+                }
+
+            }
+
+            return View();
+        }
+
+        
+
+
 
     }
 }
