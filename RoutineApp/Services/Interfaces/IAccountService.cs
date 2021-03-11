@@ -18,5 +18,9 @@ namespace RoutineApp.Services.Interfaces
         Task SignOutAsync();
 
         Task<IdentityResult> ChangePasswordAsync(ChangePasswordModel model);
+
+        Task<string> SendEmailToResetPasswordAsync(EmailResetPasswordModel model);
+
+        Task<IdentityResult> ResetPasswordAsync(ResetPasswordModel model);
     }
 }

@@ -21,7 +21,6 @@ namespace RoutineApp.Controllers
         }
 
 
-
         public IActionResult SignUp()
         {
             ViewBag.Errors = new List<string>();
@@ -60,7 +59,7 @@ namespace RoutineApp.Controllers
             return View();
         }
 
-        [HttpGet("ConfirmEmail")]
+        
         public async Task<IActionResult> ConfirmEmail(string id, string token)
         {
             ViewBag.Errors = new List<string>();
@@ -145,8 +144,51 @@ namespace RoutineApp.Controllers
             return View();
         }
 
-        
+        public IActionResult SendEmailToResetPassword()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> SendEmailToResetPassword(EmailResetPasswordModel model)
+        {
+            ViewBag.MessageResult = "";
+
+            if (ModelState.IsValid)
+            {
+                ViewBag.MessageResult = await _accountService.SendEmailToResetPasswordAsync(model);
+            }
+
+            return View();
+        }
+
+
+        public IActionResult ResetPassword (string id, string token)
+        {
+            ResetPasswordModel model = new ResetPasswordModel{ Id = id, Token = token};
+            return View(model);
+        }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            ViewBag.Errors = new List<string>();
+
+            if (ModelState.IsValid)
+            {
+                model.Token = model.Token.Replace(' ', '+');
+
+                var result = await _accountService.ResetPasswordAsync(model);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+                }
+            }
+
+            return View();
+        }
 
 
     }

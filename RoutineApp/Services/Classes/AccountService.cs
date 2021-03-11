@@ -44,11 +44,12 @@ namespace RoutineApp.Services.Classes
 
         private async Task SendEmailConfirmationAsync(User user, string token)
         {
-            string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\RoutineApp\\RoutineApp\\Mails\\ConfirmEmail.html";
+
+            string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\MVC\\RoutineApp\\RoutineApp\\Mails\\ConfirmEmail.html";
             string subject = "Email Confirmation";
             List<Attachment> attachments = new();
             List<string> mails = new() { user.Email };
-            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44384" + $"/ConfirmEmail?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
+            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44384" + $"/Account/ConfirmEmail?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
 
             await _emailService.SendEmailAsync(subject, htmlPath, mails, attachments, values);
         }
@@ -80,5 +81,33 @@ namespace RoutineApp.Services.Classes
 
             return await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
         }
+
+        public async Task<string> SendEmailToResetPasswordAsync(EmailResetPasswordModel model)
+        {
+            User user = null;
+
+            user = await _userManager.FindByEmailAsync(model.Email);
+
+            if (user is null) return "You have not created an account";
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            string subject = "Reset Password";
+            string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\MVC\\RoutineApp\\RoutineApp\\Mails\\ResetPassword.html";
+            List<string> mails = new() { model.Email };
+            List<Attachment> attachments = new();
+            List<(string, string)> values = new() {("Link", string.Format("https://localhost:44384" + $"/Account/ResetPassword?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
+
+            await _emailService.SendEmailAsync(subject, htmlPath, mails, attachments, values);
+
+            return "Check your email to reset your password";
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(ResetPasswordModel model)
+        {
+            User user = await _userManager.FindByIdAsync(model.Id);
+
+            return await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+        }
+
     }
 }
