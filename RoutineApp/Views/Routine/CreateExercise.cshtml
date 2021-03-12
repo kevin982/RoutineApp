@@ -1,0 +1,66 @@
+﻿@model RoutineApp.Models.CreateExerciseModel
+
+@{
+    ViewData["Title"] = "CreateExercise";
+}
+
+<h1>CreateExercise</h1>
+
+<h4>CreateExerciseModel</h4>
+<hr />
+
+@{
+    if (ViewBag.Result is not null)
+    {
+        if (ViewBag.Result)
+        {
+            <div class="alert alert-success">
+                <h3>We have created the exercise correctly!</h3>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <h3>We could not create the exercise, something went wrong</h3>
+            </div>
+        }
+    }
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateExercise" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
+                <div class="custom-file">
+
+                    <input asp-for="Images" class="custom-file-input" id="customFile" />
+                    <label asp-for="Images" class="custom-file-label"></label>
+                </div>
+
+                <span asp-validation-for="Images" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
