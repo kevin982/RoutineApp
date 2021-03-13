@@ -8,6 +8,8 @@
 
         public Exercise Exercise { get; set; } = new();
 
+        public int Day { get; set; }
+
         public float Weight { get; set; } = 0;
 
         public int Repetitions { get; set; } = 0;

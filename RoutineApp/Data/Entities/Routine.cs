@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RoutineApp.Data.Entities
 {
@@ -12,7 +13,12 @@ namespace RoutineApp.Data.Entities
 
         public User User { get; set; } = new();
 
-
         public List<Exercise> Exercises { get; set; } = new();
+
+        public DateTime CreatedOn { get; set; }
+
+
     }
+
+   
 }

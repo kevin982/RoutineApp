@@ -23,5 +23,6 @@ namespace RoutineApp.Data
         public DbSet<Weight> Weights { get; set; }
 
         public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
+
     }
 }

@@ -46,5 +46,12 @@ namespace RoutineApp.Services.Classes
         {
             return await _context.ExerciseCategories.AsNoTracking().ToListAsync();
         } 
+
+        public async Task<List<Exercise>> GetExercisesAsync()
+        {
+            var idUser = _userService.GetUserId();
+
+            return await _context.Exercises.AsNoTracking().Include(e => e.Images).Where(e => e.UserId == idUser).ToListAsync();
+        }
     }
 }

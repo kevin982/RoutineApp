@@ -12,6 +12,8 @@ namespace RoutineApp.Services.Interfaces
         Task<bool> CreateExerciseAsync(CreateExerciseModel model);
 
         Task<List<ExerciseCategory>> GetCategoriesAsync();
+
+        Task<List<Exercise>> GetExercisesAsync();
     }
 
 }

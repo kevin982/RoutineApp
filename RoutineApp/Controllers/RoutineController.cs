@@ -57,5 +57,10 @@ namespace RoutineApp.Controllers
             return View();
         }
 
+        public IActionResult CreateRoutine()
+        {
+            return View();
+        }
+
     }
 }
