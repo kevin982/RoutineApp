@@ -15,7 +15,7 @@ namespace RoutineApp.Models
         public string Name { get; set; }
 
         [Display(Name ="Please enter the category")]
-        public string Category { get; set; }
+        public int Category { get; set; }
 
         [Display(Name = "Please enter the exercise images")]
         public IFormFileCollection Images { get; set; } 
@@ -27,7 +27,7 @@ namespace RoutineApp.Models
             return new Exercise()
             {
                 Name = this.Name,
-                Category = this.Category,
+                CategoryId = Category,
                 Images = ImageToStore
             };
         }

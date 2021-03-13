@@ -21,5 +21,7 @@ namespace RoutineApp.Data
         public DbSet<Image> Images { get; set; }
         
         public DbSet<Weight> Weights { get; set; }
+
+        public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
     }
 }

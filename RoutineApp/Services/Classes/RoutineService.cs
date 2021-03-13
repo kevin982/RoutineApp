@@ -1,4 +1,5 @@
-﻿using RoutineApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RoutineApp.Data;
 using RoutineApp.Data.Entities;
 using RoutineApp.Models;
 using RoutineApp.Services.Interfaces;
@@ -38,12 +39,12 @@ namespace RoutineApp.Services.Classes
             {
                 return false;
             }
-
-
-
-
-
+ 
         }
 
+        public async Task<List<ExerciseCategory>> GetCategoriesAsync()
+        {
+            return await _context.ExerciseCategories.AsNoTracking().ToListAsync();
+        } 
     }
 }

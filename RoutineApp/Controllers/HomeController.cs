@@ -14,12 +14,6 @@ namespace RoutineApp.Controllers
     public class HomeController : Controller
     {
 
-        private readonly RoutineContext c = null;
-
-        public HomeController(RoutineContext cc)
-        {
-            c = cc;
-        }
         public IActionResult Index()
         { 
             return View();
