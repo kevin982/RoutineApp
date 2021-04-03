@@ -1,4 +1,6 @@
-﻿namespace RoutineApp.Data.Entities
+﻿using System;
+
+namespace RoutineApp.Data.Entities
 {
     public class ExerciseDetail
     {
@@ -8,7 +10,7 @@
 
         public Exercise Exercise { get; set; } = new();
 
-        public int Day { get; set; }
+        public DateTime DayDone { get; set; } = new();
 
         public float Weight { get; set; } = 0;
 

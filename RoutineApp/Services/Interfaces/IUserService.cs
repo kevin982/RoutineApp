@@ -7,7 +7,6 @@ namespace RoutineApp.Services.Classes
     public interface IUserService
     {
         Task<List<Exercise>> GetExercisesAsync();
-        Task<List<Routine>> GetRoutinesAsync();
         string GetUserId();
     }
 }

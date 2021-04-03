@@ -1,6 +1,6 @@
 ﻿@model RoutineApp.Models.CreateExerciseModel
 
-@inject RoutineApp.Services.Interfaces.IRoutineService _routineService
+@inject RoutineApp.Services.Interfaces.IExerciseService _exerciseService
 
 @{
     ViewData["Title"] = "CreateExercise";
@@ -46,7 +46,7 @@
                 <label asp-for="Category" class="form-label"></label>
                 <select asp-for="Category" class="form-control">
                     @{
-                        foreach (var category in await _routineService.GetCategoriesAsync())
+                        foreach (var category in await _exerciseService.GetCategoriesAsync())
                         {
                             <option value="@category.Id">@category.CategoryName</option>
                         }

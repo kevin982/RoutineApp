@@ -12,16 +12,15 @@ using System.Threading.Tasks;
 namespace RoutineApp.Controllers
 {
 
-    [Authorize]
     [Route("[controller]/[action]")]
-    public class RoutineController : Controller
+    public class ExerciseController : Controller
     {
 
-        private readonly IRoutineService _routineService = null;
+        private readonly IExerciseService _exerciseService = null;
 
-        public RoutineController(IRoutineService routineService)
+        public ExerciseController(IExerciseService exerciseService)
         {
-            _routineService = routineService;
+            _exerciseService = exerciseService;
         }
 
         public IActionResult CreateExercise()
@@ -51,7 +50,7 @@ namespace RoutineApp.Controllers
                     ms.Dispose();
                 }
 
-                ViewBag.Result = await _routineService.CreateExerciseAsync(model);
+                ViewBag.Result = await _exerciseService.CreateExerciseAsync(model);
             }
 
             return View();
@@ -62,5 +61,31 @@ namespace RoutineApp.Controllers
             return View();
         }
 
+
+        [HttpGet("~/GetAllExercisesAsync")]
+        public async Task<List<Exercise>> GetAllExercisesAsync()
+        {
+            return await _exerciseService.GetAllExercisesAsync();
+        }
+ 
+        [HttpPost]
+        public async Task<IActionResult> AddExercise(AddExerciseModel model)
+        {
+
+            await _exerciseService.AddExerciseToRoutineAsync(model);
+
+            return RedirectToAction("CreateRoutine");
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> RemoveExercise(int id)
+        {
+            await _exerciseService.RemoveExerciseFromRoutineAsync(id);
+            return RedirectToAction("CreateRoutine");
+        }
+
+
     }
-}
+
+    }
+

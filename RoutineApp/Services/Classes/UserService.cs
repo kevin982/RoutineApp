@@ -24,13 +24,7 @@ namespace RoutineApp.Services.Classes
         {
             return _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
-
-        public async Task<List<Routine>> GetRoutinesAsync()
-        {
-            string id = GetUserId();
-
-            return await _context.Routines.AsNoTracking().Include(routine => routine.Exercises).Where(routine => routine.UserId == id).ToListAsync();
-        }
+ 
         public async Task<List<Exercise>> GetExercisesAsync()
         {
             string id = GetUserId();

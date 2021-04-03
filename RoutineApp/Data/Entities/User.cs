@@ -20,13 +20,9 @@ namespace RoutineApp.Data.Entities
         public float Height { get; set; } = 0;
 
         public DateTime BeganToWorkOutOn { get; set; } = new();
-
-        public List<Routine> Routines { get; set; } = new();
-
+ 
         public List<Exercise> Exercises { get; set; } = new();
-
-        public List<Weight> Weights { get; set; } = new();
-
+ 
         
     }
 }

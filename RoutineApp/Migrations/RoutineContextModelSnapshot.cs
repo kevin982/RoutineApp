@@ -16,22 +16,22 @@ namespace RoutineApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ExerciseRoutine", b =>
+            modelBuilder.Entity("DayExercise", b =>
                 {
+                    b.Property<int>("DaysToTrainId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ExercisesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoutinesId")
-                        .HasColumnType("int");
+                    b.HasKey("DaysToTrainId", "ExercisesId");
 
-                    b.HasKey("ExercisesId", "RoutinesId");
+                    b.HasIndex("ExercisesId");
 
-                    b.HasIndex("RoutinesId");
-
-                    b.ToTable("ExerciseRoutine");
+                    b.ToTable("DayExercise");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -236,6 +236,21 @@ namespace RoutineApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("RoutineApp.Data.Entities.Day", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Days");
+                });
+
             modelBuilder.Entity("RoutineApp.Data.Entities.Exercise", b =>
                 {
                     b.Property<int>("Id")
@@ -245,6 +260,9 @@ namespace RoutineApp.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsInTheRoutine")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -282,6 +300,9 @@ namespace RoutineApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DayDone")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
@@ -322,52 +343,6 @@ namespace RoutineApp.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("RoutineApp.Data.Entities.Routine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Routines");
-                });
-
-            modelBuilder.Entity("RoutineApp.Data.Entities.Weight", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<float>("ExactWeight")
-                        .HasColumnType("real");
-
-                    b.Property<DateTime>("RegisteredOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Weights");
-                });
-
             modelBuilder.Entity("RoutineApp.Data.Entities.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -393,17 +368,17 @@ namespace RoutineApp.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("ExerciseRoutine", b =>
+            modelBuilder.Entity("DayExercise", b =>
                 {
-                    b.HasOne("RoutineApp.Data.Entities.Exercise", null)
+                    b.HasOne("RoutineApp.Data.Entities.Day", null)
                         .WithMany()
-                        .HasForeignKey("ExercisesId")
+                        .HasForeignKey("DaysToTrainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RoutineApp.Data.Entities.Routine", null)
+                    b.HasOne("RoutineApp.Data.Entities.Exercise", null)
                         .WithMany()
-                        .HasForeignKey("RoutinesId")
+                        .HasForeignKey("ExercisesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -498,24 +473,6 @@ namespace RoutineApp.Migrations
                     b.Navigation("Excercise");
                 });
 
-            modelBuilder.Entity("RoutineApp.Data.Entities.Routine", b =>
-                {
-                    b.HasOne("RoutineApp.Data.Entities.User", "User")
-                        .WithMany("Routines")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RoutineApp.Data.Entities.Weight", b =>
-                {
-                    b.HasOne("RoutineApp.Data.Entities.User", "User")
-                        .WithMany("Weights")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RoutineApp.Data.Entities.Exercise", b =>
                 {
                     b.Navigation("ExerciseDetails");
@@ -531,10 +488,6 @@ namespace RoutineApp.Migrations
             modelBuilder.Entity("RoutineApp.Data.Entities.User", b =>
                 {
                     b.Navigation("Exercises");
-
-                    b.Navigation("Routines");
-
-                    b.Navigation("Weights");
                 });
 #pragma warning restore 612, 618
         }

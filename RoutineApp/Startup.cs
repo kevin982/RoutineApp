@@ -57,7 +57,8 @@ namespace RoutineApp
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRoutineService, RoutineService>();
+            services.AddScoped<IExerciseService, ExerciseService>();
+            services.AddScoped<IDayService, DayService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
