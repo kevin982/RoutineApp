@@ -7,73 +7,152 @@
 }
 
 
+@*<div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-7">
+                <div class="form d-flex justify-content-between">
+                    <div class="image">
+                        <img src="https://cdn.pixabay.com/photo/2016/11/22/22/24/adult-1850925_960_720.jpg" style="width: 441px; height: 882px; aspect-ratio: auto 441 / 882;"/>
+                    </div>
+                    <form asp-action="CreateExercise" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h1>CreateExercise</h1>
+                        <h4 class="font-weight-bold mb-3">Create an exercise!</h4>
 
-<h4 class="h4">CreateExerciseModel</h4>
-<hr />
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="md-form md-outline">
+                            <i class="fas fa-envelope prefix"></i>
+                            <label asp-for="Category" class="form-label"></label>
+                            <select asp-for="Category" class="form-control">
+                                @{
+                                    foreach (var category in await _exerciseService.GetCategoriesAsync())
+                                    {
+                                        <option value="@category.Id">@category.CategoryName</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
 
-@{
-    if (ViewBag.Result is not null)
-    {
-        if (ViewBag.Result)
-        {
-            <div class="alert alert-success">
-                <h3>We have created the exercise correctly!</h3>
+                        </div>
+
+                        <div class="md-form md-outline">
+
+                            <div class="custom-file">
+
+                                <i class="fas fa-lock prefix"></i>
+                                <input asp-for="Images" class="custom-file-input" id="customFile" />
+                                <label asp-for="Images" class="custom-file-label"></label>
+                            </div>
+
+                            <span asp-validation-for="Images" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="space">
+                            <div class="float-right">
+                                <input type="submit" value="Create" class="btn btn-rounded" />
+                            </div>
+                        </div>
+
+                        <br />
+
+                    </form>
+                </div>
             </div>
-        }
-        else
-        {
-            <div class="alert alert-danger">
-                <h3>We could not create the exercise, something went wrong</h3>
-            </div>
-        }
-    }
-}
+        </div>
+    </div>*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <!--Made with love by Mutiullah Samim -->
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <!--Custom styles-->
+    <link rel="stylesheet" type="text/css" href="~/css/CreateExerciseForm.css">
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart" viewBox="0 0 16 16">
+        <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z" />
+    </svg>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Create an exercise!</h3>
+
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateExercise" method="post" enctype="multipart/form-data">
+
+                        <div class="input-group form-group">
+
+                            <input asp-for="Name" class="form-control" placeholder="Exercise name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="input-group form-group">
 
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <form asp-action="CreateExercise" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                            <select asp-for="Category" class="form-control">
+                                @{
+                                    foreach (var category in await _exerciseService.GetCategoriesAsync())
+                                    {
+                                        <option value="@category.Id">@category.CategoryName</option>
+                                    }
+                                }
+                            </select>
 
-                <label asp-for="Category" class="form-label"></label>
-                <select asp-for="Category" class="form-control">
-                    @{
-                        foreach (var category in await _exerciseService.GetCategoriesAsync())
+                        </div>
+
+                        <div class="form-group">
+                            <input asp-for="Images" class="form-control-file" id="customFile">
+                            <span asp-validation-for="Images" class="text-danger"></span>
+                        </div>
+
+                        <div class="float-left btn-primary">
+                            <input type="submit" value="Create" class="btn btn-rounded" />
+                        </div>
+
+                    </form>
+
+
+                </div>
+                @{
+                    if (ViewBag.Result is not null)
+                    {
+                        if (ViewBag.Result)
                         {
-                            <option value="@category.Id">@category.CategoryName</option>
+                            <div class="alert alert-success ">
+                                Created!
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">
+                                We could not create the exercise, something went wrong
+                            </div>
                         }
                     }
-                </select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-
+                }
             </div>
-            <div class="form-group">
 
-                <div class="custom-file">
 
-                    <input asp-for="Images" class="custom-file-input" id="customFile" />
-                    <label asp-for="Images" class="custom-file-label"></label>
-                </div>
+        </div>
 
-                <span asp-validation-for="Images" class="text-danger"></span>
 
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</body>
+</html>/* Made with love by Mutiullah Samim*/
 

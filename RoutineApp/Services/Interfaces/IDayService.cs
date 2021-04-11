@@ -7,5 +7,7 @@ namespace RoutineApp.Services.Interfaces
     public interface IDayService
     {
         Task<IEnumerable<Day>> GetAllDaysAsync();
+
+        Task<int> GetDayIdAsync();
     }
 }

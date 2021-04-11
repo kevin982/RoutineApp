@@ -13,6 +13,7 @@ namespace RoutineApp.Controllers
 {
 
     [Route("[controller]/[action]")]
+    [Authorize]
     public class ExerciseController : Controller
     {
 
@@ -34,20 +35,16 @@ namespace RoutineApp.Controllers
 
             if (ModelState.IsValid)
             {
+
+                string path = "F:\\ProgrammingPractices\\RoutineImages";
+
                 foreach (var image in model.Images)
                 {
-                    Image img = new();
+                    path += Guid.NewGuid().ToString()+"_"+image.Name;
 
-                    MemoryStream ms = new();
+                    await image.CopyToAsync(new FileStream(path, FileMode.Create));
 
-                    await image.CopyToAsync(ms);
-
-                    img.Img = ms.ToArray();
-
-                    model.ImageToStore.Add(img);
-
-                    ms.Close();
-                    ms.Dispose();
+                    model.ImagesUrl.Add(path);
                 }
 
                 ViewBag.Result = await _exerciseService.CreateExerciseAsync(model);

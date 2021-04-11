@@ -16,6 +16,5 @@ namespace RoutineApp.Data.Entities
 
         public int Repetitions { get; set; } = 0;
 
-        public int Sets { get; set; } = 0;
     }
 }

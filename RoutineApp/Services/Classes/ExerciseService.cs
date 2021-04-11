@@ -5,6 +5,7 @@ using RoutineApp.Models;
 using RoutineApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +15,13 @@ namespace RoutineApp.Services.Classes
     {
         private readonly RoutineContext _context = null;
         private readonly IUserService _userService = null;
+        private readonly IDayService _dayService = null;
 
-        public ExerciseService(RoutineContext context, IUserService userService)
+        public ExerciseService(RoutineContext context, IUserService userService, IDayService dayService)
         {
             _context = context;
             _userService = userService;
+            _dayService = dayService;
         }
 
         public async Task<bool> CreateExerciseAsync(CreateExerciseModel model)
@@ -42,7 +45,6 @@ namespace RoutineApp.Services.Classes
  
         }
 
-
         public async Task<List<ExerciseCategory>> GetCategoriesAsync()
         {
             return await _context.ExerciseCategories.AsNoTracking().ToListAsync();
@@ -50,9 +52,28 @@ namespace RoutineApp.Services.Classes
 
         public async Task<List<Exercise>> GetExercisesAsync()
         {
-            var idUser = _userService.GetUserId();
+            Stopwatch watch = new();
 
-            return await _context.Exercises.AsNoTracking().Include(e => e.Images).Where(e => e.UserId == idUser).ToListAsync();
+            watch.Start();
+
+            //var idUser = _userService.GetUserId();
+
+            //var user = await _context.Users
+            //    .Where(u => u.Id == idUser)
+            //    .Include(u => u.Exercises).ThenInclude(e => e.Category)
+            //    .ToListAsync();
+
+            var result = await _context.Images.ToListAsync();
+
+
+
+            watch.Stop();
+
+            var miliseconds = watch.ElapsedMilliseconds;
+
+ 
+            
+           return new List<Exercise>();
         }
 
         public async Task<List<Exercise>> GetAllExercisesAsync()
@@ -94,6 +115,43 @@ namespace RoutineApp.Services.Classes
 
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<Exercise>> GetExercisesForTodayAsync(string id)
+        {
+
+            int dayNumber = await _dayService.GetDayIdAsync();
+
+            Stopwatch watch = new();
+            
+            watch.Start();
+
+            var user = await _context.Users
+                .AsNoTracking()
+                .Where(u => u.Id == id)
+                .Include(u => u.Exercises.Where(e => e.DaysToTrain.Contains(new Day {Id = dayNumber, DayName = DateTime.Now.DayOfWeek.ToString()})))
+                .ThenInclude(e=> e.Images)
+                .FirstOrDefaultAsync();
+
+            watch.Stop();
+
+            var miliseconds = watch.ElapsedMilliseconds;
+ 
+ 
+            return user.Exercises;
+
+        }
+
+        public async Task<int> GetExerciseSetsDoneToday(int id)
+        {
+
+            var details =
+                await _context.ExerciseDetails
+                .AsNoTracking()
+                .Where(ed => ed.ExerciseId == id && ed.DayDone.ToShortDateString() == DateTime.Now.ToShortDateString())
+                .ToListAsync();
+
+            return details.Count;
         }
     }
 }

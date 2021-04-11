@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using RoutineApp.Claims;
 using RoutineApp.Data;
 using RoutineApp.Data.Entities;
+using RoutineApp.Extensions;
 using RoutineApp.Services.Classes;
 using RoutineApp.Services.Interfaces;
 using System;
@@ -30,6 +31,9 @@ namespace RoutineApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddAuthentication();
+
             services.AddControllersWithViews();
 
             services.AddDbContext<RoutineContext>(options => options.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection")));
@@ -38,7 +42,6 @@ namespace RoutineApp
 
             services.Configure<IdentityOptions>(options =>
             {
-
                 #region Password Configuration
                 options.Password.RequiredLength = Configuration.GetValue<int>("PasswordConfig:RequiredLength");
                 options.Password.RequiredUniqueChars = Configuration.GetValue<int>("PasswordConfig:RequiredUniqueChars");
@@ -48,17 +51,50 @@ namespace RoutineApp
                 options.Password.RequireNonAlphanumeric = Configuration.GetValue<bool>("PasswordConfig:RequireNonAlphanumeric");
                 #endregion
 
+                #region Lockout Configuration
 
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                #endregion
+
+                #region User Configurations
+
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+
+
+                #endregion
+
+                #region SignIn Configurations
 
                 options.SignIn.RequireConfirmedEmail = true;
+
+                #endregion
+
             });
 
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IEmailService, EmailService>();
+            services.ConfigureApplicationCookie(options =>
+            {
+
+                options.Cookie.HttpOnly = true; //Este nos sirve para establecer si solo permite http como protocolo.
+
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5); //Este nos sirve para establecer el tiempo de vida para que expire la cookie
+
+                options.LoginPath = "/Account/SignIn"; //Este nos sirve para establecer la ruta para hacer el loggin cuando se quiera acceder a una ruta que necesite authanticated.
+
+                options.AccessDeniedPath = "/Account/AccessDenied";  //Este nos sirve para establecer la ruta para cuando se niegue el acceso porque no esta autorizado.
+
+                options.SlidingExpiration = true;
+ 
+
+            });
+
             services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IExerciseService, ExerciseService>();
-            services.AddScoped<IDayService, DayService>();
+            services.AddMappers();
+            services.AddServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,9 +113,10 @@ namespace RoutineApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

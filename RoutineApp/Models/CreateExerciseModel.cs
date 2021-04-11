@@ -17,10 +17,13 @@ namespace RoutineApp.Models
         [Display(Name ="Please enter the category")]
         public int Category { get; set; }
 
-        [Display(Name = "Please enter the exercise images")]
+        [Display(Name = "Please enter the exercise images"), Required(ErrorMessage ="You must upload at least one image")]
         public IFormFileCollection Images { get; set; } 
 
         public List<Image> ImageToStore { get; set; } = new();
+
+        public List<string> ImagesUrl { get; set; } = new();
+
 
         public object Clone()
         {

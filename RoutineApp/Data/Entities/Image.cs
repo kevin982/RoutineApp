@@ -10,13 +10,13 @@ namespace RoutineApp.Data.Entities
 {
     public class Image
     {
-        public int Id { get; set; } = 0;
+        public int Id { get; set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public byte[] Img { get; set; }
 
-        public int ExerciseId { get; set; } = 0;
+        public int ExerciseId { get; set; }
 
-        public Exercise Excercise { get; set; } = new();
+        public Exercise Excercise { get; set; }
     }
 }

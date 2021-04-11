@@ -20,6 +20,10 @@ namespace RoutineApp.Services.Interfaces
         Task AddExerciseToRoutineAsync(AddExerciseModel model);
 
         Task RemoveExerciseFromRoutineAsync(int id);
+
+        Task<List<Exercise>> GetExercisesForTodayAsync(string id);
+
+        Task<int> GetExerciseSetsDoneToday(int id);
     }
 
 }

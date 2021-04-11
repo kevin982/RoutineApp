@@ -23,5 +23,17 @@ namespace RoutineApp.Services.Classes
             return await _context.Days.AsNoTracking().ToListAsync();
         }
 
+        public async Task<int> GetDayIdAsync()
+        {
+            string day = DateTime.Now.DayOfWeek.ToString();
+
+            var result =  await _context.Days
+                .AsNoTracking()
+                .Where(d => d.DayName == day)
+                .Select(d => new { d.Id })
+                .SingleAsync();
+
+            return result.Id; 
+        }
     }
 }
