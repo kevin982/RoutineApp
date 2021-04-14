@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@model DomainRoutineApp.Models.Responses.Exercise.ExerciseWorkOutResponseModel
+ 
+<h1>
+    Repetitions left: @Model.RepetitionsLeft
+</h1>
+
+@{
+
+    List<string> Images = new() { "https://post.healthline.com/wp-content/uploads/2020/07/9539-man_exercise_run-1200x628-facebook-1200x628.jpg", "https://api.time.com/wp-content/uploads/2019/09/getting-back-to-exercise-routine.jpg?quality=85&w=1012&h=569&crop=1" };
+
+    if (Model.Status == "Ok")
+    {
+        await Html.RenderPartialAsync("_Card", Model);
+
+        await Html.RenderPartialAsync("_ExerciseDoneForm", new ExerciseDoneRequestModel { ExerciseId = Model.ExerciseId });
+    }
+    else
+    {
+        <div class="alert-primary">
+            @Model.Status
+        </div>
+    }
+ 
+}
+
