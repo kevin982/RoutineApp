@@ -19,6 +19,6 @@ namespace DomainRoutineApp.Services.Interfaces
 
         Task<List<Exercise>> GetTodayExercisesAsync(GetTodayExercisesRequestModel model);
 
-        Task<List<CreateRoutineExerciseResponseModel>> GetAllUserExercises();
+        Task<List<(string, List<CreateRoutineExerciseResponseModel>)>> GetAllUserExercises();
     }
 }

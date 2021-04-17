@@ -34,7 +34,8 @@ namespace InfrastructureRoutineApp.Mappers.Classes
                 {
                     ExerciseId = exercise.Id,
                     ExerciseName = exercise.Name,
-                    IsInTheRoutine = exercise.IsInTheRoutine
+                    IsInTheRoutine = exercise.IsInTheRoutine,
+                    Category = exercise.Category.CategoryName
                 };
                  
                 foreach (var image in exercise.Images) response.Images.Add(image.Img);

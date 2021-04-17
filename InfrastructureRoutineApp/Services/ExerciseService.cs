@@ -62,13 +62,76 @@ namespace InfrastructureRoutineApp.Services
             await _exerciseRepository.CreateExerciseAsync(exercise);
         }
 
-        public async Task<List<CreateRoutineExerciseResponseModel>> GetAllUserExercises()
+        public async Task<List<(string, List<CreateRoutineExerciseResponseModel>)>> GetAllUserExercises()
         {
             var result = await _exerciseRepository.GetAllUserExercisesAsync(new GetAllExercisesRequestModel { UserId = _userService.GetUserId()});
 
-            return _exerciseMapper.MapDomainToCreateRoutineExerciseResponse(result);
+            var list = _exerciseMapper.MapDomainToCreateRoutineExerciseResponse(result);
+
+            return OrganizeExercisesDependendingOnTheirCategory(list);
         }
  
+        private List<(string, List<CreateRoutineExerciseResponseModel>)> OrganizeExercisesDependendingOnTheirCategory(List<CreateRoutineExerciseResponseModel> exercises)
+        {
+            List<(string, List<CreateRoutineExerciseResponseModel>)> response = new() 
+            { 
+                ("Legs", new List<CreateRoutineExerciseResponseModel>()),
+                ("Abs", new List<CreateRoutineExerciseResponseModel>()),
+                ("Chest", new List<CreateRoutineExerciseResponseModel>()),
+                ("Shoulders", new List<CreateRoutineExerciseResponseModel>()),
+                ("Biceps", new List<CreateRoutineExerciseResponseModel>()),
+                ("Triceps", new List<CreateRoutineExerciseResponseModel>()),
+                ("Forearms", new List<CreateRoutineExerciseResponseModel>()),
+                ("Back", new List<CreateRoutineExerciseResponseModel>()),
+                ("Cardio", new List<CreateRoutineExerciseResponseModel>())
+            };
+ 
+            for (int i = 0; i < exercises.Count; i++)
+            {
+                switch (exercises[i].Category)
+                {
+                    case "Legs":
+                        response[0].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Abs":
+                        response[1].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Chest":
+                        response[2].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Shoulders":
+                        response[3].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Biceps":
+                        response[4].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Triceps":
+                        response[5].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Forearms":
+                        response[6].Item2.Add(exercises[i]);
+                        break;
+
+                    case "Back":
+                        response[7].Item2.Add(exercises[i]);
+                        break;
+
+                    default:
+                        response[8].Item2.Add(exercises[i]);
+                        break;
+                }
+            }
+
+
+            return response;
+        }
+
         public async Task<List<Exercise>> GetTodayExercisesAsync(GetTodayExercisesRequestModel model)
         {
             var result = await _exerciseRepository.GetTodayExercisesAsync(model);

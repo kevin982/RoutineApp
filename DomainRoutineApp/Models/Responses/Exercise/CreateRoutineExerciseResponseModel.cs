@@ -13,5 +13,7 @@ namespace DomainRoutineApp.Models.Responses.Exercise
         public string ExerciseName { get; set; } = string.Empty;
         public bool IsInTheRoutine { get; set; } = false;
 
+        public string Category { get; set; } = string.Empty;
+
     }
 }

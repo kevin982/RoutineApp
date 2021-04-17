@@ -65,6 +65,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             var user = await _context.Users
                 .AsNoTracking()
                 .Include(u => u.Exercises).ThenInclude(e => e.Images)
+                .Include(u => u.Exercises).ThenInclude(e => e.Category)
                 .FirstOrDefaultAsync(u => u.Id == model.UserId);
 
             watch.Stop();
