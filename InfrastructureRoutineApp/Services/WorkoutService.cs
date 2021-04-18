@@ -23,6 +23,18 @@ namespace InfrastructureRoutineApp.Services
             _exerciseDetailService = exerciseDetailService;
         }
 
+        public async Task CreateAndAddExerciseDetailAsync(ExerciseDoneRequestModel model)
+        {
+            int exerciseDetailId = await _exerciseDetailService.CreateExerciseDetailAsync(model);
+
+            var exercise = await _exerciseService.GetExerciseByIdAsync(new GetExerciseRequestModel { ExerciseId = model.ExerciseId });
+
+            var detail = await _exerciseDetailService.GetExerciseDetailByIdAsync(new GetExerciseDetailByIdRequestModel { ExerciseDetailId = exerciseDetailId});
+
+            exercise.ExerciseDetails.Add(detail);
+
+            await _exerciseService.UpdateExerciseAsync(exercise);
+        }
 
         public async Task<ExerciseWorkOutResponseModel> GetNextExerciseAsync()
         {

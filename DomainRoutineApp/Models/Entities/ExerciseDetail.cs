@@ -19,5 +19,7 @@ namespace DomainRoutineApp.Models.Entities
         public float Weight { get; set; } = 0;
 
         public int Repetitions { get; set; } = 0;
+
+        public int SetNumber { get; set; } = 0;
     }
 }

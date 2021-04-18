@@ -13,5 +13,6 @@ namespace DomainRoutineApp.Models.Entities
         public string DayName { get; set; } = string.Empty;
 
         public List<Exercise> Exercises { get; set; } = new();
+
     }
 }

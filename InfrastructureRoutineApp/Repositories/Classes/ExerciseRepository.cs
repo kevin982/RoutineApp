@@ -34,6 +34,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         {
             return await _context.Exercises
                 .AsNoTracking()
+                .Include(e=> e.DaysToTrain)
                 .Where(e => e.Id == model.ExerciseId)
                 .FirstOrDefaultAsync();
         }
@@ -98,6 +99,10 @@ namespace InfrastructureRoutineApp.Repositories.Classes
 
             return user.Exercises;
         }
- 
+
+        public async Task DeleteDaysToTrain(DeleteDayToTrainRequestModel model)
+        {
+            await _context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM DayExercise where ExercisesId = {model.ExerciseId}");
+        }
     }
 }

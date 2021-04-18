@@ -34,6 +34,8 @@ namespace RoutineCoreApp
 
             services.AddControllersWithViews();
 
+            
+
             services.AddDbContext<RoutineContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"), b => b.MigrationsAssembly("RoutineCoreApp"));
@@ -93,6 +95,7 @@ namespace RoutineCoreApp
             });
 
             services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+
             services.AddMappers();
             services.AddClientServices();
             services.AddRepositories();
@@ -112,11 +115,12 @@ namespace RoutineCoreApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-
+            
             app.UseRouting();
+            
+            app.UseHttpsRedirection();
+            
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
@@ -124,9 +128,7 @@ namespace RoutineCoreApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

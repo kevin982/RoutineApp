@@ -4,35 +4,22 @@ using InfrastructureRoutineApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace RoutineCoreApp.Migrations
 {
     [DbContext(typeof(RoutineContext))]
-    partial class RoutineContextModelSnapshot : ModelSnapshot
+    [Migration("20210417013753_NowTheRelationBetweenExercisesAndDaysIsManyToOne")]
+    partial class NowTheRelationBetweenExercisesAndDaysIsManyToOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("DayExercise", b =>
-                {
-                    b.Property<int>("DaysToTrainId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExercisesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DaysToTrainId", "ExercisesId");
-
-                    b.HasIndex("ExercisesId");
-
-                    b.ToTable("DayExercise");
-                });
 
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.Day", b =>
                 {
@@ -44,7 +31,12 @@ namespace RoutineCoreApp.Migrations
                     b.Property<string>("DayName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ExerciseId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ExerciseId");
 
                     b.ToTable("Days");
                 });
@@ -109,9 +101,6 @@ namespace RoutineCoreApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Repetitions")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SetNumber")
                         .HasColumnType("int");
 
                     b.Property<float>("Weight")
@@ -371,19 +360,11 @@ namespace RoutineCoreApp.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("DayExercise", b =>
+            modelBuilder.Entity("DomainRoutineApp.Models.Entities.Day", b =>
                 {
-                    b.HasOne("DomainRoutineApp.Models.Entities.Day", null)
-                        .WithMany()
-                        .HasForeignKey("DaysToTrainId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DomainRoutineApp.Models.Entities.Exercise", null)
-                        .WithMany()
-                        .HasForeignKey("ExercisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("DaysToTrain")
+                        .HasForeignKey("ExerciseId");
                 });
 
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.Exercise", b =>
@@ -478,6 +459,8 @@ namespace RoutineCoreApp.Migrations
 
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.Exercise", b =>
                 {
+                    b.Navigation("DaysToTrain");
+
                     b.Navigation("ExerciseDetails");
 
                     b.Navigation("Images");

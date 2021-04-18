@@ -1,23 +1,25 @@
-﻿using DomainRoutineApp.Services.Interfaces;
+﻿using DomainRoutineApp.Models.Requests.Exercise;
+using DomainRoutineApp.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RoutineCoreApp.Controllers
 {
-    [Authorize]
     [Route("[controller]/[action]")]
-    public class WorkOutController : Controller
+    [Authorize]
+    public class WorkoutController : Controller
     {
         private readonly IWorkoutService _workOutService = null;
+        private readonly IExerciseService _exerciseService = null;
 
-        public WorkOutController(IWorkoutService workOutService)
+        public WorkoutController(IWorkoutService workOutService, IExerciseService exerciseService)
         {
             _workOutService = workOutService;
+            _exerciseService = exerciseService;
         }
 
         public async Task<IActionResult> WorkOut()
@@ -27,5 +29,15 @@ namespace RoutineCoreApp.Controllers
             return View(result);
         }
 
-     }
+        [HttpPost]
+        public async Task<IActionResult> ExerciseDone(ExerciseDoneRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _workOutService.CreateAndAddExerciseDetailAsync(model);
+            }
+
+            return RedirectToAction("WorkOut");
+        }
+    }
 }

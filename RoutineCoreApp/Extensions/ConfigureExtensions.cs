@@ -36,6 +36,7 @@ namespace RoutineCoreApp.Extensions
         {
             services.AddScoped<IExerciseMapper, ExerciseMapper>();
             services.AddScoped<IAccountMapper, AccountMapper>();
+            services.AddScoped<IExerciseDetailMapper, ExerciseDetailMapper>();
 
             return services;
         }

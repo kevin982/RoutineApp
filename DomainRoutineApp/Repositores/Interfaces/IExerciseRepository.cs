@@ -19,5 +19,8 @@ namespace DomainRoutineApp.Repositores.Interfaces
         Task<Exercise> GetExerciseByIdAsync(GetExerciseRequestModel model);
 
         Task UpdateExerciseAsync(Exercise exercise);
+
+        Task DeleteDaysToTrain(DeleteDayToTrainRequestModel model);
+
     }
 }

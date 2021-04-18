@@ -1,4 +1,5 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿using DomainRoutineApp.Mappers.Interfaces;
+using DomainRoutineApp.Models.Entities;
 using DomainRoutineApp.Models.Requests.Day;
 using DomainRoutineApp.Models.Requests.Exercise;
 using DomainRoutineApp.Models.Requests.ExerciseCategory;
@@ -21,14 +22,17 @@ namespace InfrastructureRoutineApp.Services
         private readonly IDayService _dayService = null;
         private readonly IExerciseMapper _exerciseMapper = null;
         private readonly IExerciseCategoryService _exerciseCategoryService = null;
+        private readonly IExerciseDetailMapper _exerciseDetailMapper = null;
+        
 
-        public ExerciseService(IExerciseRepository exerciseRepository, IUserService userService, IDayService dayService, IExerciseMapper exerciseMapper, IExerciseCategoryService exerciseCategoryService)
+        public ExerciseService(IExerciseRepository exerciseRepository, IUserService userService, IDayService dayService, IExerciseMapper exerciseMapper, IExerciseCategoryService exerciseCategoryService, IExerciseDetailMapper exerciseDetailMapper)
         {
             _exerciseRepository = exerciseRepository;
             _userService = userService;
             _dayService = dayService;
             _exerciseMapper = exerciseMapper;
             _exerciseCategoryService = exerciseCategoryService;
+            _exerciseDetailMapper = exerciseDetailMapper;
         }
 
 
@@ -145,14 +149,33 @@ namespace InfrastructureRoutineApp.Services
 
             if(exercise is not null)
             {
+                exercise.Sets = 0;
                 exercise.IsInTheRoutine = false;
-                exercise.DaysToTrain.Clear();
+                await _exerciseRepository.DeleteDaysToTrain(new DeleteDayToTrainRequestModel { ExerciseId = exercise.Id});
                 await _exerciseRepository.UpdateExerciseAsync(exercise);
             }
-
-
+ 
         }
 
- 
+        public async Task<Exercise> GetExerciseByIdAsync(GetExerciseRequestModel model)
+        {
+            return await _exerciseRepository.GetExerciseByIdAsync(model);
+        }
+
+        public async Task AddExerciseDetailAsync(ExerciseDoneRequestModel model)
+        {
+            Exercise exercise = await GetExerciseByIdAsync(new GetExerciseRequestModel { ExerciseId = model.ExerciseId });
+
+            ExerciseDetail exerciseDetail = _exerciseDetailMapper.MapExerciseDoneRequestToDomain(model);
+
+            exercise.ExerciseDetails.Add(exerciseDetail);
+
+            await _exerciseRepository.UpdateExerciseAsync(exercise);
+        }
+
+        public async Task UpdateExerciseAsync(Exercise exercise)
+        {
+            await _exerciseRepository.UpdateExerciseAsync(exercise);
+        }
     }
 }
