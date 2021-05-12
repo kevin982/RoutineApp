@@ -33,9 +33,12 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         public async Task<Exercise> GetExerciseByIdAsync(GetExerciseRequestModel model)
         {
             return await _context.Exercises
-                .AsNoTrackingWithIdentityResolution()
-                .Include(e=> e.DaysToTrain)
-                .AsSplitQuery()
+                .AsNoTracking()
+                .Include(e => e.Category)
+                .Include(e => e.Images).AsSplitQuery()
+                .Include(e => e.ExerciseDetails).AsSplitQuery()
+                .Include(e => e.User)
+                .Include(e => e.DaysToTrain).AsSplitQuery()
                 .Where(e => e.Id == model.ExerciseId)
                 .FirstOrDefaultAsync();
         }
@@ -65,7 +68,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             watch.Start();
 
             var user = await _context.Users
-                .AsNoTrackingWithIdentityResolution()
+                .AsNoTracking()
                 .Include(u => u.Exercises).ThenInclude(e => e.Images)
                 .Include(u => u.Exercises).ThenInclude(e => e.Category)
                 .FirstOrDefaultAsync(u => u.Id == model.UserId);
@@ -87,7 +90,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             watch.Start();
 
             var user = await _context.Users
-                .AsNoTrackingWithIdentityResolution()
+                .AsNoTracking()
                 .Where(u => u.Id == model.UserId)
                 .Include(u => u.Exercises.Where(e => e.DaysToTrain.Contains(new Day { Id = dayNumber, DayName = DateTime.Now.DayOfWeek.ToString() })))
                 .ThenInclude(e => e.Images)
@@ -96,7 +99,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             watch.Stop();
 
             var miliseconds = watch.ElapsedMilliseconds;
- 
+
 
             return user.Exercises;
         }

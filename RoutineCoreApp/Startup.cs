@@ -2,6 +2,7 @@ using DomainRoutineApp.Models.Entities;
 using InfrastructureRoutineApp;
 using InfrastructureRoutineApp.Claims;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -30,7 +31,25 @@ namespace RoutineCoreApp
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddAuthentication();
+            var builder = services.AddAuthentication();
+
+            builder.AddFacebook(options =>
+            {
+                options.SaveTokens = true;
+                options.ClientId = Configuration["Facebook:ClientId"];
+                options.ClientSecret = Configuration["Facebook:ClientSecret"];
+                options.Events.OnTicketReceived = (context) =>
+                {
+                    Console.WriteLine(context.HttpContext.User);
+                    return Task.CompletedTask;
+                };
+                options.Events.OnCreatingTicket = (context) =>
+                {
+                    Console.WriteLine(context.Identity);
+                    return Task.CompletedTask;
+                };
+
+            });
 
             services.AddControllersWithViews();
 
@@ -41,7 +60,13 @@ namespace RoutineCoreApp
                 options.UseSqlServer(Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"), b => b.MigrationsAssembly("RoutineCoreApp"));
             });
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<RoutineContext>().AddDefaultTokenProviders();
+            services.AddDataProtection()
+                .SetApplicationName("RoutineAppKevinVasquezBenavides");
+
+            services.AddIdentity<User, IdentityRole>().
+                AddEntityFrameworkStores<RoutineContext>().
+                AddDefaultTokenProviders().
+                AddRoles<IdentityRole>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -76,6 +101,14 @@ namespace RoutineCoreApp
 
                 #endregion
 
+                #region LockoutConfigurations
+
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
+                options.Lockout.MaxFailedAccessAttempts = 4;
+
+                #endregion
+
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -95,6 +128,7 @@ namespace RoutineCoreApp
             });
 
             services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+
 
             services.AddMappers();
             services.AddClientServices();

@@ -23,5 +23,7 @@ namespace DomainRoutineApp.Services.Interfaces
         Task SendEmailToResetPasswordAsync(EmailResetPasswordRequestModel model);
 
         Task<IdentityResult> ResetPasswordAsync(ResetPasswordRequestModel model);
+
+        Task<SignInResult> SignInFbAsync();
     }
 }

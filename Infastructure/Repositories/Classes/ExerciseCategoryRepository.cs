@@ -21,8 +21,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
 
         public async Task<List<ExerciseCategory>> GetAllCategoriesAsync()
         {
-            return await _context.ExerciseCategories.AsNoTracking()
-                .ToListAsync();
+            return await _context.ExerciseCategories.AsNoTracking().ToListAsync();
         }
 
         public async Task<ExerciseCategory> GetCategoryByIdAsync(GetExerciseCategoryByIdRequestModel model)

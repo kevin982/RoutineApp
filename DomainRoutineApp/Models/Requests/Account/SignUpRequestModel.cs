@@ -10,7 +10,7 @@ namespace DomainRoutineApp.Models.Requests.Account
     public class SignUpRequestModel
     {
         [Required(ErrorMessage = "You must enter your name"), Display(Description = "Enter your name"), MaxLength(20), MinLength(4)]
-        public string FistName { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "You must enter your last name"), Display(Description = "Enter your last name"), MaxLength(20), MinLength(4)]
         public string LastName { get; set; } = string.Empty;

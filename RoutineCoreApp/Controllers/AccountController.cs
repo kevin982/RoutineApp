@@ -1,5 +1,7 @@
 ﻿using DomainRoutineApp.Models.Requests.Account;
 using DomainRoutineApp.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -53,9 +55,7 @@ namespace RoutineCoreApp.Controllers
                 }
 
             }
-
-
-
+ 
             return View();
         }
 
@@ -93,7 +93,12 @@ namespace RoutineCoreApp.Controllers
             {
                 var result = await _accountService.SignInAsync(model);
 
-                if (!result.Succeeded)
+                if (result is null)
+                {
+                    ViewBag.Errors.Add("You have not created an account");
+                    ViewBag.Succeded = false;
+
+                }else if (!result.Succeeded)
                 {
                     if (result.IsLockedOut) ViewBag.Errors.Add("You have entered invalid cretendials several times, so you are lockout for 1 hour.");
                     if (result.IsNotAllowed) ViewBag.Errors.Add("You are not allowed to signIn, you must confirm your email.");
@@ -105,6 +110,8 @@ namespace RoutineCoreApp.Controllers
                     ViewBag.Succeded = true;
                     return RedirectToAction("Index", "Home");
                 }
+
+
             }
 
             return View();
@@ -195,6 +202,25 @@ namespace RoutineCoreApp.Controllers
 
             return View();
         }
+
+        public IActionResult ExternalLogin()
+        {
+
+            var auth = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action(nameof(FacebookResponse))
+            };
+
+            return Challenge(auth, FacebookDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> FacebookResponse()
+        {
+            await _accountService.SignInFbAsync();
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

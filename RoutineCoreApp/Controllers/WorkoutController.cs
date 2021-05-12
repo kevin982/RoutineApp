@@ -39,5 +39,20 @@ namespace RoutineCoreApp.Controllers
 
             return RedirectToAction("WorkOut");
         }
+
+        public string ValidarNombreEntrenador(string nombreEntrenador)
+        {
+            //Implementación 
+
+            throw new NotImplementedException();
+        }
+
+        public string ValidarIdEntrenador(string idEntrenador)
+        {
+            //Implementación 
+
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -6,6 +6,7 @@ using DomainRoutineApp.Services.Interfaces;
 using InfrastructureRoutineApp.Mappers.Classes;
 using InfrastructureRoutineApp.Repositories.Classes;
 using InfrastructureRoutineApp.Services;
+using InfrastructureRoutineApp.Services.Classes;
 using Microsoft.Extensions.DependencyInjection;
 using RoutineApp.Mappers.Interfaces;
 using System;
