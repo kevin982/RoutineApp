@@ -29,6 +29,7 @@ namespace RoutineCoreApp.Extensions
             services.AddScoped<IWorkoutService, WorkoutService>();
             services.AddScoped<IExerciseCategoryService, ExerciseCategoryService>();
             services.AddScoped<IExerciseDetailService, ExerciseDetailService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
 
             return services;
         }
@@ -38,6 +39,7 @@ namespace RoutineCoreApp.Extensions
             services.AddScoped<IExerciseMapper, ExerciseMapper>();
             services.AddScoped<IAccountMapper, AccountMapper>();
             services.AddScoped<IExerciseDetailMapper, ExerciseDetailMapper>();
+            services.AddScoped<IStatisticsMapper, StatisticsMapper>();
 
             return services;
         }
@@ -48,6 +50,7 @@ namespace RoutineCoreApp.Extensions
             services.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
             services.AddScoped<IExerciseDetailRepository, ExerciseDetailRepository>();
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
             return services;
         }

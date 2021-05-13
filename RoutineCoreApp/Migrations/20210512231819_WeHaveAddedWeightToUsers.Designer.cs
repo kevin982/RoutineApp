@@ -4,14 +4,16 @@ using InfrastructureRoutineApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace RoutineCoreApp.Migrations
 {
     [DbContext(typeof(RoutineContext))]
-    partial class RoutineContextModelSnapshot : ModelSnapshot
+    [Migration("20210512231819_WeHaveAddedWeightToUsers")]
+    partial class WeHaveAddedWeightToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,29 +144,6 @@ namespace RoutineCoreApp.Migrations
                     b.HasIndex("ExerciseId");
 
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("DomainRoutineApp.Models.Entities.Weight", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Kilos")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Weights");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -388,6 +367,9 @@ namespace RoutineCoreApp.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
                     b.HasDiscriminator().HasValue("User");
                 });
 
@@ -443,15 +425,6 @@ namespace RoutineCoreApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Excercise");
-                });
-
-            modelBuilder.Entity("DomainRoutineApp.Models.Entities.Weight", b =>
-                {
-                    b.HasOne("DomainRoutineApp.Models.Entities.User", "User")
-                        .WithMany("Weights")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -520,8 +493,6 @@ namespace RoutineCoreApp.Migrations
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.User", b =>
                 {
                     b.Navigation("Exercises");
-
-                    b.Navigation("Weights");
                 });
 #pragma warning restore 612, 618
         }

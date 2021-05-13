@@ -109,6 +109,18 @@ namespace RoutineCoreApp
 
                 #endregion
 
+                #region CookiesPolicy
+
+                services.Configure<CookiePolicyOptions>(options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+
+
+                #endregion
+
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -150,11 +162,13 @@ namespace RoutineCoreApp
                 app.UseHsts();
             }
             
-            app.UseRouting();
-            
             app.UseHttpsRedirection();
             
             app.UseStaticFiles();
+
+            app.UseCookiePolicy();
+            
+            app.UseRouting();
 
             app.UseAuthentication();
 

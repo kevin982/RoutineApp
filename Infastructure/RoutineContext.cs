@@ -25,5 +25,7 @@ namespace InfrastructureRoutineApp
 
         public DbSet<Day> Days { get; set; }
 
+        public DbSet<Weight> Weights { get; set; }
+
     }
 }

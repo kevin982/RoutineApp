@@ -1,0 +1,44 @@
+﻿@model DomainRoutineApp.Models.Requests.Statics.AddPersonWeightRequestModel
+
+@inject DomainRoutineApp.Services.Interfaces.IStatisticsService _statisticsService 
+
+@{
+    ViewData["Title"] = "Weight";
+    var weights = await _statisticsService.GetWeightStatisticsAsync();
+}
+
+<h1>Weight</h1>
+
+<hr />
+
+<div class="card text-white bg-dark mb-3" style="max-width: 100%;">
+    <img class="card-img-top" src="https://cdn.pixabay.com/photo/2018/02/24/09/09/woman-3177574_960_720.jpg" alt="Card image cap">
+    <div class="card-body">
+        <h2 class="card-title">Weight</h2>
+        <h6>Lowest weight: <small>@weights.LowestWeight</small> </h6>
+        <h6>Highest weight: <small>@weights.HighestWeight</small> </h6>
+        <h6>Current weight: <small>@weights.CurrentWeight</small> </h6>
+        <h6>First weight: <small>@weights.FirstWeight</small> </h6>
+    </div>
+</div>
+
+<hr />
+
+<h4>Add Weight</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Weight">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+ 

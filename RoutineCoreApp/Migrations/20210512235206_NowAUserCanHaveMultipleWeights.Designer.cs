@@ -4,14 +4,16 @@ using InfrastructureRoutineApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace RoutineCoreApp.Migrations
 {
     [DbContext(typeof(RoutineContext))]
-    partial class RoutineContextModelSnapshot : ModelSnapshot
+    [Migration("20210512235206_NowAUserCanHaveMultipleWeights")]
+    partial class NowAUserCanHaveMultipleWeights
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,9 +152,6 @@ namespace RoutineCoreApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Kilos")
                         .HasColumnType("int");

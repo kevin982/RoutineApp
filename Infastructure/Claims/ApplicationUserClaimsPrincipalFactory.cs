@@ -20,7 +20,6 @@ namespace InfrastructureRoutineApp.Claims
 
             identity.AddClaim(new Claim("FirstName", user.FirstName));
             identity.AddClaim(new Claim("LastName", user.LastName));
-            identity.AddClaim(new Claim("Height", user.Height.ToString()));
             identity.AddClaim(new Claim("Age", user.Age.ToString()));
 
 
