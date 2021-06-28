@@ -9,5 +9,7 @@ namespace DomainRoutineApp.Services.Interfaces
     public interface IUserService
     {
         string GetUserId();
+
+        bool IsAuthenticated();
     }
 }

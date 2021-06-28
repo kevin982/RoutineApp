@@ -26,5 +26,8 @@ namespace DomainRoutineApp.Services.Interfaces
         Task AddExerciseDetailAsync(ExerciseDoneRequestModel model);
 
         Task UpdateExerciseAsync(Exercise exercise);
+
+        Task<List<CreateRoutineExerciseResponseModel>> GetUserExercisesByCategoryAsync(GetUserExercisesByCategoryRequestModel model);
+ 
     }
 }

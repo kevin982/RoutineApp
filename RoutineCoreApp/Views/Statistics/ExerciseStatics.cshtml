@@ -1,0 +1,78 @@
+﻿@model DomainRoutineApp.Models.Requests.Statics.GetExerciseStatisticsRequestModel
+
+@inject DomainRoutineApp.Services.Interfaces.IExerciseService _exerciseService
+
+@{
+
+    ViewData["Title"] = "ExerciseStatics";
+    var Exercises = await _exerciseService.GetAllUserExercises();
+
+}
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,96L60,117.3C120,139,240,181,360,186.7C480,192,600,160,720,160C840,160,960,192,1080,192C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path></svg>
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-6 pt-5">
+
+            <h1 class="text-white">Exercises</h1>
+            <hr class="bg-white"/>
+
+            <form asp-action="ExerciseStatics">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ExerciseId" class="control-label text-white mb-4"></label>
+                    <select asp-for="ExerciseId" class="form-control bg-dark text-white mb-5">
+
+                        @{
+                            foreach (var exercises in Exercises)
+                            {
+                                <optgroup label="@exercises.Item1">
+
+                                    @{
+                                        foreach (var exercise in exercises.Item2)
+                                        {
+                                            <option value="@exercise.ExerciseId">@exercise.ExerciseName</option>
+                                        }
+                                    }
+
+                                </optgroup>
+                            }
+                        }
+
+                    </select>
+                    <span asp-validation-for="ExerciseId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Request" class="btn-fill-animation" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-6 pt-0">
+            <img src="~/Images/ManGettingStatistics.png" />
+        </div>
+
+    </div>
+
+    <div class="row my-5">
+        <hr class="bg-white"/>
+    </div>
+
+</div>
+
+
+
+
+@{
+    if (ViewData["exerciseStatistics"] is not null)
+    {
+        await Html.RenderPartialAsync("_ExerciseStatisticsCard", ViewData["exerciseStatistics"]);
+    }
+}
+
+
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>

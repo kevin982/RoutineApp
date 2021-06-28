@@ -12,7 +12,6 @@ namespace DomainRoutineApp.Models.Responses.Exercise
         public int ExerciseId { get; set; } = 0;
         public string ExerciseName { get; set; } = string.Empty;
         public bool IsInTheRoutine { get; set; } = false;
-
         public string Category { get; set; } = string.Empty;
 
     }

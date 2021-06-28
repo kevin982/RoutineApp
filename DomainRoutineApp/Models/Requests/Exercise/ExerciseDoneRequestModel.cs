@@ -10,7 +10,7 @@ namespace DomainRoutineApp.Models.Requests.Exercise
     public class ExerciseDoneRequestModel
     {
         [Required]
-        public float Weight { get; set; } = 0;
+        public int Weight { get; set; } = 0;
 
         [Required, Range(1,500)]
         public int Repetitions { get; set; } = 0;

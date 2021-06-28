@@ -1,0 +1,42 @@
+﻿@model DomainRoutineApp.Models.Responses.Statics.ExerciseStatisticsResponseModel
+
+@{
+    string withoutStatistics = "We do not have statistics about this exercise";
+    string explanationWithoutStatistics = "You have not done this exercise yet";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card bg-dark">
+                <img src="@Model.Images[0]" class="card-img-top" alt="Exercise image">
+                <div class="card-body gradient-background">
+                    <h1 class="card-title text-white mb-5">@Model.ExerciseName</h1>
+
+                    @{
+                        if (Model.FirstWeight == 0)
+                        {
+
+                            <h6 class="text-white">@withoutStatistics</h6>
+                            <p class="text-white">@explanationWithoutStatistics</p>
+
+                        }
+                        else
+                        {
+                            <h6 class="text-white">First day training: <small class="text-white">@Model.FirstDay</small> </h6>
+                            <h6 class="text-white">Last day traing: <small class="text-white">@Model.LastDay</small> </h6>
+                            <h6 class="text-white">First weight: <small class="text-white">@Model.FirstWeight</small> </h6>
+                            <h6 class="text-white">Current weight: <small class="text-white">@Model.CurrentWeight</small> </h6>
+                            <h6 class="text-white">Lowest weight: <small class="text-white">@Model.LowestWeight</small> </h6>
+                            <h6 class="text-white">Highest weight: <small class="text-white">@Model.HighestWeight</small> </h6>
+                            <h6 class="text-white">Repetitions average: <small class="text-white">@Model.RepetitionsAverage</small> </h6>
+
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

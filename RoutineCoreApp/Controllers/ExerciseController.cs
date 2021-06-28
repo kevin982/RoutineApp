@@ -1,6 +1,8 @@
 ﻿using ClientRoutineApp.Models;
 using ClientRoutineApp.Services.Interfaces;
+using DomainRoutineApp.Models.Entities;
 using DomainRoutineApp.Models.Requests.Exercise;
+using DomainRoutineApp.Models.Responses.Exercise;
 using DomainRoutineApp.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +12,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RoutineCoreApp.Controllers
 {
     [Route("[controller]/[action]")]
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class ExerciseController : Controller
     {
 
@@ -92,7 +96,19 @@ namespace RoutineCoreApp.Controllers
             return RedirectToAction("CreateRoutine");
         }
 
+        [HttpGet("{categoryId}")]
+        public async Task<string> GetUserExercisesByCategory(int categoryId)
+        {
+            var result = await _exerciseService.GetUserExercisesByCategoryAsync(new GetUserExercisesByCategoryRequestModel { CategoryId = categoryId});
 
+            var jsonOptions = new JsonSerializerOptions()
+            {
+                IncludeFields = true
+            };
+
+            return JsonSerializer.Serialize(result, jsonOptions);
+
+        }
     }
 
 }

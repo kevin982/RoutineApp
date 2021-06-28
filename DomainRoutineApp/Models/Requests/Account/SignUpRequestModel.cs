@@ -18,7 +18,7 @@ namespace DomainRoutineApp.Models.Requests.Account
         [Required(ErrorMessage = "You must enter your email"), Display(Description = "Enter your email"), EmailAddress]
         public string Email { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "You must enter your age"), Display(Description = "Enter your age"), Range(17, 100)]
+        [Required(ErrorMessage = "You must enter your age"), Display(Description = "Enter your age"), Range(17, 121)]
         public int Age { get; set; } = 0;
 
         [Required(ErrorMessage = "You must enter a password"), Display(Description = "Enter the password"), DataType(DataType.Password)]

@@ -12,5 +12,7 @@ namespace RoutineApp.Mappers.Interfaces
         Exercise MapCreateExerciseToDomain(CreateExerciseRequestModel model);
 
         List<CreateRoutineExerciseResponseModel> MapDomainToCreateRoutineExerciseResponse(IEnumerable<Exercise> list);
+
+        List<SelectExerciseModel> MapDomainToSelectExerciseModel(List<Exercise> list);
     }
 }

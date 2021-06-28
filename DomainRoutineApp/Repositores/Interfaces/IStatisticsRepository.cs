@@ -14,5 +14,7 @@ namespace DomainRoutineApp.Repositores.Interfaces
         Task AddWeightAsync(AddPersonWeightRequestModel model);
 
         Task<List<Weight>> GetWeightStatisticsAsync(GetWeightStatisticsRequestModel model);
+
+        Task<List<ExerciseDetail>> GetExerciseDetailsAsync(GetExerciseStatisticsRequestModel model);
     }
 }

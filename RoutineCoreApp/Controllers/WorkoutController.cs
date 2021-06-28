@@ -11,6 +11,7 @@ namespace RoutineCoreApp.Controllers
 {
     [Route("[controller]/[action]")]
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class WorkoutController : Controller
     {
         private readonly IWorkoutService _workOutService = null;

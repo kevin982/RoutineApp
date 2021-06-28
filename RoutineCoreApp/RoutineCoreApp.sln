@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainRoutineApp", "..\Doma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientRoutineApp", "..\ClientRoutineApp\ClientRoutineApp.csproj", "{25DBCA28-29BD-4A96-89C4-02617B667EBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureRoutineApp", "..\Infastructure\InfrastructureRoutineApp.csproj", "{D34CB2D3-A27A-4FB0-A0D2-D6587E361165}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfrastructureRoutineApp", "..\Infastructure\InfrastructureRoutineApp.csproj", "{D34CB2D3-A27A-4FB0-A0D2-D6587E361165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "..\Tests\Tests.csproj", "{57C71930-7FF8-45ED-8C05-957B63D20AEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D34CB2D3-A27A-4FB0-A0D2-D6587E361165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D34CB2D3-A27A-4FB0-A0D2-D6587E361165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D34CB2D3-A27A-4FB0-A0D2-D6587E361165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C71930-7FF8-45ED-8C05-957B63D20AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57C71930-7FF8-45ED-8C05-957B63D20AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57C71930-7FF8-45ED-8C05-957B63D20AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57C71930-7FF8-45ED-8C05-957B63D20AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

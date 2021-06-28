@@ -16,7 +16,7 @@ namespace DomainRoutineApp.Models.Entities
 
         public DateTime DayDone { get; set; } = new();
 
-        public float Weight { get; set; } = 0;
+        public int Weight { get; set; } = 0;
 
         public int Repetitions { get; set; } = 0;
 

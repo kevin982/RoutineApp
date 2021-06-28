@@ -1,136 +1,121 @@
 ﻿
+<link rel="stylesheet" href="~/css/Index.css" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@300&display=swap" rel="stylesheet">
 
-<div>
-    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-
-                <img class="d-block w-100" src="https://images.theconversation.com/files/339674/original/file-20200604-130929-iutdtd.jpg?ixlib=rb-1.1.0&rect=8%2C0%2C5455%2C3637&q=45&auto=format&w=496&fit=clip" />
-
-                <div class="container">
-                    <div class="carousel-caption text-start">
-                        <h1>Example headline.</h1>
-                        <p>Some representative placeholder content for the first slide of the carousel.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
-                    </div>
-                </div>
+<header class="page-header gradient-background mt-3">
+    <div class="container pt-3">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-5">
+                <h2 class="text-white">Do excercise using Routine App</h2>
+                <p>
+                    Routine app helps you to create exercises, routines
+                    and to see your progress.
+                </p>
             </div>
-            <div class="carousel-item">
-
-                <img class="d-block w-100" src="https://www.esneca.lat/wp-content/uploads/aparatos-de-gym.jpg" />
-
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>Another example headline.</h1>
-                        <p>Some representative placeholder content for the second slide of the carousel.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-
-                <img class="d-block w-100" src="data:image/jpeg;base64,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" />
-
-                <div class="container">
-                    <div class="carousel-caption text-end">
-                        <h1>One more for good measure.</h1>
-                        <p>Some representative placeholder content for the third slide of this carousel.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
-                    </div>
-                </div>
+            <div class="col-md-5">
+                <img src="/Images/ManTrainingAtHome.png" alt="header image" />
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
     </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+</header>
 
 
-    <!-- Marketing messaging and featurettes
-    ================================================== -->
-    <!-- Wrap the rest of the page in another container to center all the content. -->
-
-
-    <div class="container marketing">
-
-        <!-- Three columns of text below the carousel -->
-        <div class="row">
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-                <h2>Heading</h2>
-                <p>Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
-                <p><a class="btn btn-secondary" href="#">View details »</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-                <h2>Heading</h2>
-                <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
-                <p><a class="btn btn-secondary" href="#">View details »</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
-
-                <h2>Heading</h2>
-                <p>And lastly this, the third column of representative placeholder content.</p>
-                <p><a class="btn btn-secondary" href="#">View details »</a></p>
-            </div><!-- /.col-lg-4 -->
-        </div><!-- /.row -->
-        <!-- START THE FEATURETTES -->
-
-        <hr class="featurette-divider">
-
-        <div class="row featurette">
+<section class="feature gradient-background">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3F3F3F" fill-opacity="1" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,202.7C1120,181,1280,107,1360,69.3L1440,32L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
             <div class="col-md-7">
-                <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your mind.</span></h2>
-                <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+                <img src="/Images/WomanLifting.png" />
             </div>
             <div class="col-md-5">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+                <h1 class="my-3">Create exercises.</h1>
+                <p class="my-4">
+                    You can create your own exercises with its own images, category and name.
+                </p>
+                <ul>
+                    <li>You are able to choose multiple images from your gallery</li>
+                    <li>You can select the exercise category</li>
+                    <li>You set the exercise name</li>
+                </ul>
+                <button type="button" class="btn-fill-animation mt-4 rounded">Create an exercise</button>
             </div>
         </div>
+    </div>
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+</section>
 
-        <hr class="featurette-divider">
-
-        <div class="row featurette">
-            <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
-                <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
-            </div>
-            <div class="col-md-5 order-md-1">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
-            </div>
-        </div>
-
-        <hr class="featurette-divider">
-
-        <div class="row featurette">
+<section class="feature gradient-background">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3F3F3F" fill-opacity="1" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,202.7C1120,181,1280,107,1360,69.3L1440,32L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
             <div class="col-md-7">
-                <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-                <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
+                <img src="/Images/WomanTrainingAtHome.png" />
             </div>
             <div class="col-md-5">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
-
+                <h1 class="my-3">Create your routine.</h1>
+                <p class="my-4">
+                    You can create your own routine selecting the exercises you want to include.
+                </p>
+                <ul>
+                    <li>You are able to choose the exercises you want to do</li>
+                    <li>You can select which days you want to do exercise</li>
+                    <li>You set the sets number per exercise</li>
+                </ul>
+                <button type="button" class="btn-fill-animation mt-4 rounded">Create your routine</button>
             </div>
         </div>
+    </div>
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+</section>
 
-        <hr class="featurette-divider">
+<section class="feature gradient-background">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3F3F3F" fill-opacity="1" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,202.7C1120,181,1280,107,1360,69.3L1440,32L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-7">
+                <img src="/Images/ManDoingShouldersPress.png" />
+            </div>
+            <div class="col-md-5">
+                <h1 class="my-3">Work out</h1>
+                <p class="my-4">
+                    You can create work out with the routine app.
+                </p>
+                <ul>
+                    <li>The app shows the exercise you must do according to your routine</li>
+                    <li>The app shows how many repetitions are left until the end</li>
+                    <li>You can write the weight you used</li>
+                    <li>You are able to write the repetitions you did</li>
+                </ul>
+                <button type="button" class="btn-fill-animation mt-4 rounded">Work Out</button>
+            </div>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+</section>
 
-        <!-- /END THE FEATURETTES -->
+<section class="feature gradient-background">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3F3F3F" fill-opacity="1" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,202.7C1120,181,1280,107,1360,69.3L1440,32L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path></svg>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-7">
+                <img src="/Images/Statistics.png" />
+            </div>
+            <div class="col-md-5">
+                <h1 class="my-3">Observe your progress.</h1>
+                <p class="my-5">
+                    You can see your progress in your exercises and your weight.
+                </p>
+                <ul>
+                    <li>You can see your progress in your exercises</li>
+                    <li>You can see your progress in your weight</li>
+                </ul>
+                <button type="button" class="btn-fill-animation mt-4 rounded">See your statistics</button>
+            </div>
+        </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+</section>
 
-    </div><!-- /.container -->
-</div>
+

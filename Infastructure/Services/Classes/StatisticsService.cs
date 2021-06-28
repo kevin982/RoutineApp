@@ -1,13 +1,17 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿using DomainRoutineApp.Mappers.Interfaces;
+using DomainRoutineApp.Models.Entities;
+using DomainRoutineApp.Models.Requests.Exercise;
 using DomainRoutineApp.Models.Requests.Statics;
 using DomainRoutineApp.Models.Responses.Statics;
 using DomainRoutineApp.Repositores.Interfaces;
 using DomainRoutineApp.Services.Interfaces;
+using InfrastructureRoutineApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace InfrastructureRoutineApp.Services.Classes
 {
@@ -15,12 +19,15 @@ namespace InfrastructureRoutineApp.Services.Classes
     {
         private readonly IStatisticsRepository _statisticsRepository = null;
         private readonly IUserService _userService = null;
+        private readonly IImageMapper _imageMapper = null;
+        private readonly IExerciseService _exerciseService = null;
 
-
-        public StatisticsService(IStatisticsRepository statisticsRepository, IUserService userService)
+        public StatisticsService(IStatisticsRepository statisticsRepository, IUserService userService, IImageMapper imageMapper, IExerciseService exerciseService)
         {
             _statisticsRepository = statisticsRepository;
             _userService = userService;
+            _imageMapper = imageMapper;
+            _exerciseService = exerciseService;
         }
 
         public async Task AddWeightAsync(AddPersonWeightRequestModel model)
@@ -30,17 +37,65 @@ namespace InfrastructureRoutineApp.Services.Classes
             await _statisticsRepository.AddWeightAsync(model);
         }
 
+        public async Task<ExerciseStatisticsResponseModel> GetExerciseStatisticsAsync(GetExerciseStatisticsRequestModel model)
+        {
+            var exerciseDetails = await _statisticsRepository.GetExerciseDetailsAsync(model);
+
+
+            var result = SeparateTheExerciseStatistics(exerciseDetails);
+
+            var exercise = await _exerciseService.GetExerciseByIdAsync(new GetExerciseRequestModel { ExerciseId = model.ExerciseId});
+
+            result.ExerciseId = exercise.Id;
+
+            result.Images = _imageMapper.MapDomainToStrings(exercise.Images);
+
+            result.ExerciseName = exercise.Name;
+
+            result.CategoryName = exercise.Category.CategoryName;
+
+            result.RepetitionsAverage = exerciseDetails.Average(ed => ed.Repetitions);
+            
+            return result;
+        }
+
+        private ExerciseStatisticsResponseModel SeparateTheExerciseStatistics(List<ExerciseDetail> exerciseDetails)
+        {
+
+            if(exerciseDetails is null || exerciseDetails.Count == 0)
+            {
+                return new ExerciseStatisticsResponseModel();
+            }
+
+            var orderedByWeight = exerciseDetails.OrderBy(ed => ed.Weight).ToList();
+            var orderedByDate = exerciseDetails.OrderBy(ed => ed.DayDone).ToList();
+
+
+            string firstDay = orderedByDate[0].DayDone.GetKevinDate(); 
+            string lastDay = orderedByDate[orderedByDate.Count - 1].DayDone.GetKevinDate();
+
+            return new ExerciseStatisticsResponseModel
+            {
+                FirstWeight = orderedByDate[0].Weight,
+                CurrentWeight = orderedByDate[orderedByDate.Count - 1].Weight,
+                HighestWeight = orderedByWeight[orderedByWeight.Count - 1].Weight,
+                LowestWeight = orderedByWeight[0].Weight,
+                FirstDay = firstDay,
+                LastDay = lastDay
+            };
+        }
+
         public async Task<WeightStatisticsResponseModel> GetWeightStatisticsAsync()
         {
 
             var weights = await _statisticsRepository.GetWeightStatisticsAsync(new GetWeightStatisticsRequestModel { UserId = _userService.GetUserId()});
 
-            WeightStatisticsResponseModel weightStatistics = SeparateTheStatistics(weights);
+            WeightStatisticsResponseModel weightStatistics = SeparateTheWeightStatistics(weights);
 
             return weightStatistics;
         }
 
-        private WeightStatisticsResponseModel SeparateTheStatistics(List<Weight> weights)
+        private WeightStatisticsResponseModel SeparateTheWeightStatistics(List<Weight> weights)
         {
             if (weights is null || weights.Count == 0)
             {
@@ -64,8 +119,5 @@ namespace InfrastructureRoutineApp.Services.Classes
                 HighestWeight = weightOrderedByKilos[weightOrderedByKilos.Count - 1].Kilos
             };                        
         }
-
-
-
     }
 }

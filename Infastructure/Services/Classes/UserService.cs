@@ -21,5 +21,11 @@ namespace InfrastructureRoutineApp.Services.Classes
         {
             return _httpContext.HttpContext.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+
+        public bool IsAuthenticated()
+        {
+            return _httpContext.HttpContext.User.Identity.IsAuthenticated;
+        }
+
     }
 }

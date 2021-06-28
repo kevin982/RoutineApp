@@ -114,8 +114,8 @@ namespace RoutineCoreApp.Migrations
                     b.Property<int>("SetNumber")
                         .HasColumnType("int");
 
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

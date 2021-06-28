@@ -151,7 +151,7 @@ namespace InfrastructureRoutineApp.Services.Classes
             {
                 exercise.Sets = 0;
                 exercise.IsInTheRoutine = false;
-                await _exerciseRepository.DeleteDaysToTrain(new DeleteDayToTrainRequestModel { ExerciseId = exercise.Id });
+                await _exerciseRepository.DeleteDaysToTrainAsync(new DeleteDayToTrainRequestModel { ExerciseId = exercise.Id });
                 await _exerciseRepository.UpdateExerciseAsync(exercise);
             }
 
@@ -176,6 +176,15 @@ namespace InfrastructureRoutineApp.Services.Classes
         public async Task UpdateExerciseAsync(Exercise exercise)
         {
             await _exerciseRepository.UpdateExerciseAsync(exercise);
+        }
+
+        public async Task<List<CreateRoutineExerciseResponseModel>> GetUserExercisesByCategoryAsync(GetUserExercisesByCategoryRequestModel model)
+        {
+            model.UserId = _userService.GetUserId();
+            //model.UserId = "12e0e176-1580-4833-8642-c45f715d36ce";
+            var exercises = await _exerciseRepository.GetUserExerciseByCategoryAsync(model);
+
+            return _exerciseMapper.MapDomainToCreateRoutineExerciseResponse(exercises);
         }
     }
 }

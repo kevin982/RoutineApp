@@ -2,9 +2,11 @@
 using DomainRoutineApp.Models.Entities;
 using DomainRoutineApp.Models.Requests.Account;
 using DomainRoutineApp.Services.Interfaces;
+using InfrastructureRoutineApp.Validations.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +24,30 @@ namespace InfrastructureRoutineApp.Services.Classes
         private readonly IEmailService _emailService = null;
         private readonly IUserService _userService = null;
         private readonly IAccountMapper _accountMapper = null;
+        private readonly IAccountValidator _accountValidator = null;
+        private readonly ILogger<AccountService> _logger = null;
+        
 
-        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IUserService userService, IAccountMapper accountMapper)
+        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, IEmailService emailService, IUserService userService, IAccountMapper accountMapper, IAccountValidator accountValidator ,ILogger<AccountService> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
             _userService = userService;
             _accountMapper = accountMapper;
+            _accountValidator = accountValidator;
+            _logger = logger;
         }
 
         public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordRequestModel model)
         {
+            var validationResult = _accountValidator.ChangePasswordModelValidation(model);
+
+            if (!validationResult.Valid) throw new Exception(validationResult.Message);
+
             User user = await _userManager.FindByIdAsync(_userService.GetUserId());
+
+            if (user is null) throw new Exception("The user could no be found");
 
             return await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
         }
@@ -59,7 +72,14 @@ namespace InfrastructureRoutineApp.Services.Classes
             if (result.Succeeded)
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                await SendEmailConfirmationAsync(user, token);
+                await SendEmailConfirmationAsync(
+                    new SendEmailConfirmationRequestModel 
+                    { 
+                        Token = token,
+                        Email = user.Email,
+                        UserId = user.Id,
+                        FirstName = user.FirstName
+                    });
             }
 
             return result;
@@ -113,14 +133,14 @@ namespace InfrastructureRoutineApp.Services.Classes
             await _signInManager.SignOutAsync();
         }
 
-        private async Task SendEmailConfirmationAsync(User user, string token)
+        private async Task SendEmailConfirmationAsync(SendEmailConfirmationRequestModel model)
         {
 
             string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\MVC\\RoutineApp\\RoutineCoreApp\\Mails\\ConfirmEmail.html";
             string subject = "Email Confirmation";
             List<Attachment> attachments = new();
-            List<string> mails = new() { user.Email };
-            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44350" + $"/Account/ConfirmEmail?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
+            List<string> mails = new() { model.Email };
+            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44350" + $"/Account/ConfirmEmail?id={model.UserId}&token={model.Token}")), ("UserName", model.FirstName) };
             await _emailService.SendEmailAsync(subject, htmlPath, mails, attachments, values);
         }
     }

@@ -1,44 +1,63 @@
 ﻿@model DomainRoutineApp.Models.Requests.Statics.AddPersonWeightRequestModel
 
-@inject DomainRoutineApp.Services.Interfaces.IStatisticsService _statisticsService 
+@inject DomainRoutineApp.Services.Interfaces.IStatisticsService _statisticsService
 
 @{
     ViewData["Title"] = "Weight";
     var weights = await _statisticsService.GetWeightStatisticsAsync();
 }
-
-<h1>Weight</h1>
-
-<hr />
-
-<div class="card text-white bg-dark mb-3" style="max-width: 100%;">
-    <img class="card-img-top" src="https://cdn.pixabay.com/photo/2018/02/24/09/09/woman-3177574_960_720.jpg" alt="Card image cap">
-    <div class="card-body">
-        <h2 class="card-title">Weight</h2>
-        <h6>Lowest weight: <small>@weights.LowestWeight</small> </h6>
-        <h6>Highest weight: <small>@weights.HighestWeight</small> </h6>
-        <h6>Current weight: <small>@weights.CurrentWeight</small> </h6>
-        <h6>First weight: <small>@weights.FirstWeight</small> </h6>
-    </div>
-</div>
-
-<hr />
-
-<h4>Add Weight</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Weight">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
-                <span asp-validation-for="Weight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
  
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,96L60,117.3C120,139,240,181,360,186.7C480,192,600,160,720,160C840,160,960,192,1080,192C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path></svg>
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-6 pt-5">
+
+            <h1 class="text-white">Update your weight</h1>
+            <hr class="bg-white" />
+
+            <form asp-action="Weight">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Weight" class="control-label text-white mb-4"></label>
+                    <input asp-for="Weight" class="form-control bg-dark text-white mb-5" />
+                    <span asp-validation-for="Weight" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn-fill-animation" />
+                </div>
+            </form>
+        </div>
+
+        <div class="col-6 pt-0">
+            <img src="~/Images/PhoneGivingStatistics.png" />
+        </div>
+
+    </div>
+
+    <div class="row my-5">
+        <hr class="bg-white" />
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card text-white bg-dark mb-3" style="max-width: 100%;">
+                <img class="card-img-top" src="https://cdn.pixabay.com/photo/2018/02/24/09/09/woman-3177574_960_720.jpg" alt="Card image cap">
+                <div class="card-body gradient-background">
+                    <h2 class="card-title mb-4">Weight</h2>
+                    <h6>Lowest weight: <small>@weights.LowestWeight</small> </h6>
+                    <h6>Highest weight: <small>@weights.HighestWeight</small> </h6>
+                    <h6>Current weight: <small>@weights.CurrentWeight</small> </h6>
+                    <h6>First weight: <small>@weights.FirstWeight</small> </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+

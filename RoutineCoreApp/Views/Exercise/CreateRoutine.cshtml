@@ -4,110 +4,64 @@
 
 @inject DomainRoutineApp.Services.Interfaces.IExerciseService _exerciseService
 @inject DomainRoutineApp.Services.Interfaces.IDayService _dayService
- 
+@inject DomainRoutineApp.Services.Interfaces.IExerciseCategoryService _categoryService
+
 @{
     ViewData["Title"] = "Create Routine";
     Layout = "_Layout";
-    var Exercises = await _exerciseService.GetAllUserExercises();
 }
 
-<!-- Team -->
-<section id="team" class="pb-5">
-    <div class="container-fluid">
-        <h5 class="section-title h1">Your Exercises</h5>
-        <div class="row">
 
-            @{
-                for (int i = 0; i < Exercises.Count; i++)
-                {
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,96L60,117.3C120,139,240,181,360,186.7C480,192,600,160,720,160C840,160,960,192,1080,192C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path></svg>
 
-                    <h2>@Exercises[i].Item1</h2>
-                    <h4>Count: @Exercises[i].Item2.Count</h4>
 
-                    if (Exercises[i].Item2.Count != 0)
+ 
+<div class="container">
+    <div class="row">
+
+
+        <div class="col-6 pt-5">
+
+            <h1 class="text-white mb-3">Choose the exercise category</h1>
+
+            <hr class="bg-white" />
+
+
+            <select class="form-select bg-dark text-white mt-5" aria-label="Default select example" id="categoryCombo">
+
+
+                @{
+                    foreach (var category in await _categoryService.GetAllCategoriesAsync())
                     {
-                        foreach (var exercise in Exercises[i].Item2)
-                        {
-                            <div class="col-xs-12 col-sm-6 col-md-4">
-                                <div class="image-flip">
-                                    <div class="mainflip flip-0">
-                                        <div class="frontside">
-                                            <div class="card">
-
-                                                @{
-                                                    if (exercise.IsInTheRoutine)
-                                                    {
-                                                        <div class="alert-success">
-                                                            Added!
-                                                        </div>
-                                                    }
-                                                }
-
-
-                                                <div class="card-body text-center">
-                                                    <img class="img-fluid" src="@exercise.Images[0]" alt="card image">
-                                                    <h4 class="card-title">@exercise.ExerciseName</h4>
-
-                                                </div>
-
-                                                @{
-                                                    if (!exercise.IsInTheRoutine)
-                                                    {
-                                                        <div class="container">
-                                                            <form method="post" asp-action="AddExercise">
-
-                                                                <div class="form-group">
-                                                                    <label asp-for="Days"></label>
-                                                                    <select asp-for="Days" multiple>
-                                                                        @{
-                                                                            foreach (var day in await _dayService.GetAllDaysAsync())
-                                                                            {
-                                                                                <option value="@day.Id">@day.DayName</option>
-                                                                            }
-                                                                        }
-                                                                    </select>
-
-                                                                </div>
-
-                                                                <input asp-for="ExerciseId" hidden value="@exercise.ExerciseId" />
-
-                                                                <div class="form-group">
-                                                                    <label asp-for="Sets"></label>
-                                                                    <input asp-for="Sets" />
-                                                                </div>
-
-
-                                                                <div class="form-group">
-                                                                    <input type="submit" value="Add" class="btn btn-primary" />
-                                                                </div>
-
-                                                            </form>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="btn btn-danger">
-                                                            <a href="/Exercise/RemoveExercise/@exercise.ExerciseId">Remove</a>
-                                                        </div>
-                                                    }
-                                                }
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
+                        <option value="@category.Id">@category.CategoryName</option>
                     }
-
-
-                    <br />
-                    <hr />
-                    <br />
                 }
-            }
+
+            </select>
 
         </div>
+
+        <div class="col-6 pb-5">
+            <img src="~/Images/WomanRunningOnPhone.png" />
+        </div>
+
     </div>
-</section>
+</div>
+
+
+<div class="container">
+    <hr class="bg-white" />
+</div>
+
+<div class="container mt-5" id="exercisesContainer">
+
+</div>
+
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+
+<script src="~/js/CreateRoutine.js"></script>
+
+
+
+
 

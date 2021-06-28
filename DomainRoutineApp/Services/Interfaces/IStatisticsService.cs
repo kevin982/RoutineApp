@@ -13,5 +13,8 @@ namespace DomainRoutineApp.Services.Interfaces
         Task AddWeightAsync(AddPersonWeightRequestModel model);
 
         Task<WeightStatisticsResponseModel> GetWeightStatisticsAsync();
+
+        Task<ExerciseStatisticsResponseModel> GetExerciseStatisticsAsync(GetExerciseStatisticsRequestModel model);
+
     }
 }

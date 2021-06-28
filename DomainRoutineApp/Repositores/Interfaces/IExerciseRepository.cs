@@ -20,7 +20,10 @@ namespace DomainRoutineApp.Repositores.Interfaces
 
         Task UpdateExerciseAsync(Exercise exercise);
 
-        Task DeleteDaysToTrain(DeleteDayToTrainRequestModel model);
+        Task DeleteDaysToTrainAsync(DeleteDayToTrainRequestModel model);
+
+        Task<List<Exercise>> GetUserExerciseByCategoryAsync(GetUserExercisesByCategoryRequestModel model);
+ 
 
     }
 }

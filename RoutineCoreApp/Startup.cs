@@ -30,6 +30,20 @@ namespace RoutineCoreApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+ 
+
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
+
+            services.AddAntiforgery();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("KevinPolicy", builder =>
+                {
+                    builder.WithOrigins("https://localhost:44350");
+                });
+            });
 
             var builder = services.AddAuthentication();
 
@@ -50,10 +64,6 @@ namespace RoutineCoreApp
                 };
 
             });
-
-            services.AddControllersWithViews();
-
-            
 
             services.AddDbContext<RoutineContext>(options =>
             {
@@ -141,7 +151,7 @@ namespace RoutineCoreApp
 
             services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
 
-
+            services.AddValidators();
             services.AddMappers();
             services.AddClientServices();
             services.AddRepositories();
@@ -169,6 +179,8 @@ namespace RoutineCoreApp
             app.UseCookiePolicy();
             
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

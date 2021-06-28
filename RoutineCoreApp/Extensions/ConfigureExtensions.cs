@@ -7,6 +7,7 @@ using InfrastructureRoutineApp.Mappers.Classes;
 using InfrastructureRoutineApp.Repositories.Classes;
 using InfrastructureRoutineApp.Services;
 using InfrastructureRoutineApp.Services.Classes;
+using InfrastructureRoutineApp.Validations.Services;
 using Microsoft.Extensions.DependencyInjection;
 using RoutineApp.Mappers.Interfaces;
 using System;
@@ -36,6 +37,7 @@ namespace RoutineCoreApp.Extensions
 
         public static IServiceCollection AddMappers(this IServiceCollection services)
         {
+            services.AddScoped<IImageMapper, ImageMapper>();
             services.AddScoped<IExerciseMapper, ExerciseMapper>();
             services.AddScoped<IAccountMapper, AccountMapper>();
             services.AddScoped<IExerciseDetailMapper, ExerciseDetailMapper>();
@@ -58,6 +60,14 @@ namespace RoutineCoreApp.Extensions
         public static IServiceCollection AddClientServices(this IServiceCollection services)
         {
             services.AddScoped<IImageService, ImageService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddValidators(this IServiceCollection services)
+        {
+            services.AddScoped<IAccountValidator, AccountValidator>();
+            services.AddScoped<IDayServiceValidator, DayServiceValidator>();
 
             return services;
         }

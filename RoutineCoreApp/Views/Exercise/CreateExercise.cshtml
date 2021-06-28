@@ -5,95 +5,81 @@
 @{
     ViewData["Title"] = "CreateExercise";
 }
- 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login Page</title>
-    <!--Made with love by Mutiullah Samim -->
-    <!--Bootsrap 4 CDN-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <!--Fontawesome CDN-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,96L60,117.3C120,139,240,181,360,186.7C480,192,600,160,720,160C840,160,960,192,1080,192C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path></svg>
 
-    <!--Custom styles-->
-    <link rel="stylesheet" type="text/css" href="/css/CreateExercise.css">
+<div class="container form-container bg-dark align-content-center">
+    <div class="row">
 
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart" viewBox="0 0 16 16">
-        <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z" />
-    </svg>
-</head>
-<body>
-    <div class="container">
-        <div class="d-flex justify-content-center h-100">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Create an exercise!</h3>
+        <div class="form col-6">
+
+            <h1 class="text-white">Create exercise</h1>
+            <hr class="bg-white"/>
+
+
+            <form method="post" asp-action="SignUp" class="mt-5">
+
+                <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="Name" class="control-label text-white"></label>
+                    <input asp-for="Name" class="form-control bg-dark text-white" placeholder="First Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+
+                <label asp-for="Category" class="control-label text-white"></label>
+                <div class="input-group form-group mb-4">
+                    
+                     
+                    <select asp-for="Category" class="form-control bg-dark text-white">
+                        @{
+                            foreach (var category in await _exerciseCategoryService.GetAllCategoriesAsync())
+                            {
+                                <option value="@category.Id">@category.CategoryName</option>
+                            }
+                        }
+                    </select>
 
                 </div>
-                <div class="card-body">
-                    <form asp-action="CreateExercise" method="post" enctype="multipart/form-data">
 
-                        <div class="input-group form-group">
-
-                            <input asp-for="Name" class="form-control" placeholder="Exercise name" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-
-                        <div class="input-group form-group">
-
-
-                            <select asp-for="Category" class="form-control">
-                                @{
-                                    foreach (var category in await _exerciseCategoryService.GetAllCategoriesAsync())
-                                    {
-                                        <option value="@category.Id">@category.CategoryName</option>
-                                    }
-                                }
-                            </select>
-
-                        </div>
-
-                        <div class="form-group">
-                            <input asp-for="Images" class="form-control-file" id="customFile">
-                            <span asp-validation-for="Images" class="text-danger"></span>
-                        </div>
-
-                        <div class="float-left btn-primary">
-                            <input type="submit" value="Create" class="btn btn-rounded" />
-                        </div>
-
-                    </form>
-
-
+                <label asp-for="Images" class="control-label text-white"></label>
+                <div class="form-group">
+                    <input asp-for="Images" class="form-control-file bg-dark" id="customFile">
+                    <span asp-validation-for="Images" class="text-danger"></span>
                 </div>
-                @{
-                    if (ViewBag.Result is not null)
-                    {
-                        if (ViewBag.Result)
-                        {
-                            <div class="alert alert-success ">
-                                Created!
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-danger">
-                                We could not create the exercise, something went wrong
-                            </div>
-                        }
-                    }
-                }
-            </div>
 
+                <div class="form-group">
+                    <button class="btn-fill-animation mt-4 rounded" type="submit">Create</button>
+                </div>
+            </form>
 
         </div>
 
-
+        <div class="col-6">
+            <img class="fluid" src="~/images/WomanDoingAbsOnAPhone.png" />
+        </div>
 
     </div>
-</body>
-</html> 
+</div>
 
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320"><path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+
+@{
+    if (ViewBag.Result is not null)
+    {
+        if (ViewBag.Result)
+        {
+            <div class="alert alert-success ">
+                Created!
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                We could not create the exercise, something went wrong
+            </div>
+        }
+    }
+}

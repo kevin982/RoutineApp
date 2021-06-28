@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,16 @@ using System.Threading.Tasks;
 namespace RoutineCoreApp.Controllers
 {
     [Route("[controller]/[action]")]
+    [AutoValidateAntiforgeryToken]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService = null;
+        private readonly ILogger<AccountController> _logger = null;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, ILogger<AccountController> logger)
         {
             _accountService = accountService;
+            _logger = logger;
         }
 
 
@@ -34,10 +38,13 @@ namespace RoutineCoreApp.Controllers
         public async Task<IActionResult> SignUp(SignUpRequestModel model)
         {
 
-            ViewBag.Errors = new List<string>();
-
-            if (ModelState.IsValid)
+            try
             {
+                ViewBag.Errors = new List<string>();
+
+                if (!ModelState.IsValid) throw new ArgumentException("The model is not valid");
+                if (model is null) throw new ArgumentNullException("The model can not be null");
+
                 var result = await _accountService.CreateUserAsync(model);
 
                 if (!result.Succeeded)
@@ -49,29 +56,44 @@ namespace RoutineCoreApp.Controllers
                         ViewBag.Errors.Add(error.Description);
                     }
                 }
-                else
-                {
-                    ViewBag.UserCreated = true;
-                }
 
             }
- 
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An exception has been triggered.");
+            }
+
             return View();
+
         }
 
 
         public async Task<IActionResult> ConfirmEmail(string id, string token)
         {
-            ViewBag.Errors = new List<string>();
 
-            if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(token))
+            try
             {
+                ViewBag.Errors = new List<string>();
+
+                if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+                {
+                    ViewBag.Errors.Add("Url is invalid.");
+                    throw new ArgumentException("Url is invalid.");
+                }
+
+
                 token = token.Replace(' ', '+');
 
                 var result = await _accountService.ConfirmEmailAsync(new ConfirmEmailRequestModel { UserId = id, Token = token });
 
+                if (!result.Succeeded) throw new ArgumentException("Id or token invalid");
+
                 foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error has been triggered.");
             }
 
             return View();
@@ -98,7 +120,8 @@ namespace RoutineCoreApp.Controllers
                     ViewBag.Errors.Add("You have not created an account");
                     ViewBag.Succeded = false;
 
-                }else if (!result.Succeeded)
+                }
+                else if (!result.Succeeded)
                 {
                     if (result.IsLockedOut) ViewBag.Errors.Add("You have entered invalid cretendials several times, so you are lockout for 1 hour.");
                     if (result.IsNotAllowed) ViewBag.Errors.Add("You are not allowed to signIn, you must confirm your email.");
@@ -120,7 +143,7 @@ namespace RoutineCoreApp.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> LogOut()
         {
             await _accountService.SignOutAsync();
             return RedirectToAction("Index", "Home");

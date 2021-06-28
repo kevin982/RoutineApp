@@ -33,7 +33,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         public async Task<Exercise> GetExerciseByIdAsync(GetExerciseRequestModel model)
         {
             return await _context.Exercises
-                .AsNoTracking()
+                .AsNoTrackingWithIdentityResolution()
                 .Include(e => e.Category)
                 .Include(e => e.Images).AsSplitQuery()
                 .Include(e => e.ExerciseDetails).AsSplitQuery()
@@ -104,9 +104,19 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             return user.Exercises;
         }
 
-        public async Task DeleteDaysToTrain(DeleteDayToTrainRequestModel model)
+        public async Task DeleteDaysToTrainAsync(DeleteDayToTrainRequestModel model)
         {
             await _context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM DayExercise where ExercisesId = {model.ExerciseId}");
+        }
+
+        public async Task<List<Exercise>> GetUserExerciseByCategoryAsync(GetUserExercisesByCategoryRequestModel model)
+        {
+            return await _context.Exercises
+                .AsNoTrackingWithIdentityResolution()
+                .Where(e => e.UserId == model.UserId && e.CategoryId == model.CategoryId)
+                .Include(e => e.Images).AsSplitQuery()
+                .Include(e => e.Category)
+                .ToListAsync();
         }
     }
 }

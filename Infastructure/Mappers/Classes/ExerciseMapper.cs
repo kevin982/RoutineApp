@@ -29,6 +29,8 @@ namespace InfrastructureRoutineApp.Mappers.Classes
         {
             List<CreateRoutineExerciseResponseModel> responses = new();
 
+            
+
             foreach (var exercise in list)
             {
                 var response = new CreateRoutineExerciseResponseModel
@@ -55,6 +57,23 @@ namespace InfrastructureRoutineApp.Mappers.Classes
                 ExerciseName = exercise.Name,
                 Images = exercise.Images
             };
+        }
+
+        public List<SelectExerciseModel> MapDomainToSelectExerciseModel(List<Exercise> list)
+        {
+            List<SelectExerciseModel> result = new();
+
+            foreach (var exercise in list)
+            {
+                result.Add(new SelectExerciseModel
+                {
+                    CategoryName = exercise.Category.CategoryName,
+                    ExerciseName = exercise.Name,
+                    ExerciseId = exercise.Id
+                });
+            }
+
+            return result;
         }
     }
 }

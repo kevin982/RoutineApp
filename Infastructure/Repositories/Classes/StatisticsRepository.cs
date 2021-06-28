@@ -43,9 +43,18 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<ExerciseDetail>> GetExerciseDetailsAsync(GetExerciseStatisticsRequestModel model)
+        {
+            return await _context.ExerciseDetails
+                .AsNoTrackingWithIdentityResolution()
+                .Where(e => e.ExerciseId == model.ExerciseId)
+                .ToListAsync();
+        }
+
         public async Task<List<Weight>> GetWeightStatisticsAsync(GetWeightStatisticsRequestModel model)
         {
             var weights = await _context.Weights
+                .AsNoTrackingWithIdentityResolution()
                 .Where(w => w.UserId == model.UserId)
                 .ToListAsync();
 
