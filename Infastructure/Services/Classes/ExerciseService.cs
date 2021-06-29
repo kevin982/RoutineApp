@@ -166,9 +166,9 @@ namespace InfrastructureRoutineApp.Services.Classes
         {
             Exercise exercise = await GetExerciseByIdAsync(new GetExerciseRequestModel { ExerciseId = model.ExerciseId });
 
-            ExerciseDetail exerciseDetail = _exerciseDetailMapper.MapExerciseDoneRequestToDomain(model);
+            ExerciseSetDetail exerciseDetail = _exerciseDetailMapper.MapExerciseDoneRequestToDomain(model);
 
-            exercise.ExerciseDetails.Add(exerciseDetail);
+            exercise.ExerciseSetDetails.Add(exerciseDetail);
 
             await _exerciseRepository.UpdateExerciseAsync(exercise);
         }

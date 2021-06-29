@@ -351,4 +351,4 @@ MigrationBackup/
 /RoutineApp/wwwroot
 /RoutineApp/appsettings.Development.json
 /RoutineApp/appsettings.json
-/Tests/Tests.csproj
+

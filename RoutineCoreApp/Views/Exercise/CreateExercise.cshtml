@@ -18,13 +18,13 @@
             <hr class="bg-white"/>
 
 
-            <form method="post" asp-action="SignUp" class="mt-5">
+            <form method="post" asp-action="CreateExercise" class="mt-5" enctype="multipart/form-data">
 
                 <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
 
                 <div class="form-group mb-4">
                     <label asp-for="Name" class="control-label text-white"></label>
-                    <input asp-for="Name" class="form-control bg-dark text-white" placeholder="First Name">
+                    <input asp-for="Name" class="form-control bg-dark text-white" placeholder="Exercise Name">
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
@@ -44,10 +44,10 @@
 
                 </div>
 
-                <label asp-for="Images" class="control-label text-white"></label>
-                <div class="form-group">
-                    <input asp-for="Images" class="form-control-file bg-dark" id="customFile">
-                    <span asp-validation-for="Images" class="text-danger"></span>
+                <label asp-for="Image" class="custom-file-label text-white mb-2"></label>
+                <div class="custom-file">
+                    <input asp-for="Image" class="custom-file-input bg-dark text-white" id="customFile">
+                    <span asp-validation-for="Image" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -71,15 +71,27 @@
     {
         if (ViewBag.Result)
         {
-            <div class="alert alert-success ">
-                Created!
-            </div>
+
+            <script>
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Exercise created successfully!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            </script>
+
         }
         else
         {
-            <div class="alert alert-danger">
-                We could not create the exercise, something went wrong
-            </div>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'We could not create the exercise',
+                })
+            </script>
         }
     }
 }

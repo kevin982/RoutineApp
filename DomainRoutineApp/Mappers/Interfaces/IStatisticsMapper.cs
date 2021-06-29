@@ -10,6 +10,6 @@ namespace DomainRoutineApp.Mappers.Interfaces
 {
     public interface IStatisticsMapper
     {
-        Weight MapAddWeightToDomain(AddPersonWeightRequestModel model);
+        UserWeight MapAddWeightToDomain(AddPersonWeightRequestModel model);
     }
 }

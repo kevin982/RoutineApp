@@ -33,7 +33,7 @@ const addTheExercisesToTheDom = (exercises) => {
     for (let i = 0; i < exercises.length; i++) {
 
         let exercise = exercises[i];
-        let img = exercise.Images[0];
+        let img = exercise.Image;
 
         let divRow = document.createElement("div");
         divRow.className = "row justify-content-center";
@@ -130,6 +130,8 @@ const categoryCombo = document.getElementById("categoryCombo");
 window.addEventListener("load", async () => {
     const exercises = await getExercisesByCategoryAsync(categoryCombo.value);
 
+    console.log(exercises);
+
     addTheExercisesToTheDom(exercises);
 });
 
@@ -137,6 +139,8 @@ window.addEventListener("load", async () => {
 categoryCombo.addEventListener("change", async () => {
 
     const exercises = await getExercisesByCategoryAsync(categoryCombo.value);
+
+    console.log(exercises);
 
     if (exercises.length === 0) {
         informThereIsNotExercises();

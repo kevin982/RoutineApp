@@ -19,14 +19,12 @@ namespace InfrastructureRoutineApp.Services.Classes
     {
         private readonly IStatisticsRepository _statisticsRepository = null;
         private readonly IUserService _userService = null;
-        private readonly IImageMapper _imageMapper = null;
         private readonly IExerciseService _exerciseService = null;
 
-        public StatisticsService(IStatisticsRepository statisticsRepository, IUserService userService, IImageMapper imageMapper, IExerciseService exerciseService)
+        public StatisticsService(IStatisticsRepository statisticsRepository, IUserService userService, IExerciseService exerciseService)
         {
             _statisticsRepository = statisticsRepository;
             _userService = userService;
-            _imageMapper = imageMapper;
             _exerciseService = exerciseService;
         }
 
@@ -48,7 +46,7 @@ namespace InfrastructureRoutineApp.Services.Classes
 
             result.ExerciseId = exercise.Id;
 
-            result.Images = _imageMapper.MapDomainToStrings(exercise.Images);
+            result.Image = exercise.Image;
 
             result.ExerciseName = exercise.Name;
 
@@ -59,7 +57,7 @@ namespace InfrastructureRoutineApp.Services.Classes
             return result;
         }
 
-        private ExerciseStatisticsResponseModel SeparateTheExerciseStatistics(List<ExerciseDetail> exerciseDetails)
+        private ExerciseStatisticsResponseModel SeparateTheExerciseStatistics(List<ExerciseSetDetail> exerciseDetails)
         {
 
             if(exerciseDetails is null || exerciseDetails.Count == 0)
@@ -95,7 +93,7 @@ namespace InfrastructureRoutineApp.Services.Classes
             return weightStatistics;
         }
 
-        private WeightStatisticsResponseModel SeparateTheWeightStatistics(List<Weight> weights)
+        private WeightStatisticsResponseModel SeparateTheWeightStatistics(List<UserWeight> weights)
         {
             if (weights is null || weights.Count == 0)
             {

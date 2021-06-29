@@ -16,7 +16,7 @@ namespace DomainRoutineApp.Models.Responses.Statics
         
         public int HighestWeight { get; set; } = 0;
 
-        public List<string> Images = new();
+        public string Image = string.Empty;
 
         public int ExerciseId { get; set; } = 0;
 

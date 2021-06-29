@@ -10,6 +10,6 @@ namespace DomainRoutineApp.Mappers.Interfaces
 {
     public interface IExerciseDetailMapper
     {
-        ExerciseDetail MapExerciseDoneRequestToDomain(ExerciseDoneRequestModel model);
+        ExerciseSetDetail MapExerciseDoneRequestToDomain(ExerciseDoneRequestModel model);
     }
 }

@@ -34,26 +34,26 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
 
-            Weight weight = _statisticsMapper.MapAddWeightToDomain(model);
+            UserWeight weight = _statisticsMapper.MapAddWeightToDomain(model);
 
             weight.Date = DateTime.Now;
 
-            user.Weights.Add(weight);
+            user.UserWeights.Add(weight);
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<ExerciseDetail>> GetExerciseDetailsAsync(GetExerciseStatisticsRequestModel model)
+        public async Task<List<ExerciseSetDetail>> GetExerciseDetailsAsync(GetExerciseStatisticsRequestModel model)
         {
-            return await _context.ExerciseDetails
+            return await _context.ExerciseSetDetails
                 .AsNoTrackingWithIdentityResolution()
                 .Where(e => e.ExerciseId == model.ExerciseId)
                 .ToListAsync();
         }
 
-        public async Task<List<Weight>> GetWeightStatisticsAsync(GetWeightStatisticsRequestModel model)
+        public async Task<List<UserWeight>> GetWeightStatisticsAsync(GetWeightStatisticsRequestModel model)
         {
-            var weights = await _context.Weights
+            var weights = await _context.UserWeights
                 .AsNoTrackingWithIdentityResolution()
                 .Where(w => w.UserId == model.UserId)
                 .ToListAsync();

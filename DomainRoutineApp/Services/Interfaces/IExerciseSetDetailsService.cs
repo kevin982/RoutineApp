@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace DomainRoutineApp.Services.Interfaces
 {
-    public interface IExerciseDetailService
+    public interface IExerciseSetDetailsService
     {
         Task<int> GetExerciseSetsDoneAsync(GetExerciseSetsDoneTodayRequestModel model);
 
-        Task<int> CreateExerciseDetailAsync(ExerciseDoneRequestModel model);
+        Task<int> CreateExerciseSetDetailAsync(ExerciseDoneRequestModel model);
 
-        Task<ExerciseDetail> GetExerciseDetailByIdAsync(GetExerciseDetailByIdRequestModel model);
+        Task<ExerciseSetDetail> GetExerciseSetDetailsByIdAsync(GetExerciseDetailByIdRequestModel model);
     }
 }

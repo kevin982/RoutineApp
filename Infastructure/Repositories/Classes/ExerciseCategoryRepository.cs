@@ -27,7 +27,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         public async Task<ExerciseCategory> GetCategoryByIdAsync(GetExerciseCategoryByIdRequestModel model)
         {
             return await _context.ExerciseCategories
-                .AsNoTracking()
+                .AsNoTrackingWithIdentityResolution()
                 .Where(ec => ec.Id == model.ExerciseCategoryId)
                 .FirstOrDefaultAsync();
         }

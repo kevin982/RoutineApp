@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace InfrastructureRoutineApp.Repositories.Classes
 {
-    public class ExerciseDetailRepository : IExerciseDetailRepository
+    public class ExerciseSetDetailsRepository : IExerciseSetDetailsRepository
     {
         private readonly RoutineContext _context = null;
 
-        public ExerciseDetailRepository(RoutineContext context)
+        public ExerciseSetDetailsRepository(RoutineContext context)
         {
             _context = context;
         }
@@ -23,8 +23,8 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         public async Task<int> GetExerciseSetsDoneTodayAsync(GetExerciseSetsDoneTodayRequestModel model)
         {
             var details =
-               await _context.ExerciseDetails
-               .AsNoTracking()
+               await _context.ExerciseSetDetails
+               .AsNoTrackingWithIdentityResolution()
                .Where(ed => ed.ExerciseId == model.ExerciseId)  //&& ed.DayDone.ToShortDateString() == DateTime.Now.ToShortDateString())
                .ToListAsync();
 
@@ -42,20 +42,21 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             return details.Count;
         }
 
-        public async Task<int> CreateExerciseDetailAsync(ExerciseDetail exerciseDetail)
+        public async Task<int> CreateExerciseSetDetailAsync(ExerciseSetDetail exerciseDetail)
         {
             var exercise =  await _context.Exercises.Where(e => e.Id == exerciseDetail.ExerciseId).SingleOrDefaultAsync();
 
-            exercise.ExerciseDetails.Add(exerciseDetail);
+            exercise.ExerciseSetDetails.Add(exerciseDetail);
 
             await _context.SaveChangesAsync();
 
             return exerciseDetail.Id;
         }
 
-        public async Task<ExerciseDetail> GetExerciseDetailByIdAsync(GetExerciseDetailByIdRequestModel model)
+        public async Task<ExerciseSetDetail> GetExerciseSetDetailsByIdAsync(GetExerciseDetailByIdRequestModel model)
         {
-            return await _context.ExerciseDetails
+            return await _context.ExerciseSetDetails
+                .AsNoTrackingWithIdentityResolution()
                 .Where(ex => ex.Id == model.ExerciseDetailId)
                 .FirstOrDefaultAsync();
         }

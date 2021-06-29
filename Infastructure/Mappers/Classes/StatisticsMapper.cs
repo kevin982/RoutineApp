@@ -11,9 +11,9 @@ namespace InfrastructureRoutineApp.Mappers.Classes
 {
     public class StatisticsMapper : IStatisticsMapper
     {
-        public Weight MapAddWeightToDomain(AddPersonWeightRequestModel model)
+        public UserWeight MapAddWeightToDomain(AddPersonWeightRequestModel model)
         {
-            return new Weight
+            return new UserWeight
             {
                 Kilos = model.Weight
             };

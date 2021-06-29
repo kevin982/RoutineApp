@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainRoutineApp.Models.Entities
 {
-    public class Weight
+    public class UserWeight
     {
         public int Id { get; set; } = 0;
 

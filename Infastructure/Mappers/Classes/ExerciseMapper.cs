@@ -20,7 +20,7 @@ namespace InfrastructureRoutineApp.Mappers.Classes
                 CategoryId = model.Category
             };
 
-            foreach (var image in model.ImagesUrl) exercise.Images.Add(new Image { Img = image });
+            exercise.Image = model.ImageUrl;
 
             return exercise;
         }
@@ -41,7 +41,7 @@ namespace InfrastructureRoutineApp.Mappers.Classes
                     Category = exercise.Category.CategoryName
                 };
 
-                foreach (var image in exercise.Images) response.Images.Add(image.Img);
+                response.Image = exercise.Image;
 
                 responses.Add(response);
             }
@@ -55,7 +55,7 @@ namespace InfrastructureRoutineApp.Mappers.Classes
             {
                 ExerciseId = exercise.Id,
                 ExerciseName = exercise.Name,
-                Images = exercise.Images
+                Image = exercise.Image
             };
         }
 

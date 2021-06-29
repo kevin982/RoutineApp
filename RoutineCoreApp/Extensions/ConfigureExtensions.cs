@@ -29,7 +29,7 @@ namespace RoutineCoreApp.Extensions
             services.AddScoped<IDayService, DayService>();
             services.AddScoped<IWorkoutService, WorkoutService>();
             services.AddScoped<IExerciseCategoryService, ExerciseCategoryService>();
-            services.AddScoped<IExerciseDetailService, ExerciseDetailService>();
+            services.AddScoped<IExerciseSetDetailsService, ExerciseSetDetailsService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
 
             return services;
@@ -37,7 +37,6 @@ namespace RoutineCoreApp.Extensions
 
         public static IServiceCollection AddMappers(this IServiceCollection services)
         {
-            services.AddScoped<IImageMapper, ImageMapper>();
             services.AddScoped<IExerciseMapper, ExerciseMapper>();
             services.AddScoped<IAccountMapper, AccountMapper>();
             services.AddScoped<IExerciseDetailMapper, ExerciseDetailMapper>();
@@ -50,7 +49,7 @@ namespace RoutineCoreApp.Extensions
         {
             services.AddScoped<IDayRepository, DayRepository>();
             services.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
-            services.AddScoped<IExerciseDetailRepository, ExerciseDetailRepository>();
+            services.AddScoped<IExerciseSetDetailsRepository, ExerciseSetDetailsRepository>();
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 

@@ -35,9 +35,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             return await _context.Exercises
                 .AsNoTrackingWithIdentityResolution()
                 .Include(e => e.Category)
-                .Include(e => e.Images).AsSplitQuery()
-                .Include(e => e.ExerciseDetails).AsSplitQuery()
-                .Include(e => e.User)
+                .Include(e => e.ExerciseSetDetails).AsSplitQuery()
                 .Include(e => e.DaysToTrain).AsSplitQuery()
                 .Where(e => e.Id == model.ExerciseId)
                 .FirstOrDefaultAsync();
@@ -69,7 +67,6 @@ namespace InfrastructureRoutineApp.Repositories.Classes
 
             var user = await _context.Users
                 .AsNoTracking()
-                .Include(u => u.Exercises).ThenInclude(e => e.Images)
                 .Include(u => u.Exercises).ThenInclude(e => e.Category)
                 .FirstOrDefaultAsync(u => u.Id == model.UserId);
 
@@ -93,7 +90,6 @@ namespace InfrastructureRoutineApp.Repositories.Classes
                 .AsNoTracking()
                 .Where(u => u.Id == model.UserId)
                 .Include(u => u.Exercises.Where(e => e.DaysToTrain.Contains(new Day { Id = dayNumber, DayName = DateTime.Now.DayOfWeek.ToString() })))
-                .ThenInclude(e => e.Images)
                 .FirstOrDefaultAsync();
 
             watch.Stop();
@@ -114,7 +110,6 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             return await _context.Exercises
                 .AsNoTrackingWithIdentityResolution()
                 .Where(e => e.UserId == model.UserId && e.CategoryId == model.CategoryId)
-                .Include(e => e.Images).AsSplitQuery()
                 .Include(e => e.Category)
                 .ToListAsync();
         }

@@ -17,15 +17,13 @@ namespace InfrastructureRoutineApp
 
         public DbSet<Exercise> Exercises { get; set; }
 
-        public DbSet<ExerciseDetail> ExerciseDetails { get; set; }
-
-        public DbSet<Image> Images { get; set; }
+        public DbSet<ExerciseSetDetail> ExerciseSetDetails { get; set; }
 
         public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
 
         public DbSet<Day> Days { get; set; }
 
-        public DbSet<Weight> Weights { get; set; }
+        public DbSet<UserWeight> UserWeights { get; set; }
 
     }
 }

@@ -16,9 +16,9 @@ namespace DomainRoutineApp.Models.Entities
 
         public ExerciseCategory Category { get; set; } = new();
 
-        public List<Image> Images { get; set; } = new();
+        public string Image { get; set; } = string.Empty;
 
-        public List<ExerciseDetail> ExerciseDetails { get; set; } = new();
+        public List<ExerciseSetDetail> ExerciseSetDetails { get; set; } = new();
 
         public string UserId { get; set; } = string.Empty;
 

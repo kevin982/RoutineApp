@@ -14,9 +14,9 @@ namespace InfrastructureRoutineApp.Services.Classes
     {
         private readonly IExerciseService _exerciseService = null;
         private readonly IUserService _userService = null;
-        private readonly IExerciseDetailService _exerciseDetailService = null;
+        private readonly IExerciseSetDetailsService _exerciseDetailService = null;
 
-        public WorkoutService(IExerciseService exerciseService, IUserService userService, IExerciseDetailService exerciseDetailService)
+        public WorkoutService(IExerciseService exerciseService, IUserService userService, IExerciseSetDetailsService exerciseDetailService)
         {
             _exerciseService = exerciseService;
             _userService = userService;
@@ -25,7 +25,7 @@ namespace InfrastructureRoutineApp.Services.Classes
 
         public async Task CreateAndAddExerciseDetailAsync(ExerciseDoneRequestModel model)
         {
-            int exerciseDetailId = await _exerciseDetailService.CreateExerciseDetailAsync(model);
+            int exerciseDetailId = await _exerciseDetailService.CreateExerciseSetDetailAsync(model);
         }
 
         public async Task<ExerciseWorkOutResponseModel> GetNextExerciseAsync()
@@ -46,7 +46,7 @@ namespace InfrastructureRoutineApp.Services.Classes
                     return new ExerciseWorkOutResponseModel
                     {
                         ExerciseId = exercise.Id,
-                        Images = exercise.Images,
+                        Image = exercise.Image,
                         ExerciseName = exercise.Name,
                         RepetitionsLeft = exercise.Sets - setsDone,
                         Status = "Ok"

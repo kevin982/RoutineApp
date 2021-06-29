@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainRoutineApp.Models.Entities
 {
-    public class ExerciseDetail
+    public class ExerciseSetDetail
     {
         public int Id { get; set; } = 0;
 

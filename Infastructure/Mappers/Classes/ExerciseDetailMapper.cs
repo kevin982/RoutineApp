@@ -11,9 +11,9 @@ namespace InfrastructureRoutineApp.Mappers.Classes
 {
     public class ExerciseDetailMapper : IExerciseDetailMapper
     {
-        public ExerciseDetail MapExerciseDoneRequestToDomain(ExerciseDoneRequestModel model)
+        public ExerciseSetDetail MapExerciseDoneRequestToDomain(ExerciseDoneRequestModel model)
         {
-            return new ExerciseDetail
+            return new ExerciseSetDetail
             {
                 ExerciseId = model.ExerciseId,
                 DayDone = DateTime.Now,

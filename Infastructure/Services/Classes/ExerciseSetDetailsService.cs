@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace InfrastructureRoutineApp.Services.Classes
 {
-    public class ExerciseDetailService : IExerciseDetailService
+    public class ExerciseSetDetailsService : IExerciseSetDetailsService
     {
-        private readonly IExerciseDetailRepository _exerciseDetailRepository = null;
+        private readonly IExerciseSetDetailsRepository _exerciseDetailRepository = null;
         private readonly IExerciseService _exerciseService = null;
         private readonly IExerciseDetailMapper _exerciseDetailMapper = null;
 
-        public ExerciseDetailService(IExerciseDetailRepository exerciseDetailRepository, IExerciseDetailMapper exerciseDetailMapper, IExerciseService exerciseService)
+        public ExerciseSetDetailsService(IExerciseSetDetailsRepository exerciseDetailRepository, IExerciseDetailMapper exerciseDetailMapper, IExerciseService exerciseService)
         {
             _exerciseDetailRepository = exerciseDetailRepository;
             _exerciseDetailMapper = exerciseDetailMapper;
@@ -26,21 +26,21 @@ namespace InfrastructureRoutineApp.Services.Classes
 
         }
 
-        public async Task<int> CreateExerciseDetailAsync(ExerciseDoneRequestModel model)
+        public async Task<int> CreateExerciseSetDetailAsync(ExerciseDoneRequestModel model)
         {
-            ExerciseDetail exerciseDetail = _exerciseDetailMapper.MapExerciseDoneRequestToDomain(model);
+            ExerciseSetDetail exerciseDetail = _exerciseDetailMapper.MapExerciseDoneRequestToDomain(model);
 
             exerciseDetail.Exercise = await _exerciseService.GetExerciseByIdAsync(new GetExerciseRequestModel { ExerciseId = model.ExerciseId});
 
             exerciseDetail.SetNumber = await _exerciseDetailRepository.GetExerciseSetsDoneTodayAsync(new GetExerciseSetsDoneTodayRequestModel { ExerciseId = model.ExerciseId }) + 1;
 
-            return await _exerciseDetailRepository.CreateExerciseDetailAsync(exerciseDetail);
+            return await _exerciseDetailRepository.CreateExerciseSetDetailAsync(exerciseDetail);
 
         }
 
-        public async Task<ExerciseDetail> GetExerciseDetailByIdAsync(GetExerciseDetailByIdRequestModel model)
+        public async Task<ExerciseSetDetail> GetExerciseSetDetailsByIdAsync(GetExerciseDetailByIdRequestModel model)
         {
-            return await _exerciseDetailRepository.GetExerciseDetailByIdAsync(model);
+            return await _exerciseDetailRepository.GetExerciseSetDetailsByIdAsync(model);
         }
 
         public async Task<int> GetExerciseSetsDoneAsync(GetExerciseSetsDoneTodayRequestModel model)

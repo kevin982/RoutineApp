@@ -18,7 +18,7 @@ namespace DomainRoutineApp.Models.Entities
 
         public DateTime CreatedOn { get; set; } = new();
 
-        public List<Weight> Weights { get; set; } = new();
+        public List<UserWeight> UserWeights { get; set; } = new();
 
         public DateTime BeganToWorkOutOn { get; set; } = new();
 

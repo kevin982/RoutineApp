@@ -49,14 +49,12 @@ namespace RoutineCoreApp.Controllers
                 string cloud =_configuration.GetValue<string>("Cloudinary:cloud");
                 string apikey = _configuration.GetValue<string>("Cloudinary:apikey");
                 string secret = _configuration.GetValue<string>("Cloudinary:secret");
-
-                foreach (var image in model.Images)
-                {
+ 
   
                     PostImageRequestModel postImage = new()
                     {
-                        Image = image.OpenReadStream(),
-                        ImageName = image.FileName,
+                        Image = model.Image.OpenReadStream(),
+                        ImageName = model.Image.FileName,
                         Cloud = cloud,
                         ApiKey = apikey,
                         Secret = secret
@@ -64,8 +62,8 @@ namespace RoutineCoreApp.Controllers
 
                     string imageUrlCloudinary = await _imageService.PostImageAsync(postImage);
 
-                    model.ImagesUrl.Add(imageUrlCloudinary);
-                }
+                    model.ImageUrl = imageUrlCloudinary;
+             
 
                 await _exerciseService.CreateExerciseAsync(model);
             }

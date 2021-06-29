@@ -17,8 +17,8 @@ namespace DomainRoutineApp.Models.Requests.Exercise
         [Display(Name = "Please choose the category")]
         public int Category { get; set; } = new();
 
-        [Display(Name ="Choose the exercise images"), Required(ErrorMessage = "You must choose at least one image")]
-        public IFormFileCollection Images { get; set; }
-        public List<string> ImagesUrl { get; set; } = new();
+        [Display(Name ="Choose the exercise image"), Required(ErrorMessage = "You must choose an image")]
+        public IFormFile Image { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
     }
 }

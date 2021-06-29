@@ -17,6 +17,6 @@ namespace DomainRoutineApp.Models.Responses.Exercise
 
         public string Status { get; set; } = string.Empty;
 
-        public List<Image> Images { get; set; } = new();
+        public string Image { get; set; } = string.Empty;
     }
 }
