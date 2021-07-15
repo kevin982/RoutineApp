@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace RoutineCoreApp.Controllers
 
         public IActionResult Index()
         {
-
+ 
             try
             {
                 int edad = 12;
@@ -60,6 +61,7 @@ namespace RoutineCoreApp.Controllers
 
             return View();
         }
+ 
 
     }
 }

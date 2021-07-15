@@ -52,6 +52,7 @@ namespace RoutineCoreApp.Extensions
             services.AddScoped<IExerciseSetDetailsRepository, ExerciseSetDetailsRepository>();
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            services.AddScoped<IMailRepository, MailRepository>();
 
             return services;
         }

@@ -74,6 +74,28 @@ namespace Tests.Services
  
         }
 
+        [Fact]
+        public async Task CallTheGetAllDaysAsyncMethod()
+        {
+            //Arrange
+
+            _dayRepository.Setup(dr => dr.GetAllDaysAsync()).ReturnsAsync(new List<Day> { new Day { Id = 1, DayName = "Monday" } });
+
+            dayService = new DayService(_dayRepository.Object, _dayServiceValidator.Object);
+
+            //Act
+
+            var days = await dayService.GetAllDaysAsync();
+
+            //Assert
+
+            _dayRepository.Verify(d => d.GetAllDaysAsync(), Times.Once );
+
+
+        }
+
+
+
         #endregion
 
 
@@ -126,6 +148,94 @@ namespace Tests.Services
  
 
             _dayRepository.Verify(d => d.GetDayByIdAsync(It.IsAny<GetDayRequestModel>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task GetTheCorrectDay()
+        {
+            //arrange
+
+            var dayRequestModel = new GetDayRequestModel { DayId = 1};
+
+            _dayServiceValidator.Setup(d => d.GetDayByIdModelValidation(dayRequestModel)).Returns((true, "Ok"));
+
+            _dayRepository.Setup(dr => dr.GetDayByIdAsync(dayRequestModel)).ReturnsAsync(new Day { Id = dayRequestModel.DayId});
+
+            dayService = new DayService(_dayRepository.Object,  _dayServiceValidator.Object);   
+
+            //act
+            
+            var dayResponse = await dayService.GetDayByIdAsync(dayRequestModel);
+
+
+            //assert
+
+            Assert.Equal(dayResponse.Id, dayRequestModel.DayId);
+        }
+
+        [Fact]
+        
+        public async Task CallValidatorAndDayRepository()
+        {
+            //Arrange
+
+            _dayServiceValidator.Setup(dv => dv.GetDayByIdModelValidation(It.IsAny<GetDayRequestModel>())).Returns((true, "Ok"));
+
+            _dayRepository.Setup(dr => dr.GetDayByIdAsync(It.IsAny<GetDayRequestModel>())).ReturnsAsync(new Day { Id = 1, DayName = "Monday"});
+
+            dayService = new DayService(_dayRepository.Object, _dayServiceValidator.Object);
+
+            //Act
+
+            await dayService.GetDayByIdAsync(new GetDayRequestModel { DayId = 1});
+
+            //Assert
+
+            _dayServiceValidator.Verify(ds => ds.GetDayByIdModelValidation(It.IsAny<GetDayRequestModel>()), Times.Once);
+            _dayRepository.Verify(dr => dr.GetDayByIdAsync(It.IsAny<GetDayRequestModel>()), Times.Once);
+        }
+
+
+        #endregion
+
+
+        #region GetDayIdAsync
+
+        [Fact]
+        public async Task ThrowExceptionIfDayIdIsNotBetweenOneAndSeven()
+        {
+            //Arrange
+
+            _dayRepository.Setup(dr => dr.GetDayIdAsync()).ReturnsAsync(0);
+
+            dayService = new DayService(_dayRepository.Object, _dayServiceValidator.Object);
+
+            //Act
+ 
+
+            //Assert
+
+            await Assert.ThrowsAsync<Exception>( async () => 
+            {
+                await dayService.GetDayIdAsync();
+            });
+        }
+
+        [Fact]
+        public async Task GetTheCurrentIdNumber()
+        {
+            //Arrange
+
+            _dayRepository.Setup(dr => dr.GetDayIdAsync()).ReturnsAsync(3);
+            dayService = new DayService(_dayRepository.Object, _dayServiceValidator.Object);
+
+            //Act
+
+            int dayId = await dayService.GetDayIdAsync();
+
+            //Assert
+
+            Assert.InRange<int>(dayId, 1, 7);
         }
 
 

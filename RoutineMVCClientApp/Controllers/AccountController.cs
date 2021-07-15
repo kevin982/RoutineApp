@@ -38,24 +38,22 @@ namespace RoutineCoreApp.Controllers
         public async Task<IActionResult> SignUp(SignUpRequestModel model)
         {
 
+            ViewBag.Errors = new List<string>();
+
             try
             {
-                ViewBag.Errors = new List<string>();
 
                 if (!ModelState.IsValid) throw new ArgumentException("The model is not valid");
                 if (model is null) throw new ArgumentNullException("The model can not be null");
 
                 var result = await _accountService.CreateUserAsync(model);
 
-                if (!result.Succeeded)
-                {
-                    ViewBag.UserCreated = false;
+                ViewBag.UserCreated = result.Succeeded;
 
-                    foreach (var error in result.Errors)
-                    {
-                        ViewBag.Errors.Add(error.Description);
-                    }
-                }
+                //Adding the possible errors
+                foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+                
+
 
             }
             catch (Exception ex)

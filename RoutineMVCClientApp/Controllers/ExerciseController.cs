@@ -77,12 +77,21 @@ namespace RoutineCoreApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AddExercise(AddExerciseToRoutineRequestModel model)
         {
 
             await _exerciseService.AddExerciseToRoutineAsync(model);
 
-            return RedirectToAction("CreateRoutine");
+            return Ok();
+
+            //return RedirectToAction("CreateRoutine");
+        }
+
+        [HttpGet]
+        public ActionResult<string> AddName()
+        {
+            return "Kevin";
         }
 
         [HttpGet("{id}")]

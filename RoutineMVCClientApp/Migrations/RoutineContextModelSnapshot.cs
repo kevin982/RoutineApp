@@ -127,6 +127,23 @@ namespace RoutineCoreApp.Migrations
                     b.ToTable("ExerciseSetDetails");
                 });
 
+            modelBuilder.Entity("DomainRoutineApp.Models.Entities.Mails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MailHtmlCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MailName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mails");
+                });
+
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.UserWeight", b =>
                 {
                     b.Property<int>("Id")
@@ -409,7 +426,7 @@ namespace RoutineCoreApp.Migrations
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.ExerciseSetDetail", b =>
                 {
                     b.HasOne("DomainRoutineApp.Models.Entities.Exercise", "Exercise")
-                        .WithMany("ExerciseDetails")
+                        .WithMany("ExerciseSetDetails")
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -420,7 +437,7 @@ namespace RoutineCoreApp.Migrations
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.UserWeight", b =>
                 {
                     b.HasOne("DomainRoutineApp.Models.Entities.User", "User")
-                        .WithMany("Weights")
+                        .WithMany("UserWeights")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -479,7 +496,7 @@ namespace RoutineCoreApp.Migrations
 
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.Exercise", b =>
                 {
-                    b.Navigation("ExerciseDetails");
+                    b.Navigation("ExerciseSetDetails");
                 });
 
             modelBuilder.Entity("DomainRoutineApp.Models.Entities.ExerciseCategory", b =>
@@ -491,7 +508,7 @@ namespace RoutineCoreApp.Migrations
                 {
                     b.Navigation("Exercises");
 
-                    b.Navigation("Weights");
+                    b.Navigation("UserWeights");
                 });
 #pragma warning restore 612, 618
         }

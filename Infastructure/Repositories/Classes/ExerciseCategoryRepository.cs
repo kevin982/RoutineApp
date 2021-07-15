@@ -21,7 +21,32 @@ namespace InfrastructureRoutineApp.Repositories.Classes
 
         public async Task<List<ExerciseCategory>> GetAllCategoriesAsync()
         {
-            return await _context.ExerciseCategories.AsNoTracking().ToListAsync();
+            var result = await _context.ExerciseCategories.
+                AsNoTracking()
+                .ToListAsync();
+
+            if (result is not null && result.Count  > 0) return result;
+
+            await SeedCategories();
+
+            return await GetAllCategoriesAsync();
+        }
+
+        private async Task SeedCategories()
+        {
+
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Shoulders" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Triceps" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Biceps" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Forearms" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Chest" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Back" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Abs" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Legs" });
+            await _context.ExerciseCategories.AddAsync(new ExerciseCategory { CategoryName = "Cardio" });
+
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task<ExerciseCategory> GetCategoryByIdAsync(GetExerciseCategoryByIdRequestModel model)

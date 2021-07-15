@@ -40,6 +40,7 @@ namespace InfrastructureRoutineApp.Services.Classes
 
             var day  = await _dayRepository.GetDayByIdAsync(model);
 
+
             if (day is null) throw new Exception("We could not get the day by its id.");
 
             return day;
@@ -49,7 +50,7 @@ namespace InfrastructureRoutineApp.Services.Classes
         {
             var day = await _dayRepository.GetDayIdAsync();
 
-            if (day == 0) throw new Exception("We could not get the day number.");
+            if (day < 1 || day > 7) throw new Exception("We could not get the day number.");
 
             return day;
         }

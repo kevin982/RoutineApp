@@ -25,6 +25,7 @@ namespace ClientRoutineApp.Services.Classes
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(model.ImageName, model.Image),
+                Folder = "RoutineApp",
             };
             var uploadResult = await c.UploadAsync(uploadParams);
 

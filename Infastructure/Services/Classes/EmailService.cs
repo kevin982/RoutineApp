@@ -1,4 +1,6 @@
-﻿using DomainRoutineApp.Services.Interfaces;
+﻿using DomainRoutineApp.Models.Requests.Mail;
+using DomainRoutineApp.Repositores.Interfaces;
+using DomainRoutineApp.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -14,18 +16,37 @@ namespace InfrastructureRoutineApp.Services.Classes
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration = null;
+        private readonly IMailRepository _mailRepository = null;
 
-        public EmailService(IConfiguration configuration)
+        public EmailService(IConfiguration configuration, IMailRepository mailRepository)
         {
             _configuration = configuration;
+            _mailRepository = mailRepository;
         }
 
-        public async Task SendEmailAsync(string subject, string PathHtmlMail, List<string> emailList, List<Attachment> attachments, List<(string, string)> values)
+        public async Task<string> GetMailHtmlAsync(GetMailHtmlRequest model)
         {
+            if ((model is null) || (model.MailName != "ConfirmEmail" && model.MailName != "ResetPassword")) throw new Exception("The model to get the mail html code is not valid");
+
+            string html = "";
+            
+            try
+            {
+                html = await _mailRepository.GetMailHmlAsyncByName(model);
+                return html;
+            }catch (Exception ex)
+            {
+                throw new Exception("The model to get the mail html code is not valid");
+            }
+        }
+        public async Task SendEmailAsync(string subject, string htmlPath, List<string> emailList, List<Attachment> attachments, List<(string, string)> values)
+        {
+            string html = await File.ReadAllTextAsync(htmlPath);
+
             MailMessage mail = new()
             {
                 Subject = subject,
-                Body = await File.ReadAllTextAsync(PathHtmlMail),
+                Body = html,
                 From = new MailAddress(_configuration.GetValue<string>("SMTPConfig:EmailSender"), _configuration.GetValue<string>("SMTPConfig:DisplayName")),
                 IsBodyHtml = _configuration.GetValue<bool>("SMTPConfig:IsBodyHTML")
             };
@@ -39,10 +60,19 @@ namespace InfrastructureRoutineApp.Services.Classes
                 Host = _configuration.GetValue<string>("SMTPConfig:Host"),
                 Port = _configuration.GetValue<int>("SMTPConfig:Port"),
                 EnableSsl = _configuration.GetValue<bool>("SMTPConfig:EnableSSL"),
+                UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(_configuration.GetValue<string>("SMTPConfig:EmailSender"), _configuration.GetValue<string>("SMTPConfig:Password"))
             };
 
-            await smtpClient.SendMailAsync(mail);
+            try
+            {
+                await smtpClient.SendMailAsync(mail);
+
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.InnerException);
+            }
+
 
         }
     }

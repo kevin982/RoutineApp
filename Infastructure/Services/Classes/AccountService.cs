@@ -1,6 +1,7 @@
 ﻿using DomainRoutineApp.Mappers.Interfaces;
 using DomainRoutineApp.Models.Entities;
 using DomainRoutineApp.Models.Requests.Account;
+using DomainRoutineApp.Models.Requests.Mail;
 using DomainRoutineApp.Services.Interfaces;
 using InfrastructureRoutineApp.Validations.Services;
 using Microsoft.AspNetCore.DataProtection;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -99,11 +101,16 @@ namespace InfrastructureRoutineApp.Services.Classes
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
 
+            string htmlparent = Directory.GetParent(Directory.GetCurrentDirectory()).ToString();
+
+            string htmlFile = htmlparent += "\\RoutineMVCClientApp\\Mails\\ResetPassword.html";
+ 
+
             string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\MVC\\RoutineApp\\RoutineCoreApp\\Mails\\ResetPassword.html";
             string subject = "Reset Password";
             List<Attachment> attachments = new();
             List<string> mails = new() { model.UserEmail };
-            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44350" + $"/Account/ResetPassword?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
+            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:5001" + $"/Account/ResetPassword?id={user.Id}&token={token}")), ("UserName", user.FirstName) };
             await _emailService.SendEmailAsync(subject, htmlPath, mails, attachments, values);
         }
 
@@ -135,13 +142,15 @@ namespace InfrastructureRoutineApp.Services.Classes
 
         private async Task SendEmailConfirmationAsync(SendEmailConfirmationRequestModel model)
         {
+            string htmlparent = Directory.GetParent(Directory.GetCurrentDirectory()).ToString();
 
-            string htmlPath = "C:\\Users\\admin\\Desktop\\Programming practices\\C#\\Back\\MVC\\RoutineApp\\RoutineCoreApp\\Mails\\ConfirmEmail.html";
+            string htmlFile = htmlparent += "\\RoutineMVCClientApp\\Mails\\ConfirmEmail.html";
+
             string subject = "Email Confirmation";
             List<Attachment> attachments = new();
             List<string> mails = new() { model.Email };
-            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:44350" + $"/Account/ConfirmEmail?id={model.UserId}&token={model.Token}")), ("UserName", model.FirstName) };
-            await _emailService.SendEmailAsync(subject, htmlPath, mails, attachments, values);
+            List<(string, string)> values = new() { ("Link", string.Format("https://localhost:5001" + $"/Account/ConfirmEmail?id={model.UserId}&token={model.Token}")), ("UserName", model.FirstName) };
+            await _emailService.SendEmailAsync(subject, htmlFile, mails, attachments, values);
         }
     }
 }

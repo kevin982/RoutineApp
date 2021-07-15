@@ -28,17 +28,21 @@ namespace Tests.Services
 
         private AccountService accountService;
 
+        #region ChangePasswordMethod
+
         [Fact]
-        public async Task ThrowExceptionIfModelIsNotValid()
+        public async Task ThrowExceptionIfChangePasswordModelIsNotValid()
         {
             //Arrange
             ChangePasswordRequestModel model = null;
 
             _accountValidator.Setup(v => v.ChangePasswordModelValidation(model)).Returns((false, "Error"));
 
+            
+
             //Act
 
-            accountService = new(_userManager.Object, _signInManager.Object, _emailService.Object, _userService.Object, _accountMapper.Object, _accountValidator.Object, _logger.Object);
+            accountService = new (_userManager.Object, _signInManager.Object, _emailService.Object, _userService.Object, _accountMapper.Object, _accountValidator.Object, _logger.Object);
 
             //Assert
 
@@ -46,9 +50,11 @@ namespace Tests.Services
             {
                 await accountService.ChangePasswordAsync(model);
             });
-            
+
         }
 
 
+        #endregion
+ 
     }
 }

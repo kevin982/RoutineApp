@@ -352,3 +352,4 @@ MigrationBackup/
 /RoutineApp/appsettings.Development.json
 /RoutineApp/appsettings.json
 
+*.json

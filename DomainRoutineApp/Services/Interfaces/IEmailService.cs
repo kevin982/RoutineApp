@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainRoutineApp.Models.Requests.Mail;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
@@ -10,5 +11,8 @@ namespace DomainRoutineApp.Services.Interfaces
     public interface IEmailService
     {
         Task SendEmailAsync(string subject, string PathHtmlMail, List<string> emailList, List<Attachment> attachments, List<(string, string)> values);
+
+        Task<string> GetMailHtmlAsync(GetMailHtmlRequest model);
+ 
     }
 }

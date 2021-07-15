@@ -25,5 +25,6 @@ namespace InfrastructureRoutineApp
 
         public DbSet<UserWeight> UserWeights { get; set; }
 
+        public DbSet<Mails> Mails { get; set; }
     }
 }

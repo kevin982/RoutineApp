@@ -35,6 +35,8 @@ const addTheExercisesToTheDom = (exercises) => {
         let exercise = exercises[i];
         let img = exercise.Image;
 
+        console.log(exercise);
+
         let divRow = document.createElement("div");
         divRow.className = "row justify-content-center";
 
@@ -58,11 +60,10 @@ const addTheExercisesToTheDom = (exercises) => {
 
         let action = (exercise.IsInTheRoutine) ? "Remove" : "Add";
 
-        let cardButton = document.createElement("a");
+        let cardButton = document.createElement("button");
         cardButton.className = "btn-fill-animation mt-4 rounded";
         cardButton.textContent = action;
-        cardButton.setAttribute("href", `https//localhost:5001/Exercise/${action}/${exercise.ExerciseId}`);
-        cardButton.setAttribute("role", "button");
+        cardButton.setAttribute("id", "buttonExercise-" + action + "-" + exercise.ExerciseId);
 
         let division = document.createElement("hr");
         division.className = "bg-white mb-5";
@@ -151,4 +152,117 @@ categoryCombo.addEventListener("change", async () => {
 
 });
 
+document.addEventListener("click", async (e) => {
 
+    let id = e.target.id;
+
+    let [elementName, action, exerciseId] = id.split('-');
+
+    if (elementName !== 'buttonExercise') return;
+
+    if (action === "Add") {
+        await AddExercise(exerciseId);
+    } else if (action === "Remove"){
+        await RemoveExercise(exerciseId);
+    }
+
+
+});
+
+
+const AddExercise = async (exerciseId) => {
+
+
+
+    Swal.fire({
+        background:'black',
+        title: 'Add Exercise',
+        html: `
+                
+                <label class = 'text-white mb-3'>Choose sets number</label>
+                <br />
+                <input type="number" id="sets" class="swal2-input bg-dark text-white mb-3" placeholder="Sets number">
+                <br />
+                <label class = 'text-white mb-3'>Choose the day you want to train it</label>
+                <br />
+                <select multiple class = 'bg-dark text-white' id = 'daysToTrain'>
+                    <option value = '1'>Monday</option>
+                    <option value = '2'>Tuesday</option>
+                    <option value = '3'>Wednesday</option>
+                    <option value = '4'>Thursday</option>
+                    <option value = '5'>Friday</option>
+                    <option value = '6'>Saturday</option>
+                    <option value = '7'>Sunday</option>
+                </select>`,
+        confirmButtonText: 'Add',
+        focusConfirm: false,
+        preConfirm: async () => {
+            const sets = Swal.getPopup().querySelector('#sets').value;
+            const options = document.getElementById('daysToTrain').selectedOptions;
+            const days = Array.from(options).map(({ value }) => value);
+
+            if (!sets || !days) {
+                Swal.showValidationMessage(`Please enter sets and days`)
+            }
+
+            for (var i = 0; i < days.length; i++) days[i] = parseInt(days[i]);
+
+            const addExerciseModel = {
+                ExerciseId: parseInt(exerciseId),
+                Days: days,
+                Sets: parseInt(sets)
+            };
+
+            const settings = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(addExerciseModel)
+            };
+
+            const response = await fetch("https://localhost:44380/WeatherForecast/AddExercise", settings);
+
+            //const response = await fetch("https://localhost:44380/WeatherForecast/Get");
+
+            //const response = await fetch("https://localhost:5001/Exercise/AddName");
+
+            const json = await response.json();
+
+            console.log(response.body);
+
+
+            return { sets: sets, days: days }
+        }
+    }).then((result) => {
+        Swal.fire(`
+    Sets: ${result.value.sets}
+    Days: ${result.value.days}
+  `.trim())
+    })
+
+
+}
+
+const RemoveExercise = async (exerciseId) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            
+
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+        }
+    })
+}
