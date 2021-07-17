@@ -1,6 +1,6 @@
 ﻿using ClientRoutineApp.Models;
 using ClientRoutineApp.Services.Interfaces;
-using DomainRoutineApp.Models.Entities;
+ 
 using DomainRoutineApp.Models.Requests.Exercise;
 using DomainRoutineApp.Models.Responses.Exercise;
 using DomainRoutineApp.Services.Interfaces;

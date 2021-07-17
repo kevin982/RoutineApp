@@ -1,4 +1,6 @@
-using DomainRoutineApp.Models.Entities;
+ 
+using DomainRoutineLibrary;
+using DomainRoutineLibrary.Entities;
 using InfrastructureRoutineApp;
 using InfrastructureRoutineApp.Claims;
 using Microsoft.AspNetCore.Builder;
@@ -148,8 +150,7 @@ namespace RoutineCoreApp
 
 
             });
-
-            services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+ 
 
             services.AddValidators();
             services.AddMappers();

@@ -1,8 +1,10 @@
 ﻿using DomainRoutineApp.Mappers.Interfaces;
-using DomainRoutineApp.Models.Entities;
+ 
 using DomainRoutineApp.Models.Requests.Statics;
 using DomainRoutineApp.Models.Responses.Statics;
 using DomainRoutineApp.Repositores.Interfaces;
+using DomainRoutineLibrary;
+using DomainRoutineLibrary.Entities;
 using InfrastructureRoutineApp.Services.Classes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

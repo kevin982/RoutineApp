@@ -1,6 +1,7 @@
-﻿using DomainRoutineApp.Models.Entities;
-using DomainRoutineApp.Models.Requests.ExerciseCategory;
+﻿using DomainRoutineApp.Models.Requests.ExerciseCategory;
 using DomainRoutineApp.Repositores.Interfaces;
+using DomainRoutineLibrary;
+using DomainRoutineLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,11 @@ namespace InfrastructureRoutineApp.Repositories.Classes
 
         public async Task<List<ExerciseCategory>> GetAllCategoriesAsync()
         {
-            var result = await _context.ExerciseCategories.
-                AsNoTracking()
+            var result = await _context.ExerciseCategories
+                .AsNoTracking()
                 .ToListAsync();
 
-            if (result is not null && result.Count  > 0) return result;
+            if (result is not null && result.Count()  > 0) return result;
 
             await SeedCategories();
 

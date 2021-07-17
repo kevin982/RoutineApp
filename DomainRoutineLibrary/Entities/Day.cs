@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainRoutineApp.Models.Entities
+namespace DomainRoutineLibrary.Entities
 {
     public class Day
     {

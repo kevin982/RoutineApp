@@ -1,11 +1,12 @@
 ﻿using DomainRoutineApp.Mappers.Interfaces;
-using DomainRoutineApp.Models.Entities;
+ 
 using DomainRoutineApp.Models.Requests.Day;
 using DomainRoutineApp.Models.Requests.Exercise;
 using DomainRoutineApp.Models.Requests.ExerciseCategory;
 using DomainRoutineApp.Models.Responses.Exercise;
 using DomainRoutineApp.Repositores.Interfaces;
 using DomainRoutineApp.Services.Interfaces;
+using DomainRoutineLibrary.Entities;
 using RoutineApp.Mappers.Interfaces;
 using System;
 using System.Collections.Generic;

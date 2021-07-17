@@ -214,12 +214,13 @@ const AddExercise = async (exerciseId) => {
             };
 
             const settings = {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(addExerciseModel)
             };
+
 
             const response = await fetch("https://localhost:44380/WeatherForecast/AddExercise", settings);
 

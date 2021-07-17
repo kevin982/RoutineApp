@@ -1,5 +1,5 @@
-﻿using DomainRoutineApp.Models.Entities;
-using DomainRoutineApp.Models.Requests.Day;
+﻿using DomainRoutineApp.Models.Requests.Day;
+using DomainRoutineLibrary.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

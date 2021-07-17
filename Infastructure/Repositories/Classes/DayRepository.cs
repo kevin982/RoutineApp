@@ -1,7 +1,8 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿ 
 using DomainRoutineApp.Models.Requests.Day;
 using DomainRoutineApp.Repositores.Interfaces;
- 
+using DomainRoutineLibrary;
+using DomainRoutineLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
         {
             var days = await _context.Days.AsNoTracking().ToListAsync();
 
-            if (days.Count != 0 && days is not null) return days;
+            if (days.Count() != 0 && days is not null) return days;
 
             await SeedAllDays();
 

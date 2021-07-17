@@ -1,6 +1,8 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿
 using DomainRoutineApp.Models.Requests.ExerciseDetail;
 using DomainRoutineApp.Repositores.Interfaces;
+using DomainRoutineLibrary;
+using DomainRoutineLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,9 +30,9 @@ namespace InfrastructureRoutineApp.Repositories.Classes
                .Where(ed => ed.ExerciseId == model.ExerciseId)  //&& ed.DayDone.ToShortDateString() == DateTime.Now.ToShortDateString())
                .ToListAsync();
 
-            if (details.Count == 0 || details is null) return 0;
+            if (details.Count() == 0 || details is null) return 0;
 
-            for (int i = 0; i < details.Count; i++)
+            for (int i = 0; i < details.Count(); i++)
             {
                 if (details[i].DayDone.ToShortDateString() != DateTime.Now.ToShortDateString())
                 {
@@ -39,7 +41,7 @@ namespace InfrastructureRoutineApp.Repositories.Classes
             }
 
 
-            return details.Count;
+            return details.Count();
         }
 
         public async Task<int> CreateExerciseSetDetailAsync(ExerciseSetDetail exerciseDetail)

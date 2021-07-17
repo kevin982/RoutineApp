@@ -4,22 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainRoutineApp.Models.Entities
+namespace DomainRoutineLibrary.Entities
 {
-    public class ExerciseSetDetail
+    public class DayExercise
     {
         public int Id { get; set; } = 0;
 
+        public int DayId { get; set; } = 0;
+
+        public Day Day { get; set; } = new Day();
+        
         public int ExerciseId { get; set; } = 0;
 
         public Exercise Exercise { get; set; } = new();
 
-        public DateTime DayDone { get; set; } = new();
-
-        public int Weight { get; set; } = 0;
-
-        public int Repetitions { get; set; } = 0;
-
-        public int SetNumber { get; set; } = 0;
     }
 }

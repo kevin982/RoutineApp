@@ -1,7 +1,8 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿ 
 using DomainRoutineApp.Models.Requests.Day;
 using DomainRoutineApp.Repositores.Interfaces;
 using DomainRoutineApp.Services.Interfaces;
+using DomainRoutineLibrary.Entities;
 using InfrastructureRoutineApp.Validations.Services;
 using System;
 using System.Collections.Generic;

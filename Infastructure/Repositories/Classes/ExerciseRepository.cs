@@ -1,7 +1,8 @@
-﻿using DomainRoutineApp.Models.Entities;
-using DomainRoutineApp.Models.Requests.Exercise;
+﻿using DomainRoutineApp.Models.Requests.Exercise;
 using DomainRoutineApp.Repositores.Interfaces;
 using DomainRoutineApp.Services.Interfaces;
+using DomainRoutineLibrary;
+using DomainRoutineLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
 using RoutineApp.Mappers.Interfaces;
 using System;

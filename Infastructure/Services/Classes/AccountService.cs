@@ -1,8 +1,9 @@
 ﻿using DomainRoutineApp.Mappers.Interfaces;
-using DomainRoutineApp.Models.Entities;
+ 
 using DomainRoutineApp.Models.Requests.Account;
 using DomainRoutineApp.Models.Requests.Mail;
 using DomainRoutineApp.Services.Interfaces;
+using DomainRoutineLibrary.Entities;
 using InfrastructureRoutineApp.Validations.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;

@@ -16,29 +16,13 @@ namespace InfrastructureRoutineApp.Services.Classes
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration = null;
-        private readonly IMailRepository _mailRepository = null;
+ 
 
-        public EmailService(IConfiguration configuration, IMailRepository mailRepository)
+        public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _mailRepository = mailRepository;
         }
-
-        public async Task<string> GetMailHtmlAsync(GetMailHtmlRequest model)
-        {
-            if ((model is null) || (model.MailName != "ConfirmEmail" && model.MailName != "ResetPassword")) throw new Exception("The model to get the mail html code is not valid");
-
-            string html = "";
-            
-            try
-            {
-                html = await _mailRepository.GetMailHmlAsyncByName(model);
-                return html;
-            }catch (Exception ex)
-            {
-                throw new Exception("The model to get the mail html code is not valid");
-            }
-        }
+ 
         public async Task SendEmailAsync(string subject, string htmlPath, List<string> emailList, List<Attachment> attachments, List<(string, string)> values)
         {
             string html = await File.ReadAllTextAsync(htmlPath);

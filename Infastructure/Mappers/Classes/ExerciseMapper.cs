@@ -1,6 +1,7 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿ 
 using DomainRoutineApp.Models.Requests.Exercise;
 using DomainRoutineApp.Models.Responses.Exercise;
+using DomainRoutineLibrary.Entities;
 using RoutineApp.Mappers.Interfaces;
 using System;
 using System.Collections.Generic;

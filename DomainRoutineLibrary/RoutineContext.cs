@@ -1,4 +1,4 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿using DomainRoutineLibrary.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InfrastructureRoutineApp
+namespace DomainRoutineLibrary
 {
     public class RoutineContext : IdentityDbContext
     {
@@ -25,6 +25,6 @@ namespace InfrastructureRoutineApp
 
         public DbSet<UserWeight> UserWeights { get; set; }
 
-        public DbSet<Mails> Mails { get; set; }
+        public DbSet<DayExercise> DayExercises { get; set; }    
     }
 }

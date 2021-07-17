@@ -22,8 +22,8 @@ namespace RoutineCoreApp.Extensions
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IExerciseService, ExerciseService>();
             services.AddScoped<IDayService, DayService>();
@@ -52,7 +52,6 @@ namespace RoutineCoreApp.Extensions
             services.AddScoped<IExerciseSetDetailsRepository, ExerciseSetDetailsRepository>();
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
-            services.AddScoped<IMailRepository, MailRepository>();
 
             return services;
         }

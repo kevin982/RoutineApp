@@ -1,5 +1,6 @@
-﻿using DomainRoutineApp.Models.Entities;
+﻿ 
 using DomainRoutineApp.Models.Requests.Account;
+using DomainRoutineLibrary.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
