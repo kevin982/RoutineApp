@@ -24,7 +24,6 @@ namespace DomainRoutineLibrary
         public DbSet<Day> Days { get; set; }
 
         public DbSet<UserWeight> UserWeights { get; set; }
-
-        public DbSet<DayExercise> DayExercises { get; set; }    
+ 
     }
 }

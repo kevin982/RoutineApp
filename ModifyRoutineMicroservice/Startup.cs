@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ModifyRoutineMicroservice.Repository;
 using ModifyRoutineMicroservice.Services;
@@ -45,6 +46,33 @@ namespace ModifyRoutineMicroservice
             });
             #endregion
 
+            #region Authentication
+
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "https://localhost:5001";
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false
+                };
+            });
+
+            #endregion
+
+            #region Authorization
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ModifyRoutineScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "modifyroutineapi");
+                });
+            });
+
+            #endregion
 
             #region Database
 
@@ -105,11 +133,14 @@ namespace ModifyRoutineMicroservice
 
             app.UseCors();
 
+            app.UseAuthentication();    
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers()
+                .RequireAuthorization("ModifyRoutineScope"); ;
             });
         }
     }

@@ -19,28 +19,28 @@ namespace InfrastructureRoutineApp.Repositories.Classes
     public class StatisticsRepository : IStatisticsRepository
     {
         private readonly RoutineContext _context = null;
-        private readonly UserManager<User> _userManager = null;
+        //private readonly UserManager<User> _userManager = null;
         private readonly IStatisticsMapper _statisticsMapper = null;
         
 
 
-        public StatisticsRepository(RoutineContext context, UserManager<User> userManager, IStatisticsMapper statisticsMapper)
+        public StatisticsRepository(RoutineContext context, IStatisticsMapper statisticsMapper)
         {
             _context = context;
-            _userManager = userManager;
+            //_userManager = userManager;
             _statisticsMapper = statisticsMapper;
         }
         
 
         public async Task AddWeightAsync(AddPersonWeightRequestModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.UserId);
+            //var user = await _userManager.FindByIdAsync(model.UserId);
 
             UserWeight weight = _statisticsMapper.MapAddWeightToDomain(model);
 
             weight.Date = DateTime.Now;
 
-            user.UserWeights.Add(weight);
+            //user.UserWeights.Add(weight);
 
             await _context.SaveChangesAsync();
         }
