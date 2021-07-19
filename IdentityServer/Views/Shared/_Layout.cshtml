@@ -10,19 +10,24 @@
     <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
     
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link href = "~/css/site.css" rel="stylesheet" />
+    
+    <link href = "~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+   
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+ 
 </head>
-<body>
+<body class="bg-dark text-white">
     <partial name="_Nav" />
    
-    <div class="container body-container">
+    <div class="">
         @RenderBody()
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+ 
     @RenderSection("scripts", required: false)
 </body>
 </html>

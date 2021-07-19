@@ -18,6 +18,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DomainRoutineLibrary.Entities;
+using System.Collections.Generic;
+using IdentityServer.Services;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -32,13 +34,16 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
 
+        private readonly IAccountService _accountService = null;
+
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events)
+            IEventService events,
+            IAccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -46,7 +51,80 @@ namespace IdentityServerHost.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _accountService = accountService;   
         }
+
+        public IActionResult SignUp()
+        {
+            ViewBag.Errors = new List<string>();
+            ViewBag.UserCreated = false;
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SignUp(SignUpRequestModel model)
+        {
+
+            ViewBag.Errors = new List<string>();
+
+            try
+            {
+
+                if (!ModelState.IsValid) throw new ArgumentException("The model is not valid");
+                if (model is null) throw new ArgumentNullException("The model can not be null");
+
+                var result = await _accountService.CreateUserAsync(model);
+
+                ViewBag.UserCreated = result.Succeeded;
+
+                //Adding the possible errors
+                foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "An exception has been triggered.");
+            }
+
+            return View();
+
+        }
+        
+
+        public async Task<IActionResult> ConfirmEmail(string id, string token)
+        {
+
+            try
+            {
+                ViewBag.Errors = new List<string>();
+
+                if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(token))
+                {
+                    ViewBag.Errors.Add("Url is invalid.");
+                    throw new ArgumentException("Url is invalid.");
+                }
+
+
+                token = token.Replace(' ', '+');
+
+                var result = await _accountService.ConfirmEmailAsync(token, id);
+
+                if (!result.Succeeded) throw new ArgumentException("Id or token invalid");
+
+                foreach (var error in result.Errors) ViewBag.Errors.Add(error.Description);
+
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "An error has been triggered.");
+            }
+
+            return View();
+        }
+
 
         /// <summary>
         /// Entry point into the login workflow

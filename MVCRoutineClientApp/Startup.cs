@@ -1,4 +1,4 @@
- 
+
 using DomainRoutineLibrary;
 using DomainRoutineLibrary.Entities;
 using InfrastructureRoutineApp;
@@ -33,10 +33,9 @@ namespace RoutineCoreApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
- 
 
             services.AddControllersWithViews()
-                .AddRazorRuntimeCompilation();
+            .AddRazorRuntimeCompilation();
 
             services.AddHttpContextAccessor();
 
@@ -45,7 +44,7 @@ namespace RoutineCoreApp
             services.AddAntiforgery();
 
             #endregion
- 
+
             #region CORS
             services.AddCors(options =>
             {
@@ -224,13 +223,13 @@ namespace RoutineCoreApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
-            
+
             app.UseStaticFiles();
 
             app.UseCookiePolicy();
-            
+
             app.UseRouting();
 
             app.UseCors();

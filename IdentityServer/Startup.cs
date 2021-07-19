@@ -1,6 +1,6 @@
-﻿ 
+﻿
 using IdentityServer4;
- 
+
 using IdentityServer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +13,8 @@ using DomainRoutineLibrary;
 using DomainRoutineLibrary.Entities;
 using System;
 using Microsoft.AspNetCore.Http;
+using IdentityServer.Services;
+using IdentityServer.Mapper;
 
 namespace IdentityServer
 {
@@ -29,7 +31,9 @@ namespace IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllersWithViews();
+
 
             services.AddDbContext<RoutineContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -117,7 +121,14 @@ namespace IdentityServer
                 .AddAspNetIdentity<User>();
 
             #endregion
- 
+
+
+            #region MyServices
+
+            services.AddScoped<IAccountMapper, AccountMapper>();
+            services.AddScoped<IAccountService, AccountService>();
+
+            #endregion
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
@@ -140,7 +151,6 @@ namespace IdentityServer
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
 
             app.UseStaticFiles();

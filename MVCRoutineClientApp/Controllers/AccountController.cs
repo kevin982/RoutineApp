@@ -27,12 +27,10 @@ namespace RoutineCoreApp.Controllers
         //}
 
 
-        //public IActionResult SignUp()
-        //{
-        //    ViewBag.Errors = new List<string>();
-        //    ViewBag.UserCreated = false;
-        //    return View();
-        //}
+        public IActionResult SignUp()
+        {
+            return RedirectPermanent("https://localhost:5001/Account/SignUp");
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> SignUp(SignUpRequestModel model)
@@ -97,11 +95,11 @@ namespace RoutineCoreApp.Controllers
         //    return View();
         //}
 
-        //public IActionResult SignIn()
-        //{
-        //    ViewBag.Succeded = null;
-        //    return View();
-        //}
+        [Authorize]
+        public IActionResult SignIn()
+        {
+            return Redirect("/Home/Index");
+        }
 
         //[HttpPost]
         //public async Task<IActionResult> SignIn(SignInRequestModel model)

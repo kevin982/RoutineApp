@@ -351,5 +351,7 @@ MigrationBackup/
 /RoutineApp/wwwroot
 /RoutineApp/appsettings.Development.json
 /RoutineApp/appsettings.json
-
+ 
 *.json
+
+IdentityServer/wwwroot/lib/
