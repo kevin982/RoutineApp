@@ -33,15 +33,17 @@ namespace IdentityServer
         {
 
             services.AddControllersWithViews();
+ 
 
-
-            services.AddDbContext<RoutineContext>(options =>
+            services.AddDbContext<UsersDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
 
             #region Identity
 
-            services.AddIdentity<User, IdentityRole>()
-               .AddEntityFrameworkStores<RoutineContext>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+               .AddEntityFrameworkStores<UsersDbContext>()
                .AddDefaultTokenProviders()
                .AddRoles<IdentityRole>();
 
@@ -118,7 +120,7 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
-                .AddAspNetIdentity<User>();
+                .AddAspNetIdentity<ApplicationUser>();
 
             #endregion
 

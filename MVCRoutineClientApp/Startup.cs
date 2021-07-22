@@ -68,7 +68,7 @@ namespace RoutineCoreApp
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://localhost:5001";
+                    options.Authority = "https://localhost:49155";
 
                     options.ClientId = "RoutineMVC";
                     options.ClientSecret = "RoutineMVCSecret";

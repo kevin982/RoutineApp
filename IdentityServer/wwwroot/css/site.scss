@@ -34,3 +34,21 @@ body {
     background: rgb(92,23,148);
     background: linear-gradient(90deg, rgba(92,23,148,1) 0%, rgba(151,109,242,1) 100%);
 }
+
+
+#planner #change_title_dialog, #planner #confirm_delete_dialog {
+    background-color: #eee;
+    color: black;
+    border: 1px solid black;
+    padding: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -150px;
+    width: 300px;
+}
+
+#planner .dialog_buttons {
+    text-align: right;
+}

@@ -10,11 +10,11 @@ namespace IdentityServer.Mapper
 {
     public class AccountMapper : IAccountMapper
     {
-        public User MapSignUpRequestModelToDomain(SignUpRequestModel model)
+        public ApplicationUser MapSignUpRequestModelToDomain(SignUpRequestModel model)
         {
             if (model is null) return null;
 
-            return new User
+            return new ApplicationUser
             {
                 Email = model.Email,
                 Age = model.Age,

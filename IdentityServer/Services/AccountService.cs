@@ -18,7 +18,7 @@ namespace IdentityServer.Services
     public class AccountService :  IAccountService
     {
 
-        private readonly UserManager<User> _userManager = null;
+        private readonly UserManager<ApplicationUser> _userManager = null;
         private readonly IConfiguration Configuration = null;
 
         //private readonly SignInManager<User> _signInManager = null;
@@ -29,7 +29,7 @@ namespace IdentityServer.Services
         //private readonly ILogger<AccountService> _logger = null;
 
 
-        public AccountService(UserManager<User> userManager, IConfiguration configuration, IAccountMapper accountMapper)
+        public AccountService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IAccountMapper accountMapper)
         {
             _userManager = userManager; 
             Configuration = configuration;  
@@ -72,7 +72,7 @@ namespace IdentityServer.Services
 
         public async Task<IdentityResult> CreateUserAsync(SignUpRequestModel model)
         {
-            User user = _accountMapper.MapSignUpRequestModelToDomain(model);
+            var user = _accountMapper.MapSignUpRequestModelToDomain(model);
 
             var result = await _userManager.CreateAsync(user, model.Password);
 

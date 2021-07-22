@@ -5,6 +5,6 @@ namespace IdentityServer.Mapper
 {
     public interface IAccountMapper
     {
-        User MapSignUpRequestModelToDomain(SignUpRequestModel model);
+        ApplicationUser MapSignUpRequestModelToDomain(SignUpRequestModel model);
     }
 }
