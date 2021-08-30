@@ -11,7 +11,7 @@ namespace ExerciseMS_Core.Repositories
     {
         Task<IEnumerable<Exercise>> GetAllExercisesByCategoryAsync(Guid categoryId,int index, int size);
 
-        int GetExerciseCountByCategory(Guid categoryId);
+        int? GetExerciseCountByCategory(Guid categoryId);
 
         Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId, Guid userId);
     }

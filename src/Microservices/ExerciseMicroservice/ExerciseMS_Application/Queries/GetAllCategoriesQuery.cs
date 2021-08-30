@@ -9,6 +9,14 @@ using System.Threading.Tasks;
 namespace ExerciseMS_Application.Queries
 {
     public class GetAllCategoriesQuery : IRequest<IEnumerable<DtoCategory>>
-    {   
+    {
+        public int Index { get; set; }
+        public int Size { get; set; }
+
+        public GetAllCategoriesQuery(int index, int size)
+        {
+            Index = index;
+            Size = size;
+        }
     }
 }

@@ -47,7 +47,7 @@ namespace ExerciseMS_Infraestructure.Repositories
           
         }
 
-        public int GetExerciseCountByCategory(Guid categoryId)
+        public int? GetExerciseCountByCategory(Guid categoryId)
         {
             try
             {
@@ -63,12 +63,12 @@ namespace ExerciseMS_Infraestructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError($"Error while getting the exercises count of a specific category because of {ex.Message}");
-                return 0;
+                return null;
             }
  
         }
 
-        public override async Task<bool> DeleteAsync(Exercise data, Guid id)
+        public override async Task<bool> DeleteAsync(Guid id)
         {
             try
             {
