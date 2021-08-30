@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ExerciseMS_Core.Models.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,13 +12,12 @@ namespace ExerciseMS_Core.Models.Requests
 {
     public class CreateExerciseRequest
     {
-        [Required(ErrorMessage = "You must enter the exercise name"), Display(Name = "Please enter the exercise name"), MaxLength(30)]
-        public string Name { get; set; } = string.Empty;
+        [Required(ErrorMessage = "You must enter the exercise name"), Display(Name = "Please enter the exercise name"), MaxLength(30), MinLength(5)]
+        public string Name { get; set; }
 
-        [Display(Name = "Please choose the category")]
-        public int Category { get; set; } = new();
+        public Category Category { get; set; } 
 
-        [Display(Name = "Choose the exercise image"), Required(ErrorMessage = "You must choose an image")]
+        [Required(ErrorMessage = "You must choose an image")]
         public Stream Image { get; set; }
     }
 }
