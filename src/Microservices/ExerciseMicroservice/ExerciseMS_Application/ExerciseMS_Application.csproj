@@ -13,4 +13,8 @@
     <ProjectReference Include="..\ExerciseMS_Core\ExerciseMS_Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\QueryHandlers\" />
+  </ItemGroup>
+
 </Project>

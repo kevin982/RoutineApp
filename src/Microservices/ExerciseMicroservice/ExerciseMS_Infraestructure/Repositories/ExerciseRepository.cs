@@ -91,14 +91,14 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public async Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId)
+        public async Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId, Guid userId)
         {
             try
             {
 
                 var exercise = await _context
                     .Exercises
-                    .Where(e => e.ExerciseId == exerciseId)
+                    .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
                     .FirstOrDefaultAsync();
 
                 exercise.IsInTheRoutine = newValue;
