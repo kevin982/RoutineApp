@@ -10,9 +10,9 @@ namespace ExerciseMS_Infraestructure.Data
 {
     public class ExerciseMsDbContext : DbContext
     {
-        DbSet<Exercise> Exercises { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
 
-        DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public ExerciseMsDbContext(DbContextOptions<ExerciseMsDbContext> options):base(options){}
 

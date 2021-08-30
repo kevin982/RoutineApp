@@ -10,10 +10,10 @@ namespace ExerciseMS_Core.Repositories
     {
         Task<bool> CreateAsync(T data);
 
-        Task<bool> DeleteAsync(T data);
+        Task<bool> DeleteAsync(T data, Guid id);
 
         Task<IEnumerable<T>> GetAllAsync(int index, int size);
 
-        Task<IEnumerable<T>> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(Guid id);
     }
 }

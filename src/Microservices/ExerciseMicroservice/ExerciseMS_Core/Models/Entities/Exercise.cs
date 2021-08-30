@@ -12,6 +12,10 @@ namespace ExerciseMS_Core.Models.Entities
 
         public Guid UserId { get; set; }
 
+        public Guid CategoryId { get; set; }
+
+        public Category Category { get; set; }
+
         public string ExerciseName { get; set; }
 
         public bool IsInTheRoutine { get; set; }

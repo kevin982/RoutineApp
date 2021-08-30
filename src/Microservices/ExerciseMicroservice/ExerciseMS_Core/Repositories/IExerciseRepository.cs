@@ -9,6 +9,8 @@ namespace ExerciseMS_Core.Repositories
 {
     public interface IExerciseRepository : IRepository<Exercise>
     {
-        Task<IEnumerable<Exercise>> GetAllExercisesByCategory(Guid categoryId, int index, int size);
+        Task<IEnumerable<Exercise>> GetAllExercisesByCategoryAsync(Guid categoryId, Guid userId,int index, int size);
+
+        int GetExerciseCountByCategory(Guid categoryId, Guid userId);
     }
 }
