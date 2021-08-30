@@ -8,6 +8,8 @@ namespace ExerciseMS_Core.Services
 {
     public interface IUserService
     {
-        Task<string> GetUserId();
+        string GetUserId();
+
+        bool UserIsAuthenticated();
     }
 }

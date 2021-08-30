@@ -19,5 +19,8 @@ namespace ExerciseMS_Core.Models.Requests
 
         [Required(ErrorMessage = "You must choose an image")]
         public Stream Image { get; set; }
+
+        public string ImageUrl { get; set; }
+        public Guid UserId { get; set; }
     }
 }
