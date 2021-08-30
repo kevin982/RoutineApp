@@ -1,6 +1,7 @@
 ﻿using ExerciseMS_Core.Repositories;
 using ExerciseMS_Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace ExerciseMS_Infraestructure.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         protected ExerciseMsDbContext _context;
+        protected ILogger _logger;
 
-        public Repository(ExerciseMsDbContext context)
+        public Repository(ExerciseMsDbContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<bool> CreateAsync(T data)
@@ -27,6 +30,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error while adding an entity because of {ex.Message}");
                 return false; 
             }
         }
@@ -40,6 +44,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error while deleting an entity because of {ex.Message}");
                 return false;
             }
         }
@@ -59,6 +64,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error while getting all entities because of {ex.Message}");
                 return null;
             }
         }
@@ -75,6 +81,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error while getting an entity because of {ex.Message}");
                 return null;
             }
         }

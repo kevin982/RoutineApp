@@ -15,17 +15,19 @@ namespace ExerciseMS_Infraestructure.UoW
     {
         private readonly ExerciseMsDbContext _dbContext;
 
-        private readonly ILogger<UnitOfWork> _logger;
+        private readonly ILogger _logger;
 
         public IExerciseRepository Exercises { get; private set; }
 
         public ICategoryRepository Categories { get; private set; }
 
-        public UnitOfWork(ExerciseMsDbContext dbContext, ILogger<UnitOfWork> logger)
+        public UnitOfWork(ExerciseMsDbContext dbContext, ILoggerFactory logger)
         {
             _dbContext = dbContext;
-            
-            Exercises = new ExerciseRepository(_dbContext);
+
+            _logger = logger.CreateLogger("ExerciseMsLogs");
+
+            Exercises = new ExerciseRepository(_dbContext, _logger);
             Categories = new CategoryRepository(_dbContext);
         }
 
