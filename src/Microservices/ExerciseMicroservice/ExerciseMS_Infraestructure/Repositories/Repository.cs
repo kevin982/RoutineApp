@@ -35,7 +35,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public virtual async Task<bool> DeleteAsync(T data, Guid id)
+        public virtual async Task<bool> DeleteAsync(T data, Guid id, Guid? userId = null)
         {
             try
             {

@@ -54,5 +54,24 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
  
         }
+
+        public override async Task<bool> DeleteAsync(Exercise data, Guid id, Guid? userId = null)
+        {
+            try
+            {
+                _context.
+                    Remove(await _context
+                    .Exercises
+                    .Where(e => e.UserId == userId && e.ExerciseId == id)
+                    .FirstOrDefaultAsync());
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while deleting the exercise because of {ex.Message}");
+                return false;
+            }
+        }
     }
 }
