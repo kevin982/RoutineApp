@@ -8,26 +8,35 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ExerciseMS_Core.Services;
 
 namespace ExerciseMS_Infraestructure.Repositories
 {
     public class ExerciseRepository : Repository<Exercise>, IExerciseRepository
-    {   
+    {
+        private readonly IUserService _userService;
 
-        public ExerciseRepository(ExerciseMsDbContext context, ILogger logger) : base(context, logger){}
+        public ExerciseRepository(ExerciseMsDbContext context, ILogger logger, IUserService userService) : base(context, logger)
+        {
+            _userService = userService;
+        }
 
 
-        public async Task<IEnumerable<Exercise>> GetAllExercisesByCategoryAsync(Guid categoryId, Guid userId, int index, int size)
+        public async Task<IEnumerable<Exercise>> GetAllExercisesByCategoryAsync(Guid categoryId, int index, int size)
         {
             try
             {
+                Guid? userId = (_userService.UserIsAuthenticated())? new Guid(_userService.GetUserId()):null;
+
+                if (userId is null) throw new Exception("The user is not authenticated");
+
                 return await _context
-              .Exercises
-              .AsNoTrackingWithIdentityResolution()
-              .Where(e => e.CategoryId == categoryId && e.UserId == userId)
-              .Skip(index * size)
-              .Take(size)
-              .ToListAsync();
+                .Exercises
+                .AsNoTrackingWithIdentityResolution()
+                .Where(e => e.CategoryId == categoryId && e.UserId == userId)
+                .Skip(index * size)
+                .Take(size)
+                .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -38,10 +47,14 @@ namespace ExerciseMS_Infraestructure.Repositories
           
         }
 
-        public int GetExerciseCountByCategory(Guid categoryId, Guid userId)
+        public int GetExerciseCountByCategory(Guid categoryId)
         {
             try
             {
+                Guid? userId = (_userService.UserIsAuthenticated()) ? new Guid(_userService.GetUserId()) : null;
+
+                if (userId is null) throw new Exception("The user is not authenticated");
+
                 return _context
                 .Exercises
                 .Where(e => e.CategoryId == categoryId && e.UserId == userId)
@@ -55,10 +68,14 @@ namespace ExerciseMS_Infraestructure.Repositories
  
         }
 
-        public override async Task<bool> DeleteAsync(Exercise data, Guid id, Guid? userId = null)
+        public override async Task<bool> DeleteAsync(Exercise data, Guid id)
         {
             try
             {
+                Guid? userId = (_userService.UserIsAuthenticated()) ? new Guid(_userService.GetUserId()) : null;
+
+                if (userId is null) throw new Exception("The user is not authenticated");
+
                 _context.
                     Remove(await _context
                     .Exercises
@@ -70,6 +87,27 @@ namespace ExerciseMS_Infraestructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError($"Error while deleting the exercise because of {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId)
+        {
+            try
+            {
+
+                var exercise = await _context
+                    .Exercises
+                    .Where(e => e.ExerciseId == exerciseId)
+                    .FirstOrDefaultAsync();
+
+                exercise.IsInTheRoutine = newValue;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while updating is in the routing prop because of {ex.Message}");
                 return false;
             }
         }
