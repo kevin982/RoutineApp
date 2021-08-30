@@ -15,4 +15,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExerciseMS_Application\ExerciseMS_Application.csproj" />
+    <ProjectReference Include="..\ExerciseMS_Infraestructure\ExerciseMS_Infraestructure.csproj" />
+  </ItemGroup>
+
 </Project>

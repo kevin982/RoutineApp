@@ -1,4 +1,5 @@
 ﻿using ExerciseMS_Core.Repositories;
+using ExerciseMS_Core.Services;
 using ExerciseMS_Core.UoW;
 using ExerciseMS_Infraestructure.Data;
 using ExerciseMS_Infraestructure.Repositories;
@@ -14,6 +15,8 @@ namespace ExerciseMS_Infraestructure.UoW
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ExerciseMsDbContext _dbContext;
+       
+        private readonly IUserService _userService;
 
         private readonly ILogger _logger;
 
@@ -21,14 +24,16 @@ namespace ExerciseMS_Infraestructure.UoW
 
         public ICategoryRepository Categories { get; private set; }
 
-        public UnitOfWork(ExerciseMsDbContext dbContext, ILoggerFactory logger)
+        public UnitOfWork(ExerciseMsDbContext dbContext, ILoggerFactory logger, IUserService userService)
         {
             _dbContext = dbContext;
 
             _logger = logger.CreateLogger("ExerciseMsLogs");
+            
+            _userService = userService;
 
-            Exercises = new ExerciseRepository(_dbContext, _logger);
-            Categories = new CategoryRepository(_dbContext);
+            Exercises = new ExerciseRepository(_dbContext, _logger, _userService);
+            Categories = new CategoryRepository(_dbContext, _logger);
         }
 
         public async Task CompleteAsync()

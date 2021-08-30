@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExerciseMS_Application;
+using ExerciseMS_Infraestructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +34,13 @@ namespace ExerciseMS_API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExerciseMS_API", Version = "v1" });
             });
+
+            services.AddHttpContextAccessor();
+
+            services.AddInfrastructure(Configuration);
+            services.AddApplication();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

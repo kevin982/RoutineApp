@@ -18,15 +18,15 @@ namespace ExerciseMS_Infraestructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Legs"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Abs"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Chest"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Shoulders"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Biceps"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Triceps"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Forearms"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Back"});
-            modelBuilder.Entity<Category>().HasData(new Category { CategoryName = "Cardio"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Legs"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Abs"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Chest"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Shoulders"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Biceps"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Triceps"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Forearms"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Back"});
+            modelBuilder.Entity<Category>().HasData(new Category { CategoryId = Guid.NewGuid(),CategoryName = "Cardio"});
         }
 
     }
