@@ -21,7 +21,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             _logger = logger;
         }
 
-        public async Task<bool> CreateAsync(T data)
+        public virtual async Task<bool> CreateAsync(T data)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(T data, Guid id)
+        public virtual async Task<bool> DeleteAsync(T data, Guid id)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(int index, int size)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(int index, int size)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
             try
             {
