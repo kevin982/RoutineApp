@@ -15,15 +15,12 @@ namespace ExerciseMS_Core.Models.Requests
         [Required(ErrorMessage = "You must enter the exercise name"), Display(Name = "Please enter the exercise name"), MaxLength(30), MinLength(5)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "You must choose an image")]
+        [Required(ErrorMessage = "You must provide the image")]
         public IFormFile Image { get; set; }
 
+
         [Required(ErrorMessage = "You must provide the category id")]
-
         public Guid CategoryId { get; set; }
-
-        public Category Category { get; set; } 
-        public string ImageUrl { get; set; }
-        public Guid UserId { get; set; }
+ 
     }
 }

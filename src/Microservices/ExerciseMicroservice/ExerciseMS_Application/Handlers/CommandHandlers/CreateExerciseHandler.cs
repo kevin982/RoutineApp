@@ -5,6 +5,7 @@ using ExerciseMS_Core.Models.Requests;
 using ExerciseMS_Core.Services;
 using ExerciseMS_Core.UoW;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -35,19 +36,21 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
 
         public async Task<bool> Handle(CreateExerciseCommand request, CancellationToken cancellationToken)
         {
-            request.CreateExerciseRequest.Category = await _unitOfWork.Categories.GetByIdAsync(request.CreateExerciseRequest.CategoryId);
+            var category = await _unitOfWork.Categories.GetByIdAsync(request.CreateExerciseRequest.CategoryId);
 
             Exercise exercise = _mapper.MapRequestToEntity(request.CreateExerciseRequest);
 
             if (exercise == null) return false;
 
-            string imageUrl = await SendImage(request.CreateExerciseRequest.Image.OpenReadStream());
+            string imageUrl = await SendImage(request.CreateExerciseRequest.Image);
 
             if (string.IsNullOrEmpty(imageUrl)) return false;
 
             exercise.ImageUrl = imageUrl;
 
             exercise.UserId = new Guid(_userService.GetUserId());
+
+            exercise.Category = category;
 
             bool result = await _unitOfWork.Exercises.CreateAsync(exercise);
 
@@ -56,14 +59,15 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
             return result;
         }
 
-        private async Task<string> SendImage(Stream image)
+        private async Task<string> SendImage(IFormFile Image)
         {
             return await _imageService.UploadImageAsync(new UploadImageRequest 
             {
-                Image = image,
+                Image = Image.OpenReadStream(),
                 ApiKey =Configuration["Cloudinary:apikey"],
                 Cloud =Configuration["Cloudinary:cloud"],
-                Secret =Configuration["Cloudinary:secret"] 
+                Secret =Configuration["Cloudinary:secret"],
+                ImageName = Image.FileName
             });
         }
     }

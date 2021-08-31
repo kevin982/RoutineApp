@@ -26,9 +26,8 @@ namespace ExerciseMS_Infraestructure.Repositories
         {
             try
             {
-                Guid? userId = (_userService.UserIsAuthenticated())? new Guid(_userService.GetUserId()):null;
+                Guid userId = new Guid(_userService.GetUserId());
 
-                if (userId is null) throw new Exception("The user is not authenticated");
 
                 return await _context
                 .Exercises
@@ -51,10 +50,8 @@ namespace ExerciseMS_Infraestructure.Repositories
         {
             try
             {
-                Guid? userId = (_userService.UserIsAuthenticated()) ? new Guid(_userService.GetUserId()) : null;
-
-                if (userId is null) throw new Exception("The user is not authenticated");
-
+                Guid userId = new Guid(_userService.GetUserId());
+ 
                 return _context
                 .Exercises
                 .Where(e => e.CategoryId == categoryId && e.UserId == userId)
@@ -72,9 +69,8 @@ namespace ExerciseMS_Infraestructure.Repositories
         {
             try
             {
-                Guid? userId = (_userService.UserIsAuthenticated()) ? new Guid(_userService.GetUserId()) : null;
-
-                if (userId is null) throw new Exception("The user is not authenticated");
+                Guid userId = new Guid(_userService.GetUserId());
+ 
 
                 _context.
                     Remove(await _context

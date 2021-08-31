@@ -24,8 +24,9 @@ namespace ExerciseMS_API.Controllers
 
         #region Commands
 
+ 
         [HttpPost("/api/v1/Exercise")]
-        public async Task<ActionResult> CreateExercise(CreateExerciseRequest model)
+        public async Task<ActionResult> CreateExercise([FromForm]CreateExerciseRequest model)
         {
             CreateExerciseCommand command = new(model);
 
@@ -55,13 +56,12 @@ namespace ExerciseMS_API.Controllers
         {
             GetExercisesByCategoryQuery query = new(new Guid (categoryId), index, size);
 
-            var result = _mediator.Send(query);
+            var result = await _mediator.Send(query);
 
             return (result is not null) ? Ok(result) : NotFound();
         }
 
         [HttpGet("/api/v1/Exercise/Category/{categoryId}")]
-
         public async Task<ActionResult<int>> GetExercisesCountByCategory(string categoryId)
         {
             GetExercisesCountByCategoryQuery query = new(new Guid(categoryId));

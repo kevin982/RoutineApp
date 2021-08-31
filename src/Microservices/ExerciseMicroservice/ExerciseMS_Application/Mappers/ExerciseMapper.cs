@@ -18,11 +18,8 @@ namespace ExerciseMS_Application.Mappers
             return new Exercise
             {
                 ExerciseName = request.Name,
-                Category = request.Category,
-                CategoryId = request.Category.CategoryId,
-                ImageUrl = request.ImageUrl,
+                CategoryId = request.CategoryId,
                 IsInTheRoutine = false,
-                UserId = request.UserId
             };
         }
 

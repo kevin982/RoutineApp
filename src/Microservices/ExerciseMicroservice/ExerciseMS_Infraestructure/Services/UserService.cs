@@ -20,7 +20,7 @@ namespace ExerciseMS_Infraestructure.Services
 
         public string GetUserId()
         {
-            return "ed74ad4c - c09a - 455a - a0c2 - 4b920beacd6c";
+            return "ed74ad4c-c09a-455a-a0c2-4b920beacd6c";
 
             //_httpContext.HttpContext.User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
         }
