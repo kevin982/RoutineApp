@@ -18,8 +18,12 @@ namespace ExerciseMS_Infraestructure.Services
             _httpContext = httpContext;
         }
 
-        public string GetUserId() => _httpContext.HttpContext.User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+        public string GetUserId()
+        {
+            return "ed74ad4c - c09a - 455a - a0c2 - 4b920beacd6c";
 
+            //_httpContext.HttpContext.User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+        }
         public bool UserIsAuthenticated() => _httpContext.HttpContext.User.Identity.IsAuthenticated;
     }
 }

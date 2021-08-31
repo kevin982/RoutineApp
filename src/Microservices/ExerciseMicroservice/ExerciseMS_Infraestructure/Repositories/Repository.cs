@@ -49,18 +49,23 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync(int index, int size)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(int index = 0, int size = 0)
         {
             try
             {
-                var result = await _context
+
+                if (index == 0 && size == 0) 
+                    return await _context.Set<T>()
+                     .AsNoTrackingWithIdentityResolution()
+                     .ToListAsync();
+
+                return await _context
                     .Set<T>()
                     .AsNoTrackingWithIdentityResolution()
                     .Skip(index * size)
                     .Take(size)
                     .ToListAsync();
 
-                return result;
             }
             catch (Exception ex)
             {

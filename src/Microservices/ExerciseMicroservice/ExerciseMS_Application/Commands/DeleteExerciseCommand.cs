@@ -10,12 +10,10 @@ namespace ExerciseMS_Application.Commands
     public class DeleteExerciseCommand : IRequest<bool>
     {
         public Guid ExerciseId { get; init; }
-        public Guid UserId { get; init; }
 
-        public DeleteExerciseCommand(Guid exerciseId, Guid userId)
+        public DeleteExerciseCommand(Guid exerciseId)
         {
             ExerciseId = exerciseId;
-            UserId = userId;
         }
     }
 }

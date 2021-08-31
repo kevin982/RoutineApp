@@ -9,12 +9,11 @@ namespace ExerciseMS_Application.Queries
 {
     public class GetExercisesCountByCategoryQuery : IRequest<int?>
     {
-        public Guid UserId { get; init; }
+
         public Guid CategoryId { get; init; }
 
-        public GetExercisesCountByCategoryQuery(Guid userId, Guid categoryId)
+        public GetExercisesCountByCategoryQuery(Guid categoryId)
         {
-            UserId = userId;
             CategoryId = categoryId;
         }
     }

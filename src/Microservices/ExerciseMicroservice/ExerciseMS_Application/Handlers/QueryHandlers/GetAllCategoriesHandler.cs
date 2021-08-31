@@ -24,7 +24,7 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
         }
         public async Task<IEnumerable<DtoCategory>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(request.Index, request.Size);
+            var categories = await _unitOfWork.Categories.GetAllAsync();
 
             return _mapper.MapEntityToDto(categories);
         }

@@ -12,7 +12,7 @@ namespace ExerciseMS_Core.Repositories
 
         Task<bool> DeleteAsync(Guid id);
 
-        Task<IEnumerable<T>> GetAllAsync(int index, int size);
+        Task<IEnumerable<T>> GetAllAsync(int index = 0, int size = 0);
 
         Task<T> GetByIdAsync(Guid id);
     }
