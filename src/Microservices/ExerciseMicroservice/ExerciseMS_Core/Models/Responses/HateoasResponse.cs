@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Core.Models.Responses
 {
-    public class HateoasExerciseMSResponse<T>
+    public class HateoasResponse
     {
         public IEnumerable<Link> Links { get; set; }
 
@@ -14,7 +14,9 @@ namespace ExerciseMS_Core.Models.Responses
 
         public int StatusCode { get; set; }
 
-        public T Content { get; set; }
+        public object Content { get; set; }
+
+        public bool Succeded { get; set; }
         
     }
 

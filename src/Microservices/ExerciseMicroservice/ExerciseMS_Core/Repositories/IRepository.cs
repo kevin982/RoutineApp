@@ -8,9 +8,9 @@ namespace ExerciseMS_Core.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        Task<bool> CreateAsync(T data);
+        Task<T> CreateAsync(T data);
 
-        Task<bool> DeleteAsync(Guid id);
+        Task<T> DeleteAsync(Guid id);
 
         Task<IEnumerable<T>> GetAllAsync(int index = 0, int size = 0);
 

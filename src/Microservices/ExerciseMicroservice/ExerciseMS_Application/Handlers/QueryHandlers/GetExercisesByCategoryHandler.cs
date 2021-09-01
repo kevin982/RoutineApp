@@ -1,6 +1,7 @@
 ﻿using ExerciseMS_Application.Mappers;
 using ExerciseMS_Application.Queries;
 using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.UoW;
 using MediatR;
 using System;
@@ -27,7 +28,11 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
         {
             var exercises = await _unitOfWork.Exercises.GetAllExercisesByCategoryAsync(request.CategoryId, request.Index, request.Size);
 
-            return _exerciseMapper.MapEntityToDto(exercises);
+            if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") { StatusCode = 404 };
+
+            var result = _exerciseMapper.MapEntityToDto(exercises);
+
+            return result;
         }
     }
 }

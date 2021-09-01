@@ -32,6 +32,7 @@ namespace ExerciseMS_Infraestructure
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<ICustomSender, CustomSender>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

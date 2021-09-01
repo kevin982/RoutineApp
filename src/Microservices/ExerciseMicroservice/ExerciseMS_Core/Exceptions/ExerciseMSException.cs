@@ -9,5 +9,8 @@ namespace ExerciseMS_Core.Exceptions
     public class ExerciseMSException : Exception
     {
         public int StatusCode { get; set; }
+ 
+        public ExerciseMSException(string message):base(message){}
+
     }
 }

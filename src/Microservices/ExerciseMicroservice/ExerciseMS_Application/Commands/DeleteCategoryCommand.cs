@@ -1,14 +1,10 @@
-﻿using ExerciseMS_Core.Models.Entities;
+﻿using ExerciseMS_Core.Dtos;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Commands
 {
-    public class DeleteCategoryCommand : IRequest<bool>
+    public class DeleteCategoryCommand : IRequest<Guid>
     {
         public Guid CategoryId { get; init; }
 

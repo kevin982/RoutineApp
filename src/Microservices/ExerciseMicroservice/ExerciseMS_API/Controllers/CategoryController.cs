@@ -1,7 +1,11 @@
 ﻿using ExerciseMS_Application.Commands;
 using ExerciseMS_Application.Queries;
 using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Exceptions;
+using ExerciseMS_Core.Models;
 using ExerciseMS_Core.Models.Requests;
+using ExerciseMS_Core.Models.Responses;
+using ExerciseMS_Core.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,32 +20,61 @@ namespace ExerciseMS_API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICustomSender _sender;
 
-        public CategoryController(IMediator mediator)
+        public CategoryController(IMediator mediator, ICustomSender sender)
         {
             _mediator = mediator;
+            _sender = sender;
         }
 
         #region Commands
-        
+
         [HttpPost("/api/v1/Category")]
-        public async Task<ActionResult> CreateCategory(CreateCategoryRequest model)
+        public async Task<ActionResult<HateoasResponse>> CreateCategory(CreateCategoryRequest model)
         {
-            CreateCategoryCommand command = new(model);
+            try
+            {
+                CreateCategoryCommand command = new(model);
 
-            bool result = await _mediator.Send(command);
+                var categoryDto = await _mediator.Send(command);
 
-            return (result) ? Ok() : BadRequest();
+                return Ok(_sender.SendResult(categoryDto, GenericLinks.GetCategoryLinks(), $"The category whose name is {categoryDto.CategoryName} has been created!"));
+            }
+            catch (Exception ex)
+            {
+                var result = _sender.SendError(ex, GenericLinks.GetCategoryLinks());
+
+                Response.StatusCode = result.StatusCode;
+
+                return result;
+            }
+
+
         }
+
+       
         
         [HttpDelete("api/v1/Category/{id}")]
-        public async Task<ActionResult> DeleteCategory(Guid id)
+        public async Task<ActionResult<HateoasResponse>> DeleteCategory(Guid id)
         {
-            DeleteCategoryCommand command = new(id);
+            try
+            {
+                DeleteCategoryCommand command = new(id);
 
-            bool result = await _mediator.Send(command);
+                var categoryDeleted = new { CategoryDeletedId = await _mediator.Send(command) };
 
-            return (result) ? Ok() : NotFound();
+                return Ok(_sender.SendResult(categoryDeleted, GenericLinks.GetCategoryLinks(),$"The category with the id {categoryDeleted.CategoryDeletedId} has been deleted!"));
+
+            }
+            catch (Exception ex)
+            {
+                var result = _sender.SendError(ex, GenericLinks.GetCategoryLinks());
+
+                Response.StatusCode = result.StatusCode;
+
+                return result;
+            }
         }
 
         #endregion
@@ -49,17 +82,26 @@ namespace ExerciseMS_API.Controllers
         #region Queries
 
         [HttpGet("api/v1/Category")]
-        public async Task<ActionResult<IEnumerable<DtoExercise>>> GetAllCategories()
+        public async Task<ActionResult<HateoasResponse>> GetAllCategories()
         {
-            GetAllCategoriesQuery query = new();
+            try
+            {
+                GetAllCategoriesQuery query = new();
 
-            var result = await _mediator.Send(query);
+                var categories = await _mediator.Send(query);
 
-            return (result is not null)? Ok(result) : NotFound();
+                return Ok(_sender.SendResult(categories, GenericLinks.GetCategoryLinks(), "The categories have been achieved!"));
+            }
+            catch (Exception ex)
+            {
+                var result = _sender.SendError(ex, GenericLinks.GetCategoryLinks());
+
+                Response.StatusCode = result.StatusCode;
+
+                return result;
+            }
         }
-
         #endregion
-
-
+    
     }
 }

@@ -1,14 +1,11 @@
-﻿using ExerciseMS_Core.Models.Requests;
+﻿using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Models.Requests;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ExerciseMS_Application.Commands
 {
-    public class CreateExerciseCommand : IRequest<bool>
+    public class CreateExerciseCommand : IRequest<DtoExercise>
     {
         public CreateExerciseRequest CreateExerciseRequest { get; init; }
 

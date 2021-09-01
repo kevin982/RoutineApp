@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ExerciseMS_Core.Services;
+using ExerciseMS_Core.Exceptions;
 
 namespace ExerciseMS_Infraestructure.Repositories
 {
@@ -24,88 +25,74 @@ namespace ExerciseMS_Infraestructure.Repositories
 
         public async Task<IEnumerable<Exercise>> GetAllExercisesByCategoryAsync(Guid categoryId, int index, int size)
         {
-            try
-            {
-                Guid userId = new Guid(_userService.GetUserId());
+
+            string id = _userService.GetUserId();
+
+            if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated.") { StatusCode = 401 };
+
+            Guid userId = new Guid(id);
+
+            return await _context
+            .Exercises
+            .AsNoTrackingWithIdentityResolution()
+            .Where(e => e.CategoryId == categoryId && e.UserId == userId)
+            .Skip(index * size)
+            .Take(size)
+            .ToListAsync();
 
 
-                return await _context
-                .Exercises
-                .AsNoTrackingWithIdentityResolution()
-                .Where(e => e.CategoryId == categoryId && e.UserId == userId)
-                .Skip(index * size)
-                .Take(size)
-                .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while getting all exercises by category because of {ex.Message}");
-                return null;
-            }
-
-          
         }
 
-        public int? GetExerciseCountByCategory(Guid categoryId)
+        public int GetExerciseCountByCategory(Guid categoryId)
         {
-            try
-            {
-                Guid userId = new Guid(_userService.GetUserId());
- 
-                return _context
-                .Exercises
-                .Where(e => e.CategoryId == categoryId && e.UserId == userId)
-                .Count();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while getting the exercises count of a specific category because of {ex.Message}");
-                return null;
-            }
- 
+
+            string id = _userService.GetUserId();
+
+            if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated.") { StatusCode = 401 };
+
+            Guid userId = new Guid(id);
+
+            int count = _context
+            .Exercises
+            .Where(e => e.CategoryId == categoryId && e.UserId == userId)
+            .Count();
+
+            if (count == 0) throw new ExerciseMSException("There are not exercises with that category") { StatusCode = 404};
+
+            return count;
         }
 
-        public override async Task<bool> DeleteAsync(Guid id)
+        public override async Task<Exercise> DeleteAsync(Guid exerciseId)
         {
-            try
-            {
-                Guid userId = new Guid(_userService.GetUserId());
- 
+            string id = _userService.GetUserId();
 
-                _context.
-                    Remove(await _context
-                    .Exercises
-                    .Where(e => e.UserId == userId && e.ExerciseId == id)
-                    .FirstOrDefaultAsync());
+            if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated.") { StatusCode = 401 };
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while deleting the exercise because of {ex.Message}");
-                return false;
-            }
+            Guid userId = new Guid(id);
+
+            Exercise exerciseToEliminate = await GetByIdAsync(exerciseId);
+
+            if (exerciseToEliminate is null) throw new ExerciseMSException("The exercise has not been found!") { StatusCode = 404 };
+
+            if(exerciseToEliminate.UserId != userId) throw new ExerciseMSException("The exercise has not been found!") { StatusCode = 404 };
+
+            _context.Exercises.Remove(exerciseToEliminate);
+
+            return exerciseToEliminate;
         }
 
         public async Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId, Guid userId)
         {
-            try
-            {
 
-                var exercise = await _context
-                    .Exercises
-                    .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
-                    .FirstOrDefaultAsync();
+            var exercise = await _context
+                .Exercises
+                .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
+                .FirstOrDefaultAsync();
 
-                exercise.IsInTheRoutine = newValue;
+            exercise.IsInTheRoutine = newValue;
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while updating is in the routing prop because of {ex.Message}");
-                return false;
-            }
+            return true;
+
         }
     }
 }

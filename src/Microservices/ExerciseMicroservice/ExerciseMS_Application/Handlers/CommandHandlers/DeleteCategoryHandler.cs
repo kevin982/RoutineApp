@@ -1,4 +1,6 @@
 ﻿using ExerciseMS_Application.Commands;
+using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Models.Entities;
 using ExerciseMS_Core.UoW;
 using MediatR;
 using System;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Handlers.CommandHandlers
 {
-    public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, bool>
+    public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,13 +21,13 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         { 
-            bool result =  await _unitOfWork.Categories.DeleteAsync(request.CategoryId);
+            Category result =  await _unitOfWork.Categories.DeleteAsync(request.CategoryId);
 
-            if (result) await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
 
-            return result;
+            return result.CategoryId;
         }
     }
 }

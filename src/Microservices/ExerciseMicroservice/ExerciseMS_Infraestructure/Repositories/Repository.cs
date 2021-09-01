@@ -1,4 +1,5 @@
-﻿using ExerciseMS_Core.Repositories;
+﻿using ExerciseMS_Core.Exceptions;
+using ExerciseMS_Core.Repositories;
 using ExerciseMS_Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -21,74 +22,45 @@ namespace ExerciseMS_Infraestructure.Repositories
             _logger = logger;
         }
 
-        public virtual async Task<bool> CreateAsync(T data)
+        public virtual async Task<T> CreateAsync(T data)
         {
-            try
-            {
-               await _context.Set<T>().AddAsync(data);
-               return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while adding an entity because of {ex.Message}");
-                return false; 
-            }
+            await _context.Set<T>().AddAsync(data);
+            return data;
         }
 
-        public virtual async Task<bool> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
-            try
-            {
-                _context.Set<T>().Remove(await GetByIdAsync(id));
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while deleting an entity because of {ex.Message}");
-                return false;
-            }
+            T dataToEliminate = await GetByIdAsync(id);
+
+            if (dataToEliminate is null) throw new ExerciseMSException("The entity to eliminate has not been found") { StatusCode = 400};
+
+            _context.Set<T>().Remove(dataToEliminate);
+
+            return dataToEliminate;
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync(int index = 0, int size = 0)
         {
-            try
-            {
+            if (index == 0 && size == 0)
+                return await _context.Set<T>()
+                 .AsNoTrackingWithIdentityResolution()
+                 .ToListAsync();
 
-                if (index == 0 && size == 0) 
-                    return await _context.Set<T>()
-                     .AsNoTrackingWithIdentityResolution()
-                     .ToListAsync();
-
-                return await _context
-                    .Set<T>()
-                    .AsNoTrackingWithIdentityResolution()
-                    .Skip(index * size)
-                    .Take(size)
-                    .ToListAsync();
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while getting all entities because of {ex.Message}");
-                return null;
-            }
+            return await _context
+                .Set<T>()
+                .AsNoTrackingWithIdentityResolution()
+                .Skip(index * size)
+                .Take(size)
+                .ToListAsync();
         }
 
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            try
-            {
-                var result = await _context
-                    .Set<T>()
-                    .FindAsync(id);
+            var result = await _context
+                .Set<T>()
+                .FindAsync(id);
 
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while getting an entity because of {ex.Message}");
-                return null;
-            }
+            return result;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using ExerciseMS_Application.Commands;
 using ExerciseMS_Application.Mappers;
+using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.Models.Entities;
 using ExerciseMS_Core.UoW;
 using MediatR;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Handlers.CommandHandlers
 {
-    public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, bool>
+    public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, DtoCategory>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICategoryMapper _mapper;
@@ -23,15 +25,17 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<DtoCategory> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             Category category = _mapper.MapRequestToEntity(request.CreateCategoryRequest);
 
-            bool result = await _unitOfWork.Categories.CreateAsync(category);
-            
-            if(result) await _unitOfWork.CompleteAsync();
+            if (category is null) throw new ExerciseMSException("The create category request model can not be null") { StatusCode = 500};
 
-            return result;
+            Category result = await _unitOfWork.Categories.CreateAsync(category);
+            
+            await _unitOfWork.CompleteAsync();
+
+            return _mapper.MapEntityToDto(result);
         }
     }
 }

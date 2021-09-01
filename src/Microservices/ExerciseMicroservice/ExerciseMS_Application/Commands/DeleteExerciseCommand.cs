@@ -1,13 +1,10 @@
-﻿using MediatR;
+﻿using ExerciseMS_Core.Dtos;
+using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Commands
 {
-    public class DeleteExerciseCommand : IRequest<bool>
+    public class DeleteExerciseCommand : IRequest<Guid>
     {
         public Guid ExerciseId { get; init; }
 

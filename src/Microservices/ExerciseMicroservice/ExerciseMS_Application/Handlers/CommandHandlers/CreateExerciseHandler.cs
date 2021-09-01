@@ -1,5 +1,7 @@
 ﻿using ExerciseMS_Application.Commands;
 using ExerciseMS_Application.Mappers;
+using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.Models.Entities;
 using ExerciseMS_Core.Models.Requests;
 using ExerciseMS_Core.Services;
@@ -17,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Handlers.CommandHandlers
 {
-    public class CreateExerciseHandler : IRequestHandler<CreateExerciseCommand, bool>
+    public class CreateExerciseHandler : IRequestHandler<CreateExerciseCommand, DtoExercise>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IExerciseMapper _mapper;
@@ -34,17 +36,19 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
             Configuration = configuration;
         }
 
-        public async Task<bool> Handle(CreateExerciseCommand request, CancellationToken cancellationToken)
+        public async Task<DtoExercise> Handle(CreateExerciseCommand request, CancellationToken cancellationToken)
         {
             var category = await _unitOfWork.Categories.GetByIdAsync(request.CreateExerciseRequest.CategoryId);
 
+            if (category is null) throw new ExerciseMSException("The category has not been found") { StatusCode = 404};
+
             Exercise exercise = _mapper.MapRequestToEntity(request.CreateExerciseRequest);
 
-            if (exercise == null) return false;
+            if (exercise == null) throw new ExerciseMSException("The create exercise request can not be null") { StatusCode = 500};
 
             string imageUrl = await SendImage(request.CreateExerciseRequest.Image);
 
-            if (string.IsNullOrEmpty(imageUrl)) return false;
+            if (string.IsNullOrEmpty(imageUrl)) throw new ExerciseMSException("The image could not be uploaded") { StatusCode = 400 };
 
             exercise.ImageUrl = imageUrl;
 
@@ -52,11 +56,11 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
 
             exercise.Category = category;
 
-            bool result = await _unitOfWork.Exercises.CreateAsync(exercise);
+            Exercise result = await _unitOfWork.Exercises.CreateAsync(exercise);
 
-            if (result) await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
 
-            return result;
+            return _mapper.MapEntityToDto(result);
         }
 
         private async Task<string> SendImage(IFormFile Image)

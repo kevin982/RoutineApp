@@ -23,7 +23,7 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
         {
             bool result = await _unitOfWork.Exercises.UpdateIsInTheRoutine(request.NewValue, request.ExerciseId, request.UserId);
 
-            if (result) await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CompleteAsync();
 
             return result;
         }

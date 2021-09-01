@@ -2,6 +2,8 @@
 using ExerciseMS_Application.Queries;
 using ExerciseMS_Core.Dtos;
 using ExerciseMS_Core.Models.Requests;
+using ExerciseMS_Core.Models.Responses;
+using ExerciseMS_Core.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,34 +18,60 @@ namespace ExerciseMS_API.Controllers
     public class ExerciseController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICustomSender _sender;
 
-        public ExerciseController(IMediator mediator)
+
+        public ExerciseController(IMediator mediator, ICustomSender sender)
         {
             _mediator = mediator;
+            _sender = sender;
         }
 
         #region Commands
 
- 
+
         [HttpPost("/api/v1/Exercise")]
-        public async Task<ActionResult> CreateExercise([FromForm]CreateExerciseRequest model)
+        public async Task<ActionResult<HateoasResponse>> CreateExercise([FromForm]CreateExerciseRequest model)
         {
-            CreateExerciseCommand command = new(model);
+            try
+            {
+                CreateExerciseCommand command = new(model);
 
-            bool result = await _mediator.Send(command);
+                var exercise = await _mediator.Send(command);
 
-            return (result) ? Ok() : BadRequest();
+                return Ok(_sender.SendResult(exercise, GenericLinks.GetExerciseLinks(), $"The exercise whose name is {exercise.ExerciseName} has been created!"));
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = _sender.SendError(ex, GenericLinks.GetExerciseLinks());
+
+                Response.StatusCode = errorResponse.StatusCode;
+
+                return errorResponse;
+            }
         }
 
 
         [HttpDelete("/api/v1/Exercise/{id}")]
-        public async Task<ActionResult> DeleteExercise(string id)
+        public async Task<ActionResult<HateoasResponse>> DeleteExercise(Guid id)
         {
-            DeleteExerciseCommand command = new(new Guid(id));
+            try
+            {
+                DeleteExerciseCommand command = new(id);
 
-            bool result = await _mediator.Send(command);
+                var exerciseDeleted = new { DeletedExerciseId = await _mediator.Send(command) };
 
-            return (result) ? Ok() : NotFound();
+                return Ok(_sender.SendResult(exerciseDeleted, GenericLinks.GetExerciseLinks(), $"The exercise whose id is {exerciseDeleted.DeletedExerciseId} has been deleted!"));
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = _sender.SendError(ex, GenericLinks.GetExerciseLinks());
+
+                Response.StatusCode = errorResponse.StatusCode;
+
+                return errorResponse;
+            }
+
         }
 
         #endregion
@@ -51,24 +79,51 @@ namespace ExerciseMS_API.Controllers
 
         #region Queries
 
-        [HttpGet("/api/v1/Exercise/{categoryId}/{index}/{size}")]
-        public async Task<ActionResult<IEnumerable<DtoExercise>>> GetAllExercisesByCategory(string categoryId, int index, int size)
+        [HttpGet("/api/v1/Exercise/Category/{categoryId}/{index}/{size}")]
+        public async Task<ActionResult<HateoasResponse>> GetAllExercisesByCategory(Guid categoryId, int index, int size)
         {
-            GetExercisesByCategoryQuery query = new(new Guid (categoryId), index, size);
 
-            var result = await _mediator.Send(query);
+            try
+            {
+                GetExercisesByCategoryQuery query = new(categoryId, index, size);
 
-            return (result is not null) ? Ok(result) : NotFound();
+                var exercises = await _mediator.Send(query);
+
+                return Ok(_sender.SendResult(exercises, GenericLinks.GetExerciseLinks(), $"The exercises whose category id is {categoryId} have been reached!"));
+
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = _sender.SendError(ex, GenericLinks.GetExerciseLinks());
+
+                Response.StatusCode = errorResponse.StatusCode;
+
+                return errorResponse;
+            }
+
+
         }
 
         [HttpGet("/api/v1/Exercise/Category/{categoryId}")]
-        public async Task<ActionResult<int>> GetExercisesCountByCategory(string categoryId)
+        public async Task<ActionResult<HateoasResponse>> GetExercisesCountByCategory(Guid categoryId)
         {
-            GetExercisesCountByCategoryQuery query = new(new Guid(categoryId));
+            try
+            {
+                GetExercisesCountByCategoryQuery query = new(categoryId);
 
-            var result = await _mediator.Send(query);
+                var count = new { Count = await _mediator.Send(query) };
 
-            return (result is not null) ? Ok(result) : NotFound();
+                return Ok(_sender.SendResult(count, GenericLinks.GetExerciseLinks(), "The exercise count with that specific category has been reached!"));
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = _sender.SendError(ex, GenericLinks.GetExerciseLinks());
+
+                Response.StatusCode = errorResponse.StatusCode;
+
+                return errorResponse;
+            }
+
         }
 
         #endregion

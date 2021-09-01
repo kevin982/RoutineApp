@@ -1,6 +1,7 @@
 ﻿using ExerciseMS_Application.Mappers;
 using ExerciseMS_Application.Queries;
 using ExerciseMS_Core.Dtos;
+using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.UoW;
 using MediatR;
 using System;
@@ -26,7 +27,11 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
         {
             var categories = await _unitOfWork.Categories.GetAllAsync();
 
-            return _mapper.MapEntityToDto(categories);
+            var result = _mapper.MapEntityToDto(categories);
+
+            if (result is null) throw new ExerciseMSException("There are not categories") { StatusCode = 404 };
+
+            return result;
         }
     }
 }

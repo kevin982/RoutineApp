@@ -1,5 +1,6 @@
 ﻿using ExerciseMS_Application.Mappers;
 using ExerciseMS_Application.Queries;
+using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.UoW;
 using MediatR;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Handlers.QueryHandlers
 {
-    public class GetExercisesCountByCategoryHandler : IRequestHandler<GetExercisesCountByCategoryQuery, int?>
+    public class GetExercisesCountByCategoryHandler : IRequestHandler<GetExercisesCountByCategoryQuery, int>
     {
         private readonly IExerciseMapper _exerciseMapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -21,9 +22,9 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
             _exerciseMapper = exerciseMapper;
             _unitOfWork = unitOfWork;
         }
-        public async Task<int?> Handle(GetExercisesCountByCategoryQuery request, CancellationToken cancellationToken)
+        public async Task<int> Handle(GetExercisesCountByCategoryQuery request, CancellationToken cancellationToken)
         {
-            int? count = _unitOfWork.Exercises.GetExerciseCountByCategory(request.CategoryId);
+            int count = _unitOfWork.Exercises.GetExerciseCountByCategory(request.CategoryId);
 
             return count;
         }

@@ -22,26 +22,19 @@ namespace ExerciseMS_Infraestructure.Services
 
         public async Task<string> UploadImageAsync(UploadImageRequest model)
         {
-            try
+
+            Account ac = new(model.Cloud, model.ApiKey, model.Secret);
+
+            Cloudinary c = new(ac);
+
+            var uploadParams = new ImageUploadParams()
             {
-                Account ac = new(model.Cloud, model.ApiKey, model.Secret);
+                File = new FileDescription(model.ImageName, model.Image),
+                Folder = "RoutineApp",
+            };
+            var uploadResult = await c.UploadAsync(uploadParams);
 
-                Cloudinary c = new(ac);
-
-                var uploadParams = new ImageUploadParams()
-                {
-                    File = new FileDescription(model.ImageName, model.Image),
-                    Folder = "RoutineApp",
-                };
-                var uploadResult = await c.UploadAsync(uploadParams);
-
-                return uploadResult.SecureUrl.ToString();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"The image could not be uploaded at {DateTime.UtcNow} because of {ex.Message}");
-                return "";
-            }
+            return uploadResult.SecureUrl.ToString();
  
         }
     }
