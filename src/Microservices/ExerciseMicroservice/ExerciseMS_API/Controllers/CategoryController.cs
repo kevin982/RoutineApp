@@ -7,6 +7,7 @@ using ExerciseMS_Core.Models.Requests;
 using ExerciseMS_Core.Models.Responses;
 using ExerciseMS_Core.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Commands
 
+        [Authorize(Policy = "WriteScope")]
+        [Authorize(Policy = "Admin")]
         [HttpPost("/api/v1/Category")]
         public async Task<ActionResult<HateoasResponse>> CreateCategory(CreateCategoryRequest model)
         {
@@ -53,8 +56,9 @@ namespace ExerciseMS_API.Controllers
 
         }
 
-       
-        
+
+        [Authorize(Policy = "WriteScope")]
+        [Authorize(Policy = "Admin")]
         [HttpDelete("api/v1/Category/{id}")]
         public async Task<ActionResult<HateoasResponse>> DeleteCategory(Guid id)
         {
@@ -81,6 +85,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Queries
 
+        [Authorize(Policy = "ReadScope")]
+        [Authorize(Policy = "User,Admin")]
         [HttpGet("api/v1/Category")]
         public async Task<ActionResult<HateoasResponse>> GetAllCategories()
         {

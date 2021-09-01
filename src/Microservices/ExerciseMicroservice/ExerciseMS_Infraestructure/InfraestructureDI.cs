@@ -18,7 +18,8 @@ namespace ExerciseMS_Infraestructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            
+
+            #region Database
 
             services.AddDbContext<ExerciseMsDbContext>(options =>
             {
@@ -30,13 +31,65 @@ namespace ExerciseMS_Infraestructure
                 
             });
 
+            #endregion
+
+            #region Services
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<ICustomSender, CustomSender>();
 
+            #endregion
+
+            #region UoW
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            #endregion
 
+            #region Authentication and Authorization
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "https://localhost:9002";
+
+                    options.TokenValidationParameters = new()
+                    {
+                        ValidateAudience = true
+                    };
+                });
+
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("WriteScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "exerciseMsScope.write");
+                });
+
+                options.AddPolicy("ReadScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "exerciseMsScope.read");
+                });
+
+                options.AddPolicy("User", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("role", "user");
+                });
+
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("role", "admin");
+                });
+            });
+            
+            #endregion
 
             return services;
         }

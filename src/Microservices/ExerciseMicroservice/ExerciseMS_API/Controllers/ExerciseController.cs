@@ -5,6 +5,7 @@ using ExerciseMS_Core.Models.Requests;
 using ExerciseMS_Core.Models.Responses;
 using ExerciseMS_Core.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Commands
 
-
+        [Authorize(Policy = "WriteScope")]
+        [Authorize(Policy = "Admin, User")]
         [HttpPost("/api/v1/Exercise")]
         public async Task<ActionResult<HateoasResponse>> CreateExercise([FromForm]CreateExerciseRequest model)
         {
@@ -51,7 +53,8 @@ namespace ExerciseMS_API.Controllers
             }
         }
 
-
+        [Authorize(Policy = "WriteScope")]
+        [Authorize(Policy = "Admin,User")]
         [HttpDelete("/api/v1/Exercise/{id}")]
         public async Task<ActionResult<HateoasResponse>> DeleteExercise(Guid id)
         {
@@ -79,6 +82,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Queries
 
+        [Authorize(Policy = "ReadScope")]
+        [Authorize(Policy = "Admin,User")]
         [HttpGet("/api/v1/Exercise/Category/{categoryId}/{index}/{size}")]
         public async Task<ActionResult<HateoasResponse>> GetAllExercisesByCategory(Guid categoryId, int index, int size)
         {
@@ -104,6 +109,8 @@ namespace ExerciseMS_API.Controllers
 
         }
 
+        [Authorize(Policy = "ReadScope")]
+        [Authorize(Policy = "Admin,User")]
         [HttpGet("/api/v1/Exercise/Category/{categoryId}")]
         public async Task<ActionResult<HateoasResponse>> GetExercisesCountByCategory(Guid categoryId)
         {

@@ -1,0 +1,11 @@
+-MVC Client: http: 8000:80  https: 9000:443
+
+-ApiGateway: http: 8001:81  https: 9001:444
+
+-Identity Server: http: 8002:82  https: 9002:445
+
+-ExerciseMS: http: 8003:83  https: 9003:446
+
+-RoutineMS: http: 8004:84  https: 9004:447
+
+-StatisticsMS : http: 8005:85  https: 9005:448
