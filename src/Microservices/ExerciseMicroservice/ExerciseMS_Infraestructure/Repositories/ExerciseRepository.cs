@@ -89,6 +89,8 @@ namespace ExerciseMS_Infraestructure.Repositories
                 .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
                 .FirstOrDefaultAsync();
 
+            if (exercise is null) throw new ExerciseMSException("The exercise to update has been found!") { StatusCode = 404};
+
             exercise.IsInTheRoutine = newValue;
 
             return true;

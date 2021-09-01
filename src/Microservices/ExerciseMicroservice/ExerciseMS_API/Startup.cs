@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExerciseMS_Application;
+using ExerciseMS_Application.Events;
 using ExerciseMS_Infraestructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +41,7 @@ namespace ExerciseMS_API
             services.AddInfrastructure(Configuration);
             services.AddApplication();
 
-            
+            services.AddHostedService<SubscriberExerciseMS>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
