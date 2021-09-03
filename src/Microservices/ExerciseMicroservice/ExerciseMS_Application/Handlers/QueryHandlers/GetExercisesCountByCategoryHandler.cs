@@ -2,6 +2,7 @@
 using ExerciseMS_Application.Queries;
 using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.UoW;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,28 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
     {
         private readonly IExerciseMapper _exerciseMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<GetExercisesCountByCategoryQuery> _validator;
 
-        public GetExercisesCountByCategoryHandler(IExerciseMapper exerciseMapper, IUnitOfWork unitOfWork)
+        public GetExercisesCountByCategoryHandler(IExerciseMapper exerciseMapper, IUnitOfWork unitOfWork, IValidator<GetExercisesCountByCategoryQuery> validator)
         {
             _exerciseMapper = exerciseMapper;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
         public async Task<int> Handle(GetExercisesCountByCategoryQuery request, CancellationToken cancellationToken)
         {
-            int count = _unitOfWork.Exercises.GetExerciseCountByCategory(request.CategoryId);
+            try
+            {
+                await _validator.ValidateAndThrowAsync(request);
 
-            return count;
+                int count = _unitOfWork.Exercises.GetExerciseCountByCategory(request.CategoryId);
+
+                return count;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

@@ -84,7 +84,7 @@ namespace ExerciseMS_API.Controllers
 
         [Authorize(Policy = "ReadScope")]
         [Authorize(Policy = "Admin,User")]
-        [HttpGet("/api/v1/Exercise/Category/{categoryId}/{index}/{size}")]
+        [HttpGet("/api/v1/Exercise/Category/{categoryId}/{index:int:min(0)}/{size:int:min(5):max(20)}")]
         public async Task<ActionResult<HateoasResponse>> GetAllExercisesByCategory(Guid categoryId, int index, int size)
         {
 

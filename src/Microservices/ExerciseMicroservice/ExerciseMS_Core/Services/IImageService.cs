@@ -1,4 +1,5 @@
 ﻿using ExerciseMS_Core.Models.Requests;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,6 @@ namespace ExerciseMS_Core.Services
 {
     public interface IImageService
     {
-        Task<string> UploadImageAsync(UploadImageRequest model); 
+        Task<string> UploadImageAsync(IFormFile image); 
     }
 }

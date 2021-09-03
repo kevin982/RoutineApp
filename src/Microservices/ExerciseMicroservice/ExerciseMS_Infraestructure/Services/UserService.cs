@@ -1,4 +1,5 @@
-﻿using ExerciseMS_Core.Services;
+﻿using ExerciseMS_Core.Exceptions;
+using ExerciseMS_Core.Services;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,22 @@ namespace ExerciseMS_Infraestructure.Services
 
         public string GetUserId()
         {
-            return "ed74ad4c-c09a-455a-a0c2-4b920beacd6c";
+            try
+            {
+                string id = _httpContext.HttpContext.User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
 
-            //_httpContext.HttpContext.User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+                if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated") { StatusCode = 401};
+
+                return id;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
+        
+        
         public bool UserIsAuthenticated() => _httpContext.HttpContext.User.Identity.IsAuthenticated;
     }
 }

@@ -45,7 +45,7 @@ namespace ExerciseMS_Infraestructure.UoW
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while saving changes because of: {ex.Message}");
+                throw;
             }
         }
     }

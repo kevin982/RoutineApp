@@ -25,75 +25,99 @@ namespace ExerciseMS_Infraestructure.Repositories
 
         public async Task<IEnumerable<Exercise>> GetAllExercisesByCategoryAsync(Guid categoryId, int index, int size)
         {
+            try
+            {
+                if (categoryId == Guid.Empty || size == 0) throw new ExerciseMSException("Bad request to get all the exercises by category") { StatusCode = 400 };
 
-            string id = _userService.GetUserId();
+                Guid userId = new Guid(_userService.GetUserId());
 
-            if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated.") { StatusCode = 401 };
+                var exercises = await _context
+                .Exercises
+                .AsNoTrackingWithIdentityResolution()
+                .Where(e => e.CategoryId == categoryId && e.UserId == userId)
+                .Skip(index * size)
+                .Take(size)
+                .ToListAsync();
 
-            Guid userId = new Guid(id);
+                if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") {StatusCode = 400 };
+                if (exercises.Count == 0) throw new ExerciseMSException("The user does not have exercises with that category") {StatusCode = 400 };
 
-            return await _context
-            .Exercises
-            .AsNoTrackingWithIdentityResolution()
-            .Where(e => e.CategoryId == categoryId && e.UserId == userId)
-            .Skip(index * size)
-            .Take(size)
-            .ToListAsync();
-
-
+                return exercises;
+            }   
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public int GetExerciseCountByCategory(Guid categoryId)
         {
+            try
+            {
+                if (categoryId == Guid.Empty) throw new ExerciseMSException("The category id can not be empty") { StatusCode = 400 };
 
-            string id = _userService.GetUserId();
+                Guid userId = new Guid(_userService.GetUserId());
 
-            if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated.") { StatusCode = 401 };
+                int count = _context
+                .Exercises
+                .Where(e => e.CategoryId == categoryId && e.UserId == userId)
+                .Count();
 
-            Guid userId = new Guid(id);
+                if (count == 0) throw new ExerciseMSException("There are not exercises with that category") { StatusCode = 404 };
 
-            int count = _context
-            .Exercises
-            .Where(e => e.CategoryId == categoryId && e.UserId == userId)
-            .Count();
+                return count;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
-            if (count == 0) throw new ExerciseMSException("There are not exercises with that category") { StatusCode = 404};
-
-            return count;
         }
 
         public override async Task<Exercise> DeleteAsync(Guid exerciseId)
         {
-            string id = _userService.GetUserId();
+            try
+            {
+                if (exerciseId == Guid.Empty) throw new ExerciseMSException("The exercise id to delete the exercise can not be empty") { StatusCode = 400 };
 
-            if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated.") { StatusCode = 401 };
+                Guid userId = new Guid(_userService.GetUserId());
 
-            Guid userId = new Guid(id);
+                Exercise exerciseToEliminate = await GetByIdAsync(exerciseId);
 
-            Exercise exerciseToEliminate = await GetByIdAsync(exerciseId);
+                if (exerciseToEliminate.UserId != userId) throw new ExerciseMSException("The exercise has not been found!") { StatusCode = 404 };
 
-            if (exerciseToEliminate is null) throw new ExerciseMSException("The exercise has not been found!") { StatusCode = 404 };
+                _context.Exercises.Remove(exerciseToEliminate);
 
-            if(exerciseToEliminate.UserId != userId) throw new ExerciseMSException("The exercise has not been found!") { StatusCode = 404 };
-
-            _context.Exercises.Remove(exerciseToEliminate);
-
-            return exerciseToEliminate;
+                return exerciseToEliminate;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId, Guid userId)
         {
+            try
+            {
+                if (exerciseId == Guid.Empty || userId == Guid.Empty) throw new ExerciseMSException("To update the exercise the user and exercise id must not be empty") {StatusCode = 400 };
 
-            var exercise = await _context
-                .Exercises
-                .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
-                .FirstOrDefaultAsync();
+                var exercise = await _context
+                    .Exercises
+                    .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
+                    .FirstOrDefaultAsync();
 
-            if (exercise is null) throw new ExerciseMSException("The exercise to update has been found!") { StatusCode = 404};
+                if (exercise is null) throw new ExerciseMSException("The exercise to update has been found!") { StatusCode = 404};
 
-            exercise.IsInTheRoutine = newValue;
+                exercise.IsInTheRoutine = newValue;
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
 
         }
     }

@@ -44,7 +44,7 @@ namespace ExerciseMS_Infraestructure.Services
                 Links = links,
                 Succeded = false,
                 StatusCode = e.StatusCode,
-                Message = e.Message,
+                Message = (e.StatusCode == 500) ? "Server error" : e.Message,
                 Content = null,
             };
 

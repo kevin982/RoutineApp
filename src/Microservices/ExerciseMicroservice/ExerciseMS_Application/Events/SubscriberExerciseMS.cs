@@ -82,6 +82,8 @@ namespace ExerciseMS_Application.Events
         {
             try
             {
+                if (string.IsNullOrEmpty(content)) throw new Exception("The content to update the exercise can not be null or empty");
+
                 var request = JsonSerializer.Deserialize<UpdateExerciseRequest>(content);
 
                 using(var scope = _services.CreateScope())

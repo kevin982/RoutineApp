@@ -3,6 +3,7 @@ using ExerciseMS_Application.Queries;
 using ExerciseMS_Core.Dtos;
 using ExerciseMS_Core.Exceptions;
 using ExerciseMS_Core.UoW;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,22 +18,33 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
     {
         private readonly IExerciseMapper _exerciseMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<GetExercisesByCategoryQuery> _validator;
 
-        public GetExercisesByCategoryHandler(IExerciseMapper exerciseMapper, IUnitOfWork unitOfWork)
+        public GetExercisesByCategoryHandler(IExerciseMapper exerciseMapper, IUnitOfWork unitOfWork, IValidator<GetExercisesByCategoryQuery> validator)
         {
             _exerciseMapper = exerciseMapper;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
         public async Task<IEnumerable<DtoExercise>> Handle(GetExercisesByCategoryQuery request, CancellationToken cancellationToken)
         {
-            var exercises = await _unitOfWork.Exercises.GetAllExercisesByCategoryAsync(request.CategoryId, request.Index, request.Size);
+            try
+            {
+                await _validator.ValidateAndThrowAsync(request);
 
-            if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") { StatusCode = 404 };
+                var exercises = await _unitOfWork.Exercises.GetAllExercisesByCategoryAsync(request.CategoryId, request.Index, request.Size);
 
-            var result = _exerciseMapper.MapEntityToDto(exercises);
+                if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") { StatusCode = 404 };
 
-            return result;
+                var result = _exerciseMapper.MapEntityToDto(exercises);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

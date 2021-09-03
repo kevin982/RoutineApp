@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Handlers.QueryHandlers
 {
-    public class GetAllCategoriesHandler : IRequestHandler<GetAllCategoriesQuery, IEnumerable<DtoCategory>>
+    public class GetAllCategoriesHandler : IRequestHandler<GetAllCategoriesQuery, IEnumerable<DtoCategory>> 
     {
         private readonly ICategoryMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -25,13 +25,22 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
         }
         public async Task<IEnumerable<DtoCategory>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync();
+            try
+            {
+                if (request is null) throw new ExerciseMSException("The get all categories query can not be null") {StatusCode = 500};
 
-            var result = _mapper.MapEntityToDto(categories);
+                var categories = await _unitOfWork.Categories.GetAllAsync();
 
-            if (result is null) throw new ExerciseMSException("There are not categories") { StatusCode = 404 };
+                var result = _mapper.MapEntityToDto(categories);
 
-            return result;
+                if (result is null) throw new ExerciseMSException("There are not categories") { StatusCode = 404 };
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
