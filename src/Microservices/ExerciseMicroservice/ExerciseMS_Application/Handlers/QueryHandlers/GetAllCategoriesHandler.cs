@@ -31,11 +31,7 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
 
                 var categories = await _unitOfWork.Categories.GetAllAsync();
 
-                var result = _mapper.MapEntityToDto(categories);
-
-                if (result is null) throw new ExerciseMSException("There are not categories") { StatusCode = 404 };
-
-                return result;
+                return _mapper.MapEntityToDto(categories);
             }
             catch (Exception)
             {

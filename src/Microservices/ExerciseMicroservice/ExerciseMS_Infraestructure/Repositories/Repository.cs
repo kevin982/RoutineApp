@@ -14,12 +14,10 @@ namespace ExerciseMS_Infraestructure.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         protected ExerciseMsDbContext _context;
-        protected ILogger _logger;
 
-        public Repository(ExerciseMsDbContext context, ILogger logger)
+        public Repository(ExerciseMsDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public virtual async Task<T> CreateAsync(T data)
@@ -61,16 +59,20 @@ namespace ExerciseMS_Infraestructure.Repositories
                 List<T> result;
 
                 if (index == 0 && size == 0)
+                {
                     result = await _context.Set<T>()
                      .AsNoTrackingWithIdentityResolution()
                      .ToListAsync();
-
-                result =  await _context
+                }
+                else
+                {
+                    result = await _context
                     .Set<T>()
                     .AsNoTrackingWithIdentityResolution()
                     .Skip(index * size)
                     .Take(size)
                     .ToListAsync();
+                }
 
                 if (result is null) throw new ExerciseMSException("There are not entities") { StatusCode = 404 };
                 if (result.Count == 0) throw new ExerciseMSException("There are not entities") { StatusCode = 404 };

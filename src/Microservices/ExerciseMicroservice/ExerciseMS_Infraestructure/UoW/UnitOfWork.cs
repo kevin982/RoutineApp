@@ -18,22 +18,17 @@ namespace ExerciseMS_Infraestructure.UoW
        
         private readonly IUserService _userService;
 
-        private readonly ILogger _logger;
-
         public IExerciseRepository Exercises { get; private set; }
 
         public ICategoryRepository Categories { get; private set; }
 
-        public UnitOfWork(ExerciseMsDbContext dbContext, ILoggerFactory logger, IUserService userService)
+        public UnitOfWork(ExerciseMsDbContext dbContext, IUserService userService)
         {
             _dbContext = dbContext;
-
-            _logger = logger.CreateLogger("ExerciseMsLogs");
-            
             _userService = userService;
 
-            Exercises = new ExerciseRepository(_dbContext, _logger, _userService);
-            Categories = new CategoryRepository(_dbContext, _logger);
+            Exercises = new ExerciseRepository(_dbContext, _userService);
+            Categories = new CategoryRepository(_dbContext);
         }
 
         public async Task CompleteAsync()

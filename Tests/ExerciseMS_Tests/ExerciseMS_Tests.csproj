@@ -27,10 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Reference Include="ExerciseMS_API">
+      <HintPath>..\..\src\Microservices\ExerciseMicroservice\ExerciseMS_API\bin\Debug\net5.0\ExerciseMS_API.dll</HintPath>
+    </Reference>
     <Reference Include="ExerciseMS_Application">
       <HintPath>..\..\src\Microservices\ExerciseMicroservice\ExerciseMS_Application\bin\Debug\net5.0\ExerciseMS_Application.dll</HintPath>
     </Reference>

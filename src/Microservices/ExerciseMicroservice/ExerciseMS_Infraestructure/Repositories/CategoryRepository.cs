@@ -12,6 +12,6 @@ namespace ExerciseMS_Infraestructure.Repositories
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        public CategoryRepository(ExerciseMsDbContext context, ILogger logger) : base(context, logger) { }
+        public CategoryRepository(ExerciseMsDbContext context) : base(context) { }
     }
 }

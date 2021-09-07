@@ -25,7 +25,7 @@ namespace ExerciseMS_Infraestructure.Services
             {
                 string id = _httpContext.HttpContext.User?.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
 
-                if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated") { StatusCode = 401};
+                if (string.IsNullOrEmpty(id)) throw new ExerciseMSException("The user is not authenticated") { StatusCode = 401 };
 
                 return id;
             }
@@ -35,8 +35,19 @@ namespace ExerciseMS_Infraestructure.Services
             }
 
         }
-        
-        
-        public bool UserIsAuthenticated() => _httpContext.HttpContext.User.Identity.IsAuthenticated;
+
+
+        public bool UserIsAuthenticated() 
+        {
+            try
+            {
+                return _httpContext.HttpContext.User.Identity.IsAuthenticated;
+            }
+            catch (Exception) 
+            { 
+                throw;
+            }
+
+        } 
     }
 }

@@ -35,11 +35,7 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
 
                 var exercises = await _unitOfWork.Exercises.GetAllExercisesByCategoryAsync(request.CategoryId, request.Index, request.Size);
 
-                if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") { StatusCode = 404 };
-
-                var result = _exerciseMapper.MapEntityToDto(exercises);
-
-                return result;
+                return _exerciseMapper.MapEntityToDto(exercises);
             }
             catch (Exception)
             {

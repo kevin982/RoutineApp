@@ -15,13 +15,11 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
 {
     public class GetExercisesCountByCategoryHandler : IRequestHandler<GetExercisesCountByCategoryQuery, int>
     {
-        private readonly IExerciseMapper _exerciseMapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<GetExercisesCountByCategoryQuery> _validator;
 
-        public GetExercisesCountByCategoryHandler(IExerciseMapper exerciseMapper, IUnitOfWork unitOfWork, IValidator<GetExercisesCountByCategoryQuery> validator)
+        public GetExercisesCountByCategoryHandler(IUnitOfWork unitOfWork, IValidator<GetExercisesCountByCategoryQuery> validator)
         {
-            _exerciseMapper = exerciseMapper;
             _unitOfWork = unitOfWork;
             _validator = validator;
         }
@@ -31,9 +29,7 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
             {
                 await _validator.ValidateAndThrowAsync(request);
 
-                int count = _unitOfWork.Exercises.GetExerciseCountByCategory(request.CategoryId);
-
-                return count;
+                return _unitOfWork.Exercises.GetExerciseCountByCategory(request.CategoryId);
             }
             catch (Exception)
             {

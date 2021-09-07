@@ -30,10 +30,6 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
             {
                 await _validator.ValidateAndThrowAsync(request);
 
-                if (request is null) throw new ExerciseMSException("The command to delete the exercise can not be null") { StatusCode = 500};
-            
-                if (request.ExerciseId == Guid.Empty) throw new ExerciseMSException("The command to delete the exercise can not contain an empty id") { StatusCode = 500};
-
                 Exercise result = await _unitOfWork.Exercises.DeleteAsync(request.ExerciseId);
 
                 await _unitOfWork.CompleteAsync();

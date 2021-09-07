@@ -17,7 +17,7 @@ namespace ExerciseMS_Infraestructure.Repositories
     {
         private readonly IUserService _userService;
 
-        public ExerciseRepository(ExerciseMsDbContext context, ILogger logger, IUserService userService) : base(context, logger)
+        public ExerciseRepository(ExerciseMsDbContext context, IUserService userService) : base(context)
         {
             _userService = userService;
         }
@@ -102,14 +102,11 @@ namespace ExerciseMS_Infraestructure.Repositories
             {
                 if (exerciseId == Guid.Empty || userId == Guid.Empty) throw new ExerciseMSException("To update the exercise the user and exercise id must not be empty") {StatusCode = 400 };
 
-                var exercise = await _context
-                    .Exercises
-                    .Where(e => e.ExerciseId == exerciseId && e.UserId == userId)
-                    .FirstOrDefaultAsync();
+                Exercise exerciseToUpdate = await GetByIdAsync(exerciseId);
 
-                if (exercise is null) throw new ExerciseMSException("The exercise to update has been found!") { StatusCode = 404};
+                if (exerciseToUpdate.UserId != userId) throw new ExerciseMSException("The exercise has not been found!") { StatusCode = 404 };
 
-                exercise.IsInTheRoutine = newValue;
+                exerciseToUpdate.IsInTheRoutine = newValue;
 
                 return true;
             }
