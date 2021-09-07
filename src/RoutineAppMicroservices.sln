@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsMS_Core", "Micros
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsMS_Infraestructure", "Microservices\StatisticsMicroservice\StatisticsMS_Infraestructure\StatisticsMS_Infraestructure.csproj", "{23E386A5-E0D5-4932-ACDD-975EA5CA351F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityMicroservice", "Microservices\IdentityMicroservice\IdentityMicroservice.csproj", "{9130EACB-C228-46A7-B641-38081456D8D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{23E386A5-E0D5-4932-ACDD-975EA5CA351F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23E386A5-E0D5-4932-ACDD-975EA5CA351F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23E386A5-E0D5-4932-ACDD-975EA5CA351F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9130EACB-C228-46A7-B641-38081456D8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9130EACB-C228-46A7-B641-38081456D8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9130EACB-C228-46A7-B641-38081456D8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9130EACB-C228-46A7-B641-38081456D8D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
