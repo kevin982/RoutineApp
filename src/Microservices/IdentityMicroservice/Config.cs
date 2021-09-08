@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -10,49 +11,60 @@ namespace IdentityMicroservice
     public static class Config
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
-                   new IdentityResource[]
-                   {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                   };
+         new List<IdentityResource>
+         {
+            new IdentityResources.OpenId(),
+            new IdentityResources.Profile(),
+         };
 
         public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
+       new List<ApiScope>
+       {
+            new ApiScope("exerciseMs.all", "All crud operations for the catalog exercise micro service"),
+            new ApiScope("routineMs.all", "All crud operations for the routine micro service"),
+            new ApiScope("statistisMs.all", "All crud operations for the statistics micro service"),
+            new ApiScope("roles", "The user roles", new List<string>{ "role"})
+       };
+
+        public static IEnumerable<ApiResource> ApiResources =>
+            new List<ApiResource>
             {
-                new ApiScope("scope1"),
-                new ApiScope("scope2"),
             };
 
         public static IEnumerable<Client> Clients =>
-            new Client[]
+        new List<Client>
+        {
+            new Client
             {
-                // m2m client credentials flow client
-                new Client
+                ClientId = "RoutineMVC",
+
+                ClientSecrets = { new Secret("RoutineMVCSecret".Sha256()) },
+
+
+                AllowedGrantTypes = GrantTypes.Code,
+
+                RequirePkce = true,
+
+                // where to redirect to after login
+                RedirectUris = { "https://localhost:9000/signin-oidc" },
+
+                // where to redirect to after logout
+                PostLogoutRedirectUris = { "https://localhost:9000/signout-callback-oidc" },
+
+                AllowOfflineAccess = true,
+
+
+                // scopes that client has access to
+                AllowedScopes = new List<string>
                 {
-                    ClientId = "m2m.client",
-                    ClientName = "Client Credentials Client",
-
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
-
-                    AllowedScopes = { "scope1" }
-                },
-
-                // interactive client using code flow + pkce
-                new Client
-                {
-                    ClientId = "interactive",
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-
-                    RedirectUris = { "https://localhost:44300/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
-
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "scope2" }
-                },
-            };
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "roles",
+                    "exerciseMs.all",
+                    "routineMs.all",
+                    "statistisMs.all"
+                }
+            }
+        };
     }
 }

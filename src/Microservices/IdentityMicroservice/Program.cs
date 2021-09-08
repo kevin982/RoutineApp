@@ -76,6 +76,7 @@ namespace IdentityMicroservice
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8002", "https://localhost:9002");
                 });
     }
 }

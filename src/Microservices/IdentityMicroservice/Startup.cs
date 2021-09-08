@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace IdentityMicroservice
 {
@@ -37,9 +38,71 @@ namespace IdentityMicroservice
                     sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(20), errorNumbersToAdd : null);
                 }));
 
+            #region Identity
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultTokenProviders()
+               .AddRoles<IdentityRole>();
+
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                #region Password Configuration
+                options.Password.RequiredLength = Configuration.GetValue<int>("PasswordConfig:RequiredLength");
+                options.Password.RequiredUniqueChars = Configuration.GetValue<int>("PasswordConfig:RequiredUniqueChars");
+                options.Password.RequireDigit = Configuration.GetValue<bool>("PasswordConfig:RequireDigit");
+                options.Password.RequireLowercase = Configuration.GetValue<bool>("PasswordConfig:RequireLowerCase");
+                options.Password.RequireUppercase = Configuration.GetValue<bool>("PasswordConfig:RequireUpperCase");
+                options.Password.RequireNonAlphanumeric = Configuration.GetValue<bool>("PasswordConfig:RequireNonAlphanumeric");
+                #endregion
+
+                #region Lockout Configuration
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                #endregion
+
+                #region User Configurations
+
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+                options.User.RequireUniqueEmail = true;
+
+                #endregion
+
+                #region SignIn Configurations
+
+                options.SignIn.RequireConfirmedEmail = true;
+
+                #endregion
+
+                #region LockoutConfigurations
+
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
+                options.Lockout.MaxFailedAccessAttempts = 4;
+
+                #endregion
+
+                #region CookiesPolicy
+
+                services.Configure<CookiePolicyOptions>(options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+
+
+                #endregion
+
+            });
+
+            #endregion
+
+            #region IdentityServer4
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -53,22 +116,22 @@ namespace IdentityMicroservice
             })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryApiResources(Config.ApiResources)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
+
+            #endregion
+ 
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
             services.AddAuthentication()
-                .AddGoogle(options =>
+                .AddGoogle(gOptions =>
                 {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                    
-                    // register your IdentityServer with Google at https://console.developers.google.com
-                    // enable the Google+ API
-                    // set the redirect URI to https://localhost:5001/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
+                    gOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    gOptions.ClientId = Configuration.GetValue<string>("IdentityProviders:Google:Id");
+                    gOptions.ClientSecret = Configuration.GetValue<string>("IdentityProviders:Google:Secret");
                 });
         }
 
@@ -77,7 +140,6 @@ namespace IdentityMicroservice
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
 
             app.UseStaticFiles();
