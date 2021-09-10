@@ -69,7 +69,7 @@ namespace IdentityMicroservice
 
                 #region User Configurations
 
-                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+                options.User.AllowedUserNameCharacters = "aábcdeéfghiíjklmnñoópqrstuúvwxyzAÁBCDEÉFGHIÍJKLMNOÓPQRSTUÚVWXYZ0123456789-._@+ ";
                 options.User.RequireUniqueEmail = true;
 
                 #endregion

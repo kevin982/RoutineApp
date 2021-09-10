@@ -15,7 +15,7 @@ namespace IdentityMicroservice.Mappers
             {
                 return new ApplicationUser
                 {
-                    UserName = $"{model.UserName}_{Guid.NewGuid()}",
+                    UserName = $"{model.UserName.Replace(" ", "")}_{Guid.NewGuid()}",
                     Email = model.Email,
                     UsedExternalProvider = false,
                 };

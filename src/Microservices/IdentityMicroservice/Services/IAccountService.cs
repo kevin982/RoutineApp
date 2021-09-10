@@ -11,5 +11,6 @@ namespace IdentityMicroservice.Services
         Task<IdentityResult> CreateUserAsync(SignUpRequestModel model);
         Task<IdentityResult> ResetPasswordAsync(ResetPasswordRequestModel model);
         Task SendEmailToResetPasswordAsync(EmailResetPasswordRequestModel model);
+        Task<ApplicationUser> CustomFindUserAsync(string findBy, string value);
     }
 }

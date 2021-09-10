@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityMicroservice.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210909231246_Initial")]
+    [Migration("20210910201209_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,15 +118,15 @@ namespace IdentityMicroservice.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fe913bce-ef93-4462-bbe3-11a62cef5974",
-                            ConcurrencyStamp = "4907f1f1-f03c-4914-bc8a-44819beff506",
+                            Id = "4dcaa670-bbd6-4be8-8218-a151af4eec44",
+                            ConcurrencyStamp = "2e7ec7c3-f256-4204-900b-b05cb7831a29",
                             Name = "user",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "57b153a8-9fbc-4899-9604-66829c2ff2ea",
-                            ConcurrencyStamp = "1080b930-2ef1-4cbf-aa21-9ac1b078d8ba",
+                            Id = "90e363c9-6193-4c02-a810-8fe356908125",
+                            ConcurrencyStamp = "c2259e5e-d581-48b1-9638-238d05312001",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });

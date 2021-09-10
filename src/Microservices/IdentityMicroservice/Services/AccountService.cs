@@ -21,32 +21,44 @@ namespace IdentityMicroservice.Services
         private readonly UserManager<ApplicationUser> _userManager = null;
         private readonly IConfiguration Configuration = null;
         private readonly IAccountMapper _accountMapper = null;
-        private readonly IHttpContextAccessor _httpContext = null;
-        private readonly RoleManager<IdentityRole> _roleManager = null;
 
-
-
-
-        public AccountService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IAccountMapper accountMapper, IHttpContextAccessor httpContextAccessor, RoleManager<IdentityRole> roleManager)
+        public AccountService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IAccountMapper accountMapper)
         {
             _userManager = userManager;
             Configuration = configuration;
             _accountMapper = accountMapper;
-            _httpContext = httpContextAccessor;
-            _roleManager = roleManager;
         }
 
+        public async Task<ApplicationUser> CustomFindUserAsync(string findBy, string value)
+        {
+            if (string.IsNullOrEmpty(findBy) || string.IsNullOrEmpty(value)) throw new Exception("The findby and value can not be null or empty");
+
+            findBy = findBy.ToLower();
+
+            if (findBy != "id" && findBy != "email") throw new Exception("The findby can only be id or email");
+
+            ApplicationUser user = (findBy == "id") ? await _userManager.FindByIdAsync(value) : await _userManager.FindByEmailAsync(value);
+
+            if (user is null) throw new Exception("The user could no be found");
+
+            if (user.UsedExternalProvider) throw new Exception("Could not change password since you used an external identity provider!");
+
+            return user;
+        }
+ 
         public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordRequestModel model)
         {
             try
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(model.UserId);
+                if (model is null) throw new Exception("The model to change the password can not be null");
 
-                if (user is null) throw new Exception("The user could no be found");
+                ApplicationUser user = await CustomFindUserAsync("id", model.UserId);
 
-                if (user.UsedExternalProvider) throw new Exception("Could not change password since you used an external identity provider!");
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
-                return await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (!result.Succeeded) throw new Exception(result.Errors.ToList()[0].Description);
+
+                return result;
             }
             catch (Exception)
             {
@@ -59,13 +71,13 @@ namespace IdentityMicroservice.Services
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(userId);
+                if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userId)) throw new Exception("The userId and token must not be null or empty");
 
-                if (user is null) throw new Exception("The user could no be found");
-
-                if (user.UsedExternalProvider) throw new Exception("Could not confirm your email since you used an external identity provider!");
+                ApplicationUser user = await CustomFindUserAsync("id", userId);
 
                 var result = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (!result.Succeeded) throw new Exception(result.Errors.ToList()[0].Description);
 
                 return result;
             }
@@ -79,17 +91,27 @@ namespace IdentityMicroservice.Services
         {
             try
             {
+                if (model is null) throw new Exception("The model to create the user can not be null");
+
                 var user = _accountMapper.MapSignUpRequestModelToDomain(model);
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (!result.Succeeded) throw new Exception(result.Errors.ToList()[0].Description);
 
-                await _userManager.AddToRoleAsync(user, "user");
+                var resultRoleUser = await _userManager.AddToRoleAsync(user, "user");
 
-                if (model.Email == Configuration["AdminEmail"]) await _userManager.AddToRoleAsync(user, "admin");
+                if (!resultRoleUser.Succeeded) throw new Exception(resultRoleUser.Errors.ToList()[0].Description);
 
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                if (model.Email == Configuration["AdminEmail"])
+                {
+                    var resultRoleAdmin = await _userManager.AddToRoleAsync(user, "admin");
+                    if(!resultRoleAdmin.Succeeded) throw new Exception(resultRoleAdmin.Errors.ToList()[0].Description);
+                }
+
+                string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                if (string.IsNullOrEmpty(token)) throw new Exception("The token could not be generated!");
 
                 await SendEmailConfirmationAsync(token, user.Email, user.Id, user.UserName);
 
@@ -98,6 +120,15 @@ namespace IdentityMicroservice.Services
             }
             catch (Exception)
             {
+                if (model is null) throw;
+
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user is null) throw;
+                
+                await _userManager.RemoveFromRolesAsync(user, new List<string>{ "user", "admin"});
+                await _userManager.DeleteAsync(user);
+                
                 throw;
             }
         }
@@ -106,11 +137,9 @@ namespace IdentityMicroservice.Services
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(model.Id);
+                if (model is null) throw new Exception("The model to reset the password can not be null");
 
-                if (user is null) throw new Exception("The user could no be found");
-
-                if (user.UsedExternalProvider) throw new Exception("Could not reset password since you used an external identity provider!");
+                var user = await CustomFindUserAsync("id", model.Id);
 
                 var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
 
@@ -128,15 +157,11 @@ namespace IdentityMicroservice.Services
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(model.UserEmail);
+                if (model is null) throw new Exception("The model to send the email to reset the password can not be null");
 
-                if (user is null) throw new Exception("The user could no be found");
-
-                if (user.UsedExternalProvider) throw new Exception("Could not send email to reset password since you used an external identity provider!");
-
+                var user = await CustomFindUserAsync("email", model.UserEmail);
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
 
                 string htmlparent = Directory.GetParent(Directory.GetCurrentDirectory()).ToString();
 
@@ -158,6 +183,9 @@ namespace IdentityMicroservice.Services
         {
             try
             {
+
+                if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(name)) throw new Exception("The token, email, user id and name can not be null or empty");
+
                 string htmlparent = Directory.GetParent(Directory.GetCurrentDirectory()).ToString();
 
                 string htmlFile = htmlparent += "\\IdentityMicroservice\\Mails\\ConfirmEmail.html";
@@ -205,7 +233,7 @@ namespace IdentityMicroservice.Services
 
                 await smtpClient.SendMailAsync(mail);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

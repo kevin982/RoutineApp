@@ -156,12 +156,12 @@ namespace IdentityMicroservice.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "fe913bce-ef93-4462-bbe3-11a62cef5974", "4907f1f1-f03c-4914-bc8a-44819beff506", "user", "USER" });
+                values: new object[] { "4dcaa670-bbd6-4be8-8218-a151af4eec44", "2e7ec7c3-f256-4204-900b-b05cb7831a29", "user", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "57b153a8-9fbc-4899-9604-66829c2ff2ea", "1080b930-2ef1-4cbf-aa21-9ac1b078d8ba", "admin", "ADMIN" });
+                values: new object[] { "90e363c9-6193-4c02-a810-8fe356908125", "c2259e5e-d581-48b1-9638-238d05312001", "admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

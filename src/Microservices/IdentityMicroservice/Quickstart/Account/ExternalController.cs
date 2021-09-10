@@ -254,7 +254,7 @@ namespace IdentityServerHost.Quickstart.UI
                 var user = new ApplicationUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = $"{name}_{Guid.NewGuid()}",
+                    UserName = $"{name.Replace(" ","")}_{Guid.NewGuid()}",
                     Email = email,
                     EmailConfirmed = true,
                     UsedExternalProvider = true
