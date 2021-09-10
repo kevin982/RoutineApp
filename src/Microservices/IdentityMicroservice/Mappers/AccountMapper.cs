@@ -15,8 +15,9 @@ namespace IdentityMicroservice.Mappers
             {
                 return new ApplicationUser
                 {
-                    UserName = model.UserName,
-                    Email = model.Email
+                    UserName = $"{model.UserName}_{Guid.NewGuid()}",
+                    Email = model.Email,
+                    UsedExternalProvider = false,
                 };
             }
             catch (Exception)

@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Microsoft.AspNetCore.Http;
+using IdentityMicroservice.Mappers;
+using IdentityMicroservice.Services;
 
 namespace IdentityMicroservice
 {
@@ -133,6 +135,13 @@ namespace IdentityMicroservice
                     gOptions.ClientId = Configuration.GetValue<string>("IdentityProviders:Google:Id");
                     gOptions.ClientSecret = Configuration.GetValue<string>("IdentityProviders:Google:Secret");
                 });
+
+            #region Services
+
+            services.AddScoped<IAccountMapper, AccountMapper>();
+            services.AddScoped<IAccountService, AccountService>();
+
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app)
