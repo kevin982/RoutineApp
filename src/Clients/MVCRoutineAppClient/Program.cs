@@ -21,6 +21,7 @@ namespace MVCRoutineAppClient
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8000", "https://localhost:9000");
                 });
     }
 }
