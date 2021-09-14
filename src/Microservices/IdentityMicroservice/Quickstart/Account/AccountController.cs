@@ -58,7 +58,6 @@ namespace IdentityServerHost.Quickstart.UI
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpRequestModel model)
         {

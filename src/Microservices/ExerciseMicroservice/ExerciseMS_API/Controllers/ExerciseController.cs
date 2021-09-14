@@ -30,8 +30,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Commands
 
-        [Authorize(Policy = "WriteScope")]
-        [Authorize(Policy = "Admin, User")]
+        [Authorize(Policy = "user")]
+        [Authorize(Policy = "ExerciseScope")]
         [HttpPost("/api/v1/Exercise")]
         public async Task<ActionResult<HateoasResponse>> CreateExercise([FromForm]CreateExerciseRequest model)
         {
@@ -53,8 +53,8 @@ namespace ExerciseMS_API.Controllers
             }
         }
 
-        [Authorize(Policy = "WriteScope")]
-        [Authorize(Policy = "Admin,User")]
+        [Authorize(Policy = "user")]
+        [Authorize(Policy = "ExerciseScope")]
         [HttpDelete("/api/v1/Exercise/{id}")]
         public async Task<ActionResult<HateoasResponse>> DeleteExercise(Guid id)
         {
@@ -82,8 +82,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Queries
 
-        [Authorize(Policy = "ReadScope")]
-        [Authorize(Policy = "Admin,User")]
+        [Authorize(Policy = "user")]
+        [Authorize(Policy = "ExerciseScope")]
         [HttpGet("/api/v1/Exercise/Category/{categoryId}/{index:int:min(0)}/{size:int:min(5):max(20)}")]
         public async Task<ActionResult<HateoasResponse>> GetAllExercisesByCategory(Guid categoryId, int index, int size)
         {
@@ -109,8 +109,8 @@ namespace ExerciseMS_API.Controllers
 
         }
 
-        [Authorize(Policy = "ReadScope")]
-        [Authorize(Policy = "Admin,User")]
+        [Authorize(Policy = "user")]
+        [Authorize(Policy = "ExerciseScope")]
         [HttpGet("/api/v1/Exercise/Category/{categoryId}")]
         public async Task<ActionResult<HateoasResponse>> GetExercisesCountByCategory(Guid categoryId)
         {

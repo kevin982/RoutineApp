@@ -56,36 +56,17 @@ namespace ExerciseMS_Infraestructure
 
                     options.TokenValidationParameters = new()
                     {
-                        ValidateAudience = true
+                        ValidateAudience = false
                     };
+
                 });
-
-
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("WriteScope", policy =>
+                options.AddPolicy("ExerciseScope", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "exerciseMsScope.write");
-                });
-
-                options.AddPolicy("ReadScope", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("scope", "exerciseMsScope.read");
-                });
-
-                options.AddPolicy("User", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("role", "user");
-                });
-
-                options.AddPolicy("Admin", policy =>
-                {
-                    policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("role", "admin");
+                    policy.RequireClaim("scope", "exerciseMs.all");
                 });
             });
             

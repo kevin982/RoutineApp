@@ -31,8 +31,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Commands
 
-        [Authorize(Policy = "WriteScope")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "admin")]
+        [Authorize(Policy = "ExerciseScope")]
         [HttpPost("/api/v1/Category")]
         public async Task<ActionResult<HateoasResponse>> CreateCategory(CreateCategoryRequest model)
         {
@@ -57,8 +57,8 @@ namespace ExerciseMS_API.Controllers
         }
 
 
-        [Authorize(Policy = "WriteScope")]
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "admin")]
+        [Authorize(Policy = "ExerciseScope")]
         [HttpDelete("api/v1/Category/{id}")]
         public async Task<ActionResult<HateoasResponse>> DeleteCategory(Guid id)
         {
@@ -85,8 +85,8 @@ namespace ExerciseMS_API.Controllers
 
         #region Queries
 
-        [Authorize(Policy = "ReadScope")]
-        [Authorize(Policy = "User,Admin")]
+        [Authorize(Roles = "user,admin")]  
+        [Authorize(Policy = "ExerciseScope")]
         [HttpGet("api/v1/Category")]
         public async Task<ActionResult<HateoasResponse>> GetAllCategories()
         {

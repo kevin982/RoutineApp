@@ -23,7 +23,7 @@ namespace IdentityMicroservice
             new ApiScope("exerciseMs.all", "All crud operations for the catalog exercise micro service"),
             new ApiScope("routineMs.all", "All crud operations for the routine micro service"),
             new ApiScope("statistisMs.all", "All crud operations for the statistics micro service"),
-            new ApiScope("roles", "The user roles", new List<string>{ "role"})
+            new ApiScope("role", "The user roles", new List<string>{ "role"})
        };
 
         public static IEnumerable<ApiResource> ApiResources =>
@@ -40,9 +40,8 @@ namespace IdentityMicroservice
 
                 ClientSecrets = { new Secret("RoutineMVCSecret".Sha256()) },
 
-
                 AllowedGrantTypes = GrantTypes.Code,
-
+                
                 RequirePkce = true,
 
                 // where to redirect to after login
@@ -59,7 +58,7 @@ namespace IdentityMicroservice
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    "roles",
+                    "role",
                     "exerciseMs.all",
                     "routineMs.all",
                     "statistisMs.all"

@@ -21,7 +21,7 @@ namespace ExerciseMS_API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:6000", "https://localhost:6001");
+                    webBuilder.UseUrls("http://localhost:8003", "https://localhost:9003");
                 });
     }
 }
