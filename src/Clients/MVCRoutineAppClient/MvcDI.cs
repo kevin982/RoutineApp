@@ -18,6 +18,8 @@ namespace MVCRoutineAppClient
         {
             services.AddMyAuthentication(Configuration);
 
+            services.AddOcelotClient();
+
             return services;
         }
 
@@ -62,5 +64,14 @@ namespace MVCRoutineAppClient
             return services;
         }
  
+        private static IServiceCollection AddOcelotClient(this IServiceCollection services)
+        {
+            services.AddHttpClient("Ocelot", options => 
+            {
+                options.BaseAddress = new Uri("https://localhost:9001");
+            });
+
+            return services;
+        }
     }
 }

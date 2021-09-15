@@ -21,6 +21,13 @@ namespace ApiGateway
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8001", "https://localhost:9001");
+
+                    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    webBuilder.ConfigureAppConfiguration(config => 
+                    {
+                        config.AddJsonFile($"ocelot.{environment}.json");
+                    });
                 });
     }
 }
