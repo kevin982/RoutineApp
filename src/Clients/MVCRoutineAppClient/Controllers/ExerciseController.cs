@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MVCRoutineAppClient.Controllers
 {
-    [ApiController]
+    [Controller]
     [Authorize]
     public class ExerciseController : Controller
     {
@@ -39,7 +39,7 @@ namespace MVCRoutineAppClient.Controllers
 
         [AdminAuthorizationFilter]
         [HttpPost("/v1/Category")]
-        public IActionResult CreateCategory([FromForm]CreateCategoryRequestModel model)
+        public IActionResult CreateCategory(CreateCategoryRequestModel model)
         {
             //I must implement the logic to add the category here.
 
