@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MVCRoutineAppClient.Filters;
+using MVCRoutineAppClient.Services;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,6 +20,8 @@ namespace MVCRoutineAppClient
             services.AddMyAuthentication(Configuration);
 
             services.AddOcelotClient();
+
+            services.AddMyOwnServices();
 
             return services;
         }
@@ -70,6 +73,13 @@ namespace MVCRoutineAppClient
             {
                 options.BaseAddress = new Uri("https://localhost:9001");
             });
+
+            return services;
+        }
+
+        private static IServiceCollection AddMyOwnServices(this IServiceCollection services)
+        {
+            services.AddScoped<IExerciseService, ExerciseService>();
 
             return services;
         }

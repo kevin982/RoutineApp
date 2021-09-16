@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVCRoutineAppClient.Filters;
 using MVCRoutineAppClient.Models;
+using MVCRoutineAppClient.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MVCRoutineAppClient.Controllers
@@ -14,19 +14,49 @@ namespace MVCRoutineAppClient.Controllers
     [Authorize]
     public class ExerciseController : Controller
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IExerciseService _exerciseService;
+
+
+        public ExerciseController(IHttpClientFactory httpClientFactory, IExerciseService exerciseService)
+        {
+            _httpClientFactory = httpClientFactory;
+            _exerciseService = exerciseService;
+        }
+
         [UserAuthorizationFilter]
         [HttpGet("/v1/Exercise")]
-        public IActionResult CreateExercise()
+        public async Task<IActionResult> CreateExercise()
         {
+            ViewBag.AccessToken = await HttpContext.GetTokenAsync("access_token");
+
             return View();
         }
 
         [UserAuthorizationFilter]
         [HttpPost("/v1/Exercise")]
-        public IActionResult CreateExercise(CreateExerciseRequestModel model)
+        public async Task<IActionResult> CreateExercise(CreateExerciseRequestModel model)
         {
-            //I must implement the logic to add the exercise here.
+            try
+            {
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
 
+                ViewBag.AccessToken = accessToken;
+                
+                var result = await _exerciseService.CreateExerciseAsync(model, accessToken);
+
+                ViewBag.Succeeded = result.Item1;
+
+                ViewBag.Message = result.Item2;
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Succeeded = false;
+
+                ViewBag.Message = ex.Message;
+            }
+            
             return View();
         }
 
@@ -39,21 +69,25 @@ namespace MVCRoutineAppClient.Controllers
 
         [AdminAuthorizationFilter]
         [HttpPost("/v1/Category")]
-        public IActionResult CreateCategory(CreateCategoryRequestModel model)
+        public async Task<IActionResult> CreateCategory(CreateCategoryRequestModel model)
         {
-            //I must implement the logic to add the category here.
+            try
+            {
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
 
+                var result = await _exerciseService.CreateCategoryAsync(model, accessToken);
+
+                ViewBag.Succeeded = result.Item1;
+                ViewBag.Message = result.Item2;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Succeeded = false;
+                ViewBag.Message = ex.Message;
+            }
+            
             return View();
+
         }
-
-        [UserAuthorizationFilter]
-        [HttpGet("/v1/Categories")]
-        public async Task<ActionResult<string>> GetAllCategories()
-        {
-            //I must implement the logic to get all the categories here
-
-            return "";
-        }
-
     }
 }

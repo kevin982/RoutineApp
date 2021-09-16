@@ -19,7 +19,7 @@ namespace ExerciseMS_Infraestructure.Services
                 Links = links,
                 Succeded = true,
                 StatusCode = 200,
-                Message = message,
+                Title = message,
                 Content = data
             };
         }
@@ -33,7 +33,7 @@ namespace ExerciseMS_Infraestructure.Services
                     Links = links,
                     Succeded = false,
                     StatusCode = 500,
-                    Message = "Server error",
+                    Title = "Server error",
                     Content = null,
                 };
             
@@ -44,7 +44,7 @@ namespace ExerciseMS_Infraestructure.Services
                 Links = links,
                 Succeded = false,
                 StatusCode = e.StatusCode,
-                Message = (e.StatusCode == 500) ? "Server error" : e.Message,
+                Title = (e.StatusCode == 500) ? "Server error" : e.Message,
                 Content = null,
             };
 

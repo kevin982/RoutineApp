@@ -10,7 +10,7 @@ namespace ExerciseMS_Core.Models.Responses
     {
         public IEnumerable<Link> Links { get; set; }
 
-        public string Message { get; set; }
+        public string Title { get; set; }
 
         public int StatusCode { get; set; }
 

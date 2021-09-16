@@ -41,6 +41,7 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
         {
             try
             {
+
                 await _validator.ValidateAndThrowAsync(request);
 
                 var category = await _unitOfWork.Categories.GetByIdAsync(request.CreateExerciseRequest.CategoryId);
