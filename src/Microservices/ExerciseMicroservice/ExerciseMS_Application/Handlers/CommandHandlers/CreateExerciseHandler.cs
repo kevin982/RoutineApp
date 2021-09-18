@@ -44,8 +44,6 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
 
                 await _validator.ValidateAndThrowAsync(request);
 
-                var category = await _unitOfWork.Categories.GetByIdAsync(request.CreateExerciseRequest.CategoryId);
-
                 Exercise exercise = _mapper.MapRequestToEntity(request.CreateExerciseRequest);
 
                 string imageUrl = await _imageService.UploadImageAsync(request.CreateExerciseRequest.Image);
@@ -55,8 +53,6 @@ namespace ExerciseMS_Application.Handlers.CommandHandlers
                 exercise.ImageUrl = imageUrl;
 
                 exercise.UserId = new Guid(_userService.GetUserId());
-
-                exercise.Category = category;
 
                 Exercise result = await _unitOfWork.Exercises.CreateAsync(exercise);
 

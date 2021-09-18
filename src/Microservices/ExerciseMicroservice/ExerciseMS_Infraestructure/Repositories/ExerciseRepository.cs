@@ -33,7 +33,7 @@ namespace ExerciseMS_Infraestructure.Repositories
 
                 var exercises = await _context
                 .Exercises
-                .AsNoTrackingWithIdentityResolution()
+                .AsNoTracking()
                 .Where(e => e.CategoryId == categoryId && e.UserId == userId)
                 .Skip(index * size)
                 .Take(size)

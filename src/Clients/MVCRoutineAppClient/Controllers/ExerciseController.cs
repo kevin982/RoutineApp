@@ -39,6 +39,8 @@ namespace MVCRoutineAppClient.Controllers
         {
             try
             {
+                model.FileContentType = model.Image.ContentType;
+
                 string accessToken = await HttpContext.GetTokenAsync("access_token");
 
                 ViewBag.AccessToken = accessToken;
@@ -58,36 +60,6 @@ namespace MVCRoutineAppClient.Controllers
             }
             
             return View();
-        }
-
-        [AdminAuthorizationFilter]
-        [HttpGet("/v1/Category")]
-        public IActionResult CreateCategory()
-        {
-            return View();
-        }
-
-        [AdminAuthorizationFilter]
-        [HttpPost("/v1/Category")]
-        public async Task<IActionResult> CreateCategory(CreateCategoryRequestModel model)
-        {
-            try
-            {
-                string accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                var result = await _exerciseService.CreateCategoryAsync(model, accessToken);
-
-                ViewBag.Succeeded = result.Item1;
-                ViewBag.Message = result.Item2;
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Succeeded = false;
-                ViewBag.Message = ex.Message;
-            }
-            
-            return View();
-
         }
     }
 }

@@ -19,67 +19,6 @@ namespace ExerciseMS_API.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ExerciseMS_Core.Models.Entities.Category", b =>
-                {
-                    b.Property<Guid>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = new Guid("04b1e0cd-6f9f-4bf3-bf28-f9487fd588ed"),
-                            CategoryName = "Legs"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("786f4325-63e7-4f3d-9aa9-4355538a3ba3"),
-                            CategoryName = "Abs"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("5f5b42b2-e14d-4824-8d93-3977e3355f01"),
-                            CategoryName = "Chest"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("d5e61185-b9ce-4acc-a801-896ed3737f65"),
-                            CategoryName = "Shoulders"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("0caffb7d-defe-46c4-8082-5ab3a7ad3f89"),
-                            CategoryName = "Biceps"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("cea33567-29de-41d7-8689-79d2a0bdb67e"),
-                            CategoryName = "Triceps"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("6e09dc32-23d1-4a82-aaeb-ba47c852ebee"),
-                            CategoryName = "Forearms"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("b0de268a-543f-447c-ba5a-21fb35e19146"),
-                            CategoryName = "Back"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("92ee6e17-569e-4e39-9f23-af028206431a"),
-                            CategoryName = "Cardio"
-                        });
-                });
-
             modelBuilder.Entity("ExerciseMS_Core.Models.Entities.Exercise", b =>
                 {
                     b.Property<Guid>("ExerciseId")
@@ -103,20 +42,7 @@ namespace ExerciseMS_API.Migrations
 
                     b.HasKey("ExerciseId");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Exercises");
-                });
-
-            modelBuilder.Entity("ExerciseMS_Core.Models.Entities.Exercise", b =>
-                {
-                    b.HasOne("ExerciseMS_Core.Models.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,17 +11,7 @@ namespace ExerciseMS_API
     public static class GenericLinks
     {
 
-        private static string AppUri = "https://localhost:6001";
-
-        public static IEnumerable<Link> GetCategoryLinks()
-        {
-            return new List<Link>()
-            {
-                new Link(){Name = "Create a new category", Href = $"{AppUri}/api/v1/Category", Method = "POST"},
-                new Link(){Name = "Delete an existing category", Href = $"{AppUri}/api/v1/Category/[categoryid]", Method = "DELETE"},
-                new Link(){Name = "Get all categories", Href = $"{AppUri}/api/v1/Category", Method = "GET"}
-            };
-        }
+        private static string AppUri = "https://localhost:9003";
 
         public static IEnumerable<Link> GetExerciseLinks()
         {

@@ -1,0 +1,17 @@
+﻿@inject MVCRoutineAppClient.Services.ICategoryService _categoryService;
+
+
+@{
+	Layout = null;
+	var categories = await _categoryService.GetAllCategoriesAsync(Model);
+}
+
+@{
+	if (categories.Item1)
+	{
+		foreach (var category in categories.Item2)
+		{
+			<option value="@category["categoryId"]">@category["categoryName"]</option>
+		}
+	}
+}

@@ -20,15 +20,12 @@ namespace ExerciseMS_Infraestructure.UoW
 
         public IExerciseRepository Exercises { get; private set; }
 
-        public ICategoryRepository Categories { get; private set; }
-
         public UnitOfWork(ExerciseMsDbContext dbContext, IUserService userService)
         {
             _dbContext = dbContext;
             _userService = userService;
 
             Exercises = new ExerciseRepository(_dbContext, _userService);
-            Categories = new CategoryRepository(_dbContext);
         }
 
         public async Task CompleteAsync()

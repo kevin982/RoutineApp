@@ -13,6 +13,7 @@ namespace MVCRoutineAppClient.Models
 
         [Display(Name = "Choose the exercise image"), Required(ErrorMessage = "You must choose an image")]
         public IFormFile Image { get; set; }
+        public string FileContentType { get; set; }
 
     }
 }

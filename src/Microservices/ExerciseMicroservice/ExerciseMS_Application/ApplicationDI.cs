@@ -14,16 +14,13 @@ namespace ExerciseMS_Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<ICategoryMapper, CategoryMapper>();
             services.AddScoped<IExerciseMapper, ExerciseMapper>();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             #region Validators
 
-            services.AddScoped<IValidator<CreateCategoryCommand>,CreateCategoryCommandValidator>();
             services.AddScoped<IValidator<CreateExerciseCommand>, CreateExerciseCommandValidator>();
-            services.AddScoped<IValidator<DeleteCategoryCommand>,DeleteCategoryCommandValidator>();
             services.AddScoped<IValidator<DeleteExerciseCommand>,DeleteExerciseCommandValidator>();
             services.AddScoped<IValidator<GetExercisesByCategoryQuery>,GetExercisesByCategoryQueryValidator>();
             services.AddScoped<IValidator<GetExercisesCountByCategoryQuery>,GetExercisesCountByCategoryQueryValidator>();

@@ -10,7 +10,6 @@ namespace ExerciseMS_Core.UoW
     public interface IUnitOfWork
     {
         IExerciseRepository Exercises { get; }
-        ICategoryRepository Categories { get; }
         Task CompleteAsync();
     }
 }

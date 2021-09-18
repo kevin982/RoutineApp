@@ -12,7 +12,14 @@ namespace MVCRoutineAppClient.Extensions
  
         public static bool IsImage(this IFormFile file)
         {
-            return (file.ContentType.Contains("image"));
+            try
+            {
+                return (file.ContentType.Contains("image"));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

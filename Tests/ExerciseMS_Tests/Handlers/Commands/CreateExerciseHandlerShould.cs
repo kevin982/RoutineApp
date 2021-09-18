@@ -43,7 +43,6 @@ namespace ExerciseMS_Tests.Handlers.Commands
 
             //Act
 
-            _unitOfWork.Setup(u => u.Categories.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new Category());
             _mapper.Setup(u => u.MapRequestToEntity(It.IsAny<CreateExerciseRequest>())).Returns(new Exercise());
             _imageService.Setup(i => i.UploadImageAsync(It.IsAny<IFormFile>())).ReturnsAsync(string.Empty);
 
@@ -63,7 +62,6 @@ namespace ExerciseMS_Tests.Handlers.Commands
 
             //Act
 
-            _unitOfWork.Setup(u => u.Categories.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new Category());
             _mapper.Setup(u => u.MapRequestToEntity(It.IsAny<CreateExerciseRequest>())).Returns(new Exercise());
             _imageService.Setup(i => i.UploadImageAsync(It.IsAny<IFormFile>())).ReturnsAsync("h");
             _userService.Setup(u => u.GetUserId()).Returns(Guid.NewGuid().ToString());
@@ -76,7 +74,6 @@ namespace ExerciseMS_Tests.Handlers.Commands
 
             //Assert
 
-            _unitOfWork.Verify(u => u.Categories.GetByIdAsync(It.IsAny<Guid>()), Times.Once());
             _mapper.Verify(u => u.MapRequestToEntity(It.IsAny<CreateExerciseRequest>()), Times.Once());
             _imageService.Verify(i => i.UploadImageAsync(It.IsAny<IFormFile>()), Times.Once());
             _userService.Verify(u => u.GetUserId(), Times.Once());

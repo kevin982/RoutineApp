@@ -49,6 +49,7 @@ namespace MVCRoutineAppClient
                     options.Scope.Add("offline_access");
                     options.Scope.Add("profile");
                     options.Scope.Add("role");
+                    options.Scope.Add("categoryMs.all");
                     options.Scope.Add("exerciseMs.all");
                     options.Scope.Add("routineMs.all");
                     options.Scope.Add("statistisMs.all");
@@ -79,6 +80,8 @@ namespace MVCRoutineAppClient
 
         private static IServiceCollection AddMyOwnServices(this IServiceCollection services)
         {
+            services.AddScoped<ICategoryService, CategoryService>();
+
             services.AddScoped<IExerciseService, ExerciseService>();
 
             return services;

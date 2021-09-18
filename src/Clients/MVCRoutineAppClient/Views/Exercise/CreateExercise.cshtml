@@ -7,8 +7,6 @@
 @{
     ViewData["Title"] = "CreateExercise";
 
-    var categoriesResult = await _exerciseService.GetAllCategoriesAsync(ViewBag.AccessToken);
-
 }
 
 
@@ -39,20 +37,7 @@
                     
                      
                     <select asp-for="Category" class="form-control bg-dark text-white" id="categories">
-                        @{
-                            if (categoriesResult.Item1)
-                            {
-                                foreach (var category in categoriesResult.Item2)
-                                {
-                                    <option value="@category["categoryId"]">@category["categoryName"]</option>
-                                }
-                            }
-                            else
-                            {
-                                <option value="0">Error</option>
-                            }
-                        }
-
+                         @{ await Html.RenderPartialAsync("_AllCategories", $"{ViewBag.AccessToken}");}
                     </select>
 
                 </div>

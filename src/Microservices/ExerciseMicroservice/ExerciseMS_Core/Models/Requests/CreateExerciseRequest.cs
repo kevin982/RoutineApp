@@ -22,5 +22,7 @@ namespace ExerciseMS_Core.Models.Requests
         [Required(ErrorMessage = "You must provide the category id")]
         public Guid CategoryId { get; set; }
  
+        [Required(ErrorMessage = "You must provide the file content type")]
+        public string FileContentType {  get; set; }
     }
 }

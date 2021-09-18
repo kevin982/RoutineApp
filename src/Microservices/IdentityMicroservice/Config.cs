@@ -20,6 +20,7 @@ namespace IdentityMicroservice
         public static IEnumerable<ApiScope> ApiScopes =>
        new List<ApiScope>
        {
+            new ApiScope("categoryMs.all", "All crud operations for the category micro service"),
             new ApiScope("exerciseMs.all", "All crud operations for the catalog exercise micro service"),
             new ApiScope("routineMs.all", "All crud operations for the routine micro service"),
             new ApiScope("statistisMs.all", "All crud operations for the statistics micro service"),
@@ -59,6 +60,7 @@ namespace IdentityMicroservice
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     "role",
+                    "categoryMs.all",
                     "exerciseMs.all",
                     "routineMs.all",
                     "statistisMs.all"

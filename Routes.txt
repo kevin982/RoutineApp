@@ -6,6 +6,8 @@
 
 -ExerciseMS: http: 8003:83  https: 9003:446
 
--RoutineMS: http: 8004:84  https: 9004:447
+-CategoryMS: http: 8004:83  https: 9004:446
 
--StatisticsMS : http: 8005:85  https: 9005:448
+-RoutineMS: http: 8005:84  https: 9005:447
+
+-StatisticsMS : http: 8006:85  https: 9006:448
