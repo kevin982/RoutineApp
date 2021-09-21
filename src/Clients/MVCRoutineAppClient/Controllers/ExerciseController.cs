@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MVCRoutineAppClient.Filters;
 using MVCRoutineAppClient.Models;
 using MVCRoutineAppClient.Services;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MVCRoutineAppClient.Controllers
@@ -16,20 +19,19 @@ namespace MVCRoutineAppClient.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IExerciseService _exerciseService;
+        private readonly ILogger<ExerciseController> _logger;
 
-
-        public ExerciseController(IHttpClientFactory httpClientFactory, IExerciseService exerciseService)
+        public ExerciseController(IHttpClientFactory httpClientFactory, IExerciseService exerciseService, ILogger<ExerciseController> logger)
         {
             _httpClientFactory = httpClientFactory;
             _exerciseService = exerciseService;
+            _logger = logger;
         }
 
         [UserAuthorizationFilter]
         [HttpGet("/v1/Exercise")]
-        public async Task<IActionResult> CreateExercise()
+        public IActionResult CreateExercise()
         {
-            ViewBag.AccessToken = await HttpContext.GetTokenAsync("access_token");
-
             return View();
         }
 
@@ -38,28 +40,78 @@ namespace MVCRoutineAppClient.Controllers
         public async Task<IActionResult> CreateExercise(CreateExerciseRequestModel model)
         {
             try
-            {
+            { 
+
                 model.FileContentType = model.Image.ContentType;
 
                 string accessToken = await HttpContext.GetTokenAsync("access_token");
-
-                ViewBag.AccessToken = accessToken;
                 
-                var result = await _exerciseService.CreateExerciseAsync(model, accessToken);
+                ViewBag.Result = await _exerciseService.CreateExerciseAsync(model, accessToken);
+            }
+            catch (Exception)
+            {
+                JObject error = new();
 
-                ViewBag.Succeeded = result.Item1;
+                error.Add("succeeded", false);
+                error.Add("title", "Internal Error");
+            }
+            
+            return View();
+        }
 
-                ViewBag.Message = result.Item2;
+        [UserAuthorizationFilter]
+        [HttpGet("/v1/Exercise/Category/{categoryId}/{index}/{size}")]
+        public async Task<string> GetExercisesByCategory(Guid categoryId, int index, int size)
+        {
+            try
+            {
+                index -= 1;
+
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                return await _exerciseService.GetExercisesByCategory(accessToken, categoryId, index, size);
 
             }
             catch (Exception ex)
             {
-                ViewBag.Succeeded = false;
+                _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
 
-                ViewBag.Message = ex.Message;
+                var error = new 
+                {
+                    succeeded = false,
+                    title = "Internal error",
+                    statusCode = 500
+                };
+
+                return JsonSerializer.Serialize(error);
             }
-            
-            return View();
+ 
+        }
+
+        [UserAuthorizationFilter]
+        [HttpGet("/v1/Exercise/IndexesCount/{categoryId}/{size}")]
+        public async Task<string> GetIndexesCount(Guid categoryId, int size)
+        {
+            try
+            {
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                return  await _exerciseService.GetIndexesCount(accessToken, categoryId, size);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
+
+                var error = new
+                {
+                    succeeded = false,
+                    title = "Internal error",
+                    statusCode = 500
+                };
+
+                return JsonSerializer.Serialize(error);
+            }
         }
     }
 }

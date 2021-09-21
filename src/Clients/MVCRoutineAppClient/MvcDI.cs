@@ -75,6 +75,11 @@ namespace MVCRoutineAppClient
                 options.BaseAddress = new Uri("https://localhost:9001");
             });
 
+            services.AddHttpClient("Self", options =>
+            {
+                options.BaseAddress = new Uri("https://localhost:9000");
+            });
+
             return services;
         }
 
@@ -83,6 +88,8 @@ namespace MVCRoutineAppClient
             services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddScoped<IExerciseService, ExerciseService>();
+
+            services.AddScoped<IRoutineService, RoutineService>();
 
             return services;
         }

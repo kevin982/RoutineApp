@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Queries
 {
-    public class GetExercisesCountByCategoryQuery : IRequest<int>
+    public class GetIndexesCount : IRequest<int>
     {
 
         public Guid CategoryId { get; init; }
+        public int Size { get; init; }
 
-        public GetExercisesCountByCategoryQuery(Guid categoryId)
+        public GetIndexesCount(Guid categoryId, int size)
         {
             CategoryId = categoryId;
+            Size = size;
         }
     }
 }

@@ -24,11 +24,21 @@ namespace MVCRoutineAppClient.Services
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
-        public async Task<(bool, string)> CreateExerciseAsync(CreateExerciseRequestModel model, string accessToken)
+        public async Task<JObject> CreateExerciseAsync(CreateExerciseRequestModel model, string accessToken)
         {
             try
             {
-                if (!model.Image.IsImage()) return (false, "The file must be an image!");
+                if (!model.Image.IsImage())
+                {
+                    JObject e = new();
+
+                    e.Add("statusCode", 400);
+                    e.Add("title", "The file must be an image");
+                    e.Add("succeeded", false);
+
+                    return e;
+                }
+
 
                 var content = new MultipartFormDataContent();
 
@@ -46,21 +56,84 @@ namespace MVCRoutineAppClient.Services
 
                 var result = await client.PostAsync("/v1/Exercise", content);
 
-                if (result.IsSuccessStatusCode) return (true, "The exercise has been created!");
-
                 string bodyContent = await result.Content.ReadAsStringAsync();
 
-                if (string.IsNullOrEmpty(bodyContent)) return (false, "We could not create the exercise");
+                if (!string.IsNullOrEmpty(bodyContent)) return JObject.Parse(bodyContent);
 
-                var response = JObject.Parse(bodyContent);
+                JObject error = new();
 
-                return (false, response["title"].ToString());
+                error.Add("statusCode", (int)result.StatusCode);
+                error.Add("title", result.ReasonPhrase);
+                error.Add("succeeded", false);
+
+                return error;
             }
             catch (Exception)
             {
                 throw;
             }
         }
- 
+
+        public async Task<string> GetExercisesByCategory(string accessToken, Guid categoryId, int index, int size)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Ocelot");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var response = await client.GetAsync($"/v1/Exercise/Category/{categoryId}/{index}/{size}");
+
+                string content = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(content)) return content;
+
+                var error = new 
+                {
+                    statusCode = (int)response.StatusCode,
+                    title = response.ReasonPhrase,
+                    succeeded = false
+                };
+
+                return JsonConvert.SerializeObject(error);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+        }
+
+        public async Task<string> GetIndexesCount(string accessToken, Guid categoryId, int size)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Ocelot");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var response = await client.GetAsync($"/v1/Exercise/IndexesCount/{categoryId}/{size}");
+
+                string content = await response.Content.ReadAsStringAsync();
+
+                if(!string.IsNullOrEmpty(content)) return content;
+
+                var errorMessage = new 
+                {
+                    statusCode = (int)response.StatusCode,  
+                    title = response.ReasonPhrase,
+                    succeeded = false
+                };
+
+                return JsonConvert.SerializeObject(errorMessage);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
     }
 }

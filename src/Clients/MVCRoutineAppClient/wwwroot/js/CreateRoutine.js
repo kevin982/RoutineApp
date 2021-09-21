@@ -1,24 +1,65 @@
-﻿const GetExercises = token =>
-{
-    console.log("Hola mundo, el token es: ", token);
+﻿let indexesCount = 1;
+let currentIndex = 1;
+
+const showMessage = (icon, title, errorMessage) => {
+    Swal.fire({
+        position: 'top-center',
+        icon: `${icon}`,
+        title: `${title}`,
+        text: `${errorMessage}`,
+    });
 }
 
 
+const addCategoriesToCombo = async () => {
 
+    try {
+        const result = await fetch("https://localhost:9000/v1/Categories");
 
+        const response = await result.json();
 
+        if (!response.succeeded) {
+            throw new Error(`We could not achieve the categories due to ${response.title}`);
+            return;
+        }
 
-const getExercisesByCategoryAsync = async (categoryId) => {
+        const categoriesCombo = document.getElementById("categoryCombo");
 
-    const resp = await fetch(`https://localhost:5001/Exercise/GetUserExercisesByCategory/${categoryId}`);
+        const categories = response.content;
 
-    //const resp = await fetch("https://localhost:5001/Exercise/GetName");
+        for (let i = 0; i < categories.length; i++) {
 
-    const respJson = await resp.json();
+            const option = document.createElement("option");
+            option.setAttribute("value", categories[i].categoryId);
+            option.textContent = categories[i].categoryName;
 
-    return respJson;
+            categoriesCombo.appendChild(option);
+        }
+    } catch (e) {
+        throw e;
+    }
 }
 
+const getExercisesByCategoryAsync = async (categoryId, index, size) => {
+
+    try {
+
+        if (categoryId === undefined || index === undefined || size === undefined) return undefined;
+
+        const resp = await fetch(`https://localhost:9000/v1/Exercise/Category/${categoryId}/${index}/${size}`);
+
+        const result = await resp.json();
+
+        if (!result.succeeded) throw new Error(`We could not get the exercises due to ${result.title}`);
+
+        return result.content;
+
+    } catch (e) {
+        throw e;
+    }
+
+    
+}
 
 const eliminatePastExercisesFromTheDom = (container) => {
 
@@ -28,139 +69,260 @@ const eliminatePastExercisesFromTheDom = (container) => {
 
 }
 
-
-
-
 const addTheExercisesToTheDom = (exercises) => {
 
+    try {
+        const container = document.getElementById("exercisesContainer");
+
+        eliminatePastExercisesFromTheDom(container);
+
+        for (let i = 0; i < exercises.length; i++) {
+
+            let exercise = exercises[i];
+
+            console.log(exercise);
+
+            let divRow = document.createElement("div");
+            divRow.className = "row justify-content-center";
+
+            let card = document.createElement("div");
+            card.className = "card col-8 mb-5 bg-dark";
+
+            let cardImage = document.createElement("img");
+            cardImage.className = "card-img-top";
+            cardImage.setAttribute("src", exercise.imageUrl);
+
+            let cardBody = document.createElement("div");
+            cardBody.className = "card-body gradient-background";
+
+            let cardTitle = document.createElement("h2");
+            cardTitle.className = "card-title text-white mt-3";
+            cardTitle.textContent = exercise.exerciseName;
+
+            let action = (exercise.isInTheRoutine) ? "Remove" : "Add";
+
+            let cardButton = document.createElement("button");
+            cardButton.className = "btn-fill-animation mt-4 rounded";
+            cardButton.textContent = action;
+            cardButton.setAttribute("id", "buttonExercise-" + action + "-" + exercise.id);
+
+            let division = document.createElement("hr");
+            division.className = "bg-white mb-5";
 
 
-    const container = document.getElementById("exercisesContainer");
+            container.appendChild(divRow);
+            container.appendChild(division);
 
-    eliminatePastExercisesFromTheDom(container);
+            divRow.appendChild(card);
 
-    for (let i = 0; i < exercises.length; i++) {
+            card.appendChild(cardImage);
+            card.appendChild(cardBody);
 
-        let exercise = exercises[i];
-        let img = exercise.Image;
-
-        console.log(exercise);
-
-        let divRow = document.createElement("div");
-        divRow.className = "row justify-content-center";
-
-        let card = document.createElement("div");
-        card.className = "card col-8 mb-5 bg-dark";
-
-        let cardImage = document.createElement("img");
-        cardImage.className = "card-img-top";
-        cardImage.setAttribute("src", img);
-
-        let cardBody = document.createElement("div");
-        cardBody.className = "card-body gradient-background";
-
-        let cardTitle = document.createElement("h2");
-        cardTitle.className = "card-title text-white mt-3";
-        cardTitle.textContent = exercise.ExerciseName;
-
-        let cardText = document.createElement("p");
-        cardText.className = "card-text text-white";
-        cardText.textContent = `This exercise belongs to the ${exercise.Category} category`;
-
-        let action = (exercise.IsInTheRoutine) ? "Remove" : "Add";
-
-        let cardButton = document.createElement("button");
-        cardButton.className = "btn-fill-animation mt-4 rounded";
-        cardButton.textContent = action;
-        cardButton.setAttribute("id", "buttonExercise-" + action + "-" + exercise.ExerciseId);
-
-        let division = document.createElement("hr");
-        division.className = "bg-white mb-5";
-
-
-        container.appendChild(divRow);
-        container.appendChild(division);
-
-        divRow.appendChild(card);
-
-        card.appendChild(cardImage);
-        card.appendChild(cardBody);
-
-        cardBody.appendChild(cardTitle);
-        cardBody.appendChild(cardText);
-        cardBody.appendChild(cardButton);
-
-
-
+            cardBody.appendChild(cardTitle);
+            cardBody.appendChild(cardButton);
+        }
+    } catch (e) {
+        throw e;
     }
 
-
 }
 
-const informThereIsNotExercises = () => {
-    const container = document.getElementById("exercisesContainer");
+const thereAreNotExercises = () => {
 
-    eliminatePastExercisesFromTheDom(container);
+    try {
+        const container = document.getElementById("exercisesContainer");
 
-    const row = document.createElement("div");
-    row.className = "row";
+        eliminatePastExercisesFromTheDom(container);
 
-    const errorTextContainer = document.createElement("div");
-    errorTextContainer.className = "col-6";
+        const row = document.createElement("div");
+        row.className = "row";
 
-    const errorTitle = document.createElement("h1");
-    errorTitle.textContent = "We are sorry";
-    errorTitle.className = "text-white d-inline-block mx-3";
+        const errorTextContainer = document.createElement("div");
+        errorTextContainer.className = "col-6";
 
-    const errorText = document.createElement("p");
-    errorText.className = "text-white";
-    errorText.textContent = "You do not have exercises created in this category";
+        const errorTitle = document.createElement("h1");
+        errorTitle.textContent = "We are sorry";
+        errorTitle.className = "text-white d-inline-block mx-3";
 
-    const imageErrorContainer = document.createElement("div");
-    imageErrorContainer.className = "col-6";
+        const errorText = document.createElement("p");
+        errorText.className = "text-white";
+        errorText.textContent = "You do not have exercises created in this category";
 
-    const imageError = document.createElement("img");
-    imageError.setAttribute("src", "https://res.cloudinary.com/di5zdosfc/image/upload/v1624831901/Sad_face_Monochromatic_1_z5wzyr.png");
+        const imageErrorContainer = document.createElement("div");
+        imageErrorContainer.className = "col-6";
+
+        const imageError = document.createElement("img");
+        imageError.setAttribute("src", "https://res.cloudinary.com/di5zdosfc/image/upload/v1624831901/Sad_face_Monochromatic_1_z5wzyr.png");
 
 
-    row.appendChild(errorTextContainer);
-    row.appendChild(imageErrorContainer);
+        row.appendChild(errorTextContainer);
+        row.appendChild(imageErrorContainer);
 
-    errorTextContainer.appendChild(errorTitle);
-    errorTextContainer.appendChild(errorText);
+        errorTextContainer.appendChild(errorTitle);
+        errorTextContainer.appendChild(errorText);
 
-    imageErrorContainer.appendChild(imageError);
+        imageErrorContainer.appendChild(imageError);
 
-    container.appendChild(row);
+        container.appendChild(row);
+    } catch (e) {
+        throw e;
+    }
+    
 }
 
+const getIndexes = async (categoryId, size) =>
+{
+    try {
+        const resp = await fetch(`https://localhost:9000/v1/Exercise/IndexesCount/${categoryId}/${size}`);
 
-const categoryCombo = document.getElementById("categoryCombo");
+        const result = await resp.json();
+
+        return (result.succeeded) ? result.content.count : 0;
+
+    } catch (e) {
+        throw e;
+    }
+}
+
+const enableDisablePrivousNextBtns = () => {
+
+    try {
+        document.getElementById("btnPrevious").className = "btn btn-outline-light";
+        document.getElementById("btnNext").className = "btn btn-outline-light";
+        document.getElementById("index").textContent = currentIndex;
+
+        if (indexesCount === 0) {
+            document.getElementById("btnPrevious").className = "btn btn-outline-light disabled";
+            document.getElementById("btnNext").className = "btn btn-outline-light disabled";
+            document.getElementById("index").textContent = "0";
+            currentIndex = 0;
+        }
+
+        if (currentIndex === 1) {
+            document.getElementById("btnPrevious").className = "btn btn-outline-light disabled";
+        }
+
+        if (currentIndex === indexesCount) {
+            document.getElementById("btnNext").className = "btn btn-outline-light disabled";
+        }
+    } catch (e) {
+        throw e;
+    }
+}
 
 window.addEventListener("load", async () => {
-    const exercises = await getExercisesByCategoryAsync(categoryCombo.value);
 
-    console.log(exercises);
+    try {
+        await addCategoriesToCombo();
 
-    addTheExercisesToTheDom(exercises);
-});
+        document.getElementById("index").textContent = currentIndex;
 
+        const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
 
-categoryCombo.addEventListener("change", async () => {
+        (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
 
-    const exercises = await getExercisesByCategoryAsync(categoryCombo.value);
+        indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
 
-    console.log(exercises);
+        enableDisablePrivousNextBtns();
 
-    if (exercises.length === 0) {
-        informThereIsNotExercises();
-    } else {
-        addTheExercisesToTheDom(exercises);
+    } catch (e) {
+        showMessage('error', 'Error!', e.errorMessage);
     }
 
+});
+
+document.getElementById("categoryCombo").addEventListener("change", async () => {
+
+    try {
+
+        currentIndex = 1;
+
+        document.getElementById("index").textContent = currentIndex;
+
+        const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
+
+        (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
+
+        indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
+
+        enableDisablePrivousNextBtns();
+
+        scrollTo(0, 1000);
+    } catch (e) {
+        showMessage('error', 'Error!', e.errorMessage);
+    }
 
 });
 
+document.getElementById("size").addEventListener("change", async () => {
+
+    try {
+
+        currentIndex = 1;
+
+        document.getElementById("index").textContent = currentIndex;
+
+        const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
+
+        (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
+
+        indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
+
+        enableDisablePrivousNextBtns();
+
+        scrollTo(0, 1000);
+
+    } catch (e) {
+        showMessage('error', 'Error!', e.errorMessage);
+    }
+});
+
+document.getElementById("btnPrevious").addEventListener("click", async () => {
+
+    try {
+
+        currentIndex -= 1;
+
+        document.getElementById("index").textContent = currentIndex;
+
+        const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
+
+        (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
+
+        indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
+
+        enableDisablePrivousNextBtns();
+
+        scrollTo(0, 1000);
+
+    } catch (e) {
+        showMessage('error', 'Error!', e.errorMessage);
+    }
+});
+
+document.getElementById("btnNext").addEventListener("click", async () => {
+
+    try {
+        currentIndex += 1;
+
+        document.getElementById("index").textContent = currentIndex;
+
+        const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
+
+        (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
+
+        indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
+
+        enableDisablePrivousNextBtns();
+
+        scrollTo(0, 1000);
+    } catch (e) {
+        showMessage('error', 'Error!', e.errorMessage);
+    }
+
+    
+});
+ 
 document.addEventListener("click", async (e) => {
 
     let id = e.target.id;
@@ -169,19 +331,12 @@ document.addEventListener("click", async (e) => {
 
     if (elementName !== 'buttonExercise') return;
 
-    if (action === "Add") {
-        await AddExercise(exerciseId);
-    } else if (action === "Remove") {
-        await RemoveExercise(exerciseId);
-    }
-
+    (action === "Add") ? await AddExercise(exerciseId) : await RemoveExercise(exerciseId);
+ 
 
 });
 
-
 const AddExercise = async (exerciseId) => {
-
-
 
     Swal.fire({
         background: 'black',
@@ -210,45 +365,41 @@ const AddExercise = async (exerciseId) => {
             const options = document.getElementById('daysToTrain').selectedOptions;
             const days = Array.from(options).map(({ value }) => value);
 
-            if (!sets || !days) {
-                Swal.showValidationMessage(`Please enter sets and days`)
+            if (!sets || days.length === 0) {
+                Swal.showValidationMessage(`Please enter sets and days`);
+            } else if (sets === "0") {
+                Swal.showValidationMessage(`Please enter sets and days`);
+            } else {
+                for (var i = 0; i < days.length; i++) days[i] = parseInt(days[i]);
+
+                const addExerciseModel = {
+                    ExerciseId: parseInt(exerciseId),
+                    Days: days,
+                    Sets: parseInt(sets)
+                };
+
+                const settings = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(addExerciseModel)
+                };
+
+
+                const response = await fetch("https://localhost:9000/v1/Routine", settings);
+
+                return await response.json();
             }
 
-            for (var i = 0; i < days.length; i++) days[i] = parseInt(days[i]);
+            
 
-            const addExerciseModel = {
-                ExerciseId: parseInt(exerciseId),
-                Days: days,
-                Sets: parseInt(sets)
-            };
-
-            const settings = {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(addExerciseModel)
-            };
-
-
-            const response = await fetch("https://localhost:44380/WeatherForecast/AddExercise", settings);
-
-            //const response = await fetch("https://localhost:44380/WeatherForecast/Get");
-
-            //const response = await fetch("https://localhost:5001/Exercise/AddName");
-
-            const json = await response.json();
-
-            console.log(response.body);
-
-
-            return { sets: sets, days: days }
+            
         }
     }).then((result) => {
-        Swal.fire(`
-    Sets: ${result.value.sets}
-    Days: ${result.value.days}
-  `.trim())
+
+        (result.value.succeeded) ? showMessage('success', 'Exercises added!', 'The exercise has been added to your routine successfully!') : showMessage('error', 'Error!', `The exercise could not added due to ${result.value.title}`);
+
     })
 
 
@@ -263,16 +414,20 @@ const RemoveExercise = async (exerciseId) => {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
+    }).then(async (result) => {
+
         if (result.isConfirmed) {
 
+            const settings = {
+                method: 'DELETE'
+            };
 
+            const response = await fetch(`https://localhost:9000/v1/Routine/{exerciseId}`, settings);
 
-            Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            )
+            const content = await response.json();
+
+            (content.succeeded) ? showMessage('success', 'Exercise removed!', 'The exercise has been removed from routine successfully!') : showMessage('error', 'Error!', `The exercise could not be removed from routine due to ${content.title}`);
+
         }
     })
 }

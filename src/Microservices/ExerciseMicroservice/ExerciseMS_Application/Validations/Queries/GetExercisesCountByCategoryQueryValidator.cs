@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ExerciseMS_Application.Validations.Queries
 {
-    public class GetExercisesCountByCategoryQueryValidator : AbstractValidator<GetExercisesCountByCategoryQuery>
+    public class GetExercisesCountByCategoryQueryValidator : AbstractValidator<GetIndexesCount>
     {
         public GetExercisesCountByCategoryQueryValidator()
         {

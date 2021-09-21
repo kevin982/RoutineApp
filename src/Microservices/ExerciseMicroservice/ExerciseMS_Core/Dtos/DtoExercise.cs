@@ -12,8 +12,6 @@ namespace ExerciseMS_Core.Dtos
 
         public string ExerciseName { get; set; }
 
-        public string CategoryName { get; set; }
-
         public bool IsInTheRoutine { get; set; }
 
         public string ImageUrl { get; set; }

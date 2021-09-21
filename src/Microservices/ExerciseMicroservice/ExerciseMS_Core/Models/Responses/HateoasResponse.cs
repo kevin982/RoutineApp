@@ -16,7 +16,7 @@ namespace ExerciseMS_Core.Models.Responses
 
         public object Content { get; set; }
 
-        public bool Succeded { get; set; }
+        public bool Succeeded { get; set; }
         
     }
 

@@ -111,12 +111,12 @@ namespace ExerciseMS_API.Controllers
 
         [Authorize(Roles = "user")]
         [Authorize(Policy = "ExerciseScope")]
-        [HttpGet("/api/v1/Exercise/Category/{categoryId}")]
-        public async Task<ActionResult<HateoasResponse>> GetExercisesCountByCategory(Guid categoryId)
+        [HttpGet("/api/v1/Exercise/IndexesCount/{categoryId}/{size:int:min(5):max(20)}")]
+        public async Task<ActionResult<HateoasResponse>> GetIndexesCount(Guid categoryId, int size)
         {
             try
             {
-                GetExercisesCountByCategoryQuery query = new(categoryId);
+                GetIndexesCount query = new(categoryId, size);
 
                 var count = new { Count = await _mediator.Send(query) };
 

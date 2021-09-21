@@ -14,7 +14,7 @@ namespace CategoryMS_Infraestructure.Services
             return new HateoasResponse()
             {
                 Links = links,
-                Succeded = true,
+                Succeeded = true,
                 StatusCode = 200,
                 Title = message,
                 Content = data
@@ -28,7 +28,7 @@ namespace CategoryMS_Infraestructure.Services
                 return new HateoasResponse
                 {
                     Links = links,
-                    Succeded = false,
+                    Succeeded = false,
                     StatusCode = 500,
                     Title = "Server error",
                     Content = null,
@@ -39,7 +39,7 @@ namespace CategoryMS_Infraestructure.Services
             return new HateoasResponse
             {
                 Links = links,
-                Succeded = false,
+                Succeeded = false,
                 StatusCode = e.StatusCode,
                 Title = (e.StatusCode == 500) ? "Server error" : e.Message,
                 Content = null,

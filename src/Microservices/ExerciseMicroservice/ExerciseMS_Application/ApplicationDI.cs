@@ -23,7 +23,7 @@ namespace ExerciseMS_Application
             services.AddScoped<IValidator<CreateExerciseCommand>, CreateExerciseCommandValidator>();
             services.AddScoped<IValidator<DeleteExerciseCommand>,DeleteExerciseCommandValidator>();
             services.AddScoped<IValidator<GetExercisesByCategoryQuery>,GetExercisesByCategoryQueryValidator>();
-            services.AddScoped<IValidator<GetExercisesCountByCategoryQuery>,GetExercisesCountByCategoryQueryValidator>();
+            services.AddScoped<IValidator<GetIndexesCount>,GetExercisesCountByCategoryQueryValidator>();
 
             #endregion
 

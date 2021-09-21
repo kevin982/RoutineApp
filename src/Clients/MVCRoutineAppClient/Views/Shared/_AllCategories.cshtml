@@ -1,17 +1,29 @@
-﻿@inject MVCRoutineAppClient.Services.ICategoryService _categoryService;
+﻿@using MVCRoutineAppClient.Controllers
+@using Microsoft.AspNetCore.Http
+@inject MVCRoutineAppClient.Services.ICategoryService _categoryService;
+@using Microsoft.AspNetCore.Authentication
+@inject System.Net.Http.IHttpClientFactory _clientFactory;
+
 
 
 @{
-	Layout = null;
-	var categories = await _categoryService.GetAllCategoriesAsync(Model);
+	var client = _clientFactory.CreateClient("Self");
+
+	var result = await client.GetAsync("/v1/Categories");
+
+	var response = await result.Content.ReadAsStringAsync();
+
+	string name = "Kevin";
 }
 
 @{
-	if (categories.Item1)
-	{
-		foreach (var category in categories.Item2)
-		{
-			<option value="@category["categoryId"]">@category["categoryName"]</option>
-		}
-	}
+	//if (categories.Item1)
+	//{
+	//	foreach (var category in categories.Item2)
+	//	{
+	//		<option value="@category["categoryId"]">@category["categoryName"]</option>
+	//	}
+	//}
 }
+
+<script src="~/js/Categories.js"></script>

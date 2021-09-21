@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using MVCRoutineAppClient.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -20,9 +21,8 @@ namespace MVCRoutineAppClient.Services
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
-        public async Task<(bool, dynamic)> GetAllCategoriesAsync(string accessToken)
+        public async Task<string> GetAllCategoriesAsync(string accessToken)
         {
-
             try
             {
                 var client = _httpClientFactory.CreateClient("Ocelot");
@@ -33,34 +33,26 @@ namespace MVCRoutineAppClient.Services
 
                 string bodyContent = await result.Content.ReadAsStringAsync();
 
-                _logger.LogInformation(bodyContent);
+                if (!string.IsNullOrEmpty(bodyContent)) return bodyContent;
 
-                if (result.IsSuccessStatusCode)
+                var errorResponse = new
                 {
-                    var response = JObject.Parse(bodyContent);
+                    statusCode = (int)result.StatusCode,
+                    title = result.ReasonPhrase,
+                    succeeded = false
+                };
 
-                    _logger.LogInformation($"Response got at {DateTime.UtcNow} = {response["content"].ToString()}");
-
-                    return (true, response["content"]);
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(bodyContent)) return (false, "Error while getting the categories");
-
-                    var response = JObject.Parse(bodyContent);
-
-                    return (false, response["title"].ToString());
-                }
+                return JsonConvert.SerializeObject(errorResponse);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return (false, ex.Message);
+                throw;
             }
 
         }
 
-        public async Task<(bool, string)> CreateCategoryAsync(CreateCategoryRequestModel model, string accessToken)
+        public async Task<JObject> CreateCategoryAsync(CreateCategoryRequestModel model, string accessToken)
         {
             try
             {
@@ -72,15 +64,17 @@ namespace MVCRoutineAppClient.Services
 
                 var result = await client.PostAsync("/v1/Category", content);
 
-                if (result.IsSuccessStatusCode) return (true, "Category created!");
-
                 string bodyContent = await result.Content.ReadAsStringAsync();
 
-                if (string.IsNullOrEmpty(bodyContent)) return (false, "We could not create the category");
+                if (!string.IsNullOrEmpty(bodyContent)) return JObject.Parse(bodyContent);
 
-                var response = JObject.Parse(bodyContent);
+                JObject error = new();
 
-                return (false, response["title"].ToString());
+                error.Add("statusCode",(int)result.StatusCode);
+                error.Add("title",result.ReasonPhrase);
+                error.Add("succeeded",false);
+
+                return error;
             }
             catch (Exception)
             {

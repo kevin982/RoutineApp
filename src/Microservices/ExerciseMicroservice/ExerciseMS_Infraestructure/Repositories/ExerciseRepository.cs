@@ -4,12 +4,11 @@ using ExerciseMS_Infraestructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using ExerciseMS_Core.Services;
 using ExerciseMS_Core.Exceptions;
+using ExerciseMS_Infraestructure.Extensions;
 
 namespace ExerciseMS_Infraestructure.Repositories
 {
@@ -35,12 +34,13 @@ namespace ExerciseMS_Infraestructure.Repositories
                 .Exercises
                 .AsNoTracking()
                 .Where(e => e.CategoryId == categoryId && e.UserId == userId)
+                .OrderBy(e => e.ExerciseName)
                 .Skip(index * size)
                 .Take(size)
                 .ToListAsync();
 
-                if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") {StatusCode = 400 };
-                if (exercises.Count == 0) throw new ExerciseMSException("The user does not have exercises with that category") {StatusCode = 400 };
+                if (exercises is null) throw new ExerciseMSException("The user does not have exercises with that category") {StatusCode = 404 };
+                if (exercises.Count == 0) throw new ExerciseMSException("The user does not have exercises with that category") {StatusCode = 404 };
 
                 return exercises;
             }   
@@ -50,7 +50,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public int GetExerciseCountByCategory(Guid categoryId)
+        public int GetIndexesCountAsync(Guid categoryId, int size)
         {
             try
             {
@@ -65,7 +65,9 @@ namespace ExerciseMS_Infraestructure.Repositories
 
                 if (count == 0) throw new ExerciseMSException("There are not exercises with that category") { StatusCode = 404 };
 
-                return count;
+                decimal indexes = Math.Ceiling(count.ToDecimal() / size.ToDecimal());
+
+                return (int)indexes;
             }
             catch (Exception)
             {
@@ -114,8 +116,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             {
                 throw;
             }
-
-
+ 
         }
     }
 }
