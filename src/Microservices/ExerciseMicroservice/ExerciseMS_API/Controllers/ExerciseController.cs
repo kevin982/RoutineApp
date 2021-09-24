@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 namespace ExerciseMS_API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "user")]
+    [Authorize(Policy = "ExerciseScope")]
     public class ExerciseController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -82,8 +84,7 @@ namespace ExerciseMS_API.Controllers
 
         #region Queries
 
-        [Authorize(Roles = "user")]
-        [Authorize(Policy = "ExerciseScope")]
+ 
         [HttpGet("/api/v1/Exercise/Category/{categoryId}/{index:int:min(0)}/{size:int:min(5):max(20)}")]
         public async Task<ActionResult<HateoasResponse>> GetAllExercisesByCategory(Guid categoryId, int index, int size)
         {
@@ -109,8 +110,7 @@ namespace ExerciseMS_API.Controllers
 
         }
 
-        [Authorize(Roles = "user")]
-        [Authorize(Policy = "ExerciseScope")]
+        
         [HttpGet("/api/v1/Exercise/IndexesCount/{categoryId}/{size:int:min(5):max(20)}")]
         public async Task<ActionResult<HateoasResponse>> GetIndexesCount(Guid categoryId, int size)
         {

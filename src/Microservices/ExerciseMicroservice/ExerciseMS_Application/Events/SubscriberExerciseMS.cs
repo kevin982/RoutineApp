@@ -44,11 +44,11 @@ namespace ExerciseMS_Application.Events
 
                 _channel = _connection.CreateModel();
 
-                _channel.ExchangeDeclare(exchange: "RoutineApp", type: "topic");
+                _channel.ExchangeDeclare(exchange: "UpdateExercise", type: "topic");
 
                 _queueName = _channel.QueueDeclare().QueueName;
 
-                _channel.QueueBind(queue: _queueName, exchange: "RoutineApp", routingKey: "RoutineMS.UpdateExercise");
+                _channel.QueueBind(queue: _queueName, exchange: "UpdateExercise", routingKey: "RoutineMS.UpdateExercise");
             }
             catch (Exception ex)
             {
