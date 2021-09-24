@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RoutineMS_Application;
+using RoutineMS_Infraestructure;
 
 namespace RoutineMS_API
 {
@@ -32,6 +34,10 @@ namespace RoutineMS_API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RoutineMS_API", Version = "v1" });
             });
+
+            services.AddHttpContextAccessor();
+            services.AddInfrastructure(Configuration);
+            services.AddApplication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +53,8 @@ namespace RoutineMS_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

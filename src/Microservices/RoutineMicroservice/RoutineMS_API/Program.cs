@@ -21,6 +21,7 @@ namespace RoutineMS_API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8005", "https://localhost:9005");
                 });
     }
 }
