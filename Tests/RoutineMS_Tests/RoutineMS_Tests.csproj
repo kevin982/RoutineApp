@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +27,21 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RoutineMS_API">
+      <HintPath>..\..\src\Microservices\RoutineMicroservice\RoutineMS_API\bin\Debug\net5.0\RoutineMS_API.dll</HintPath>
+    </Reference>
+    <Reference Include="RoutineMS_Application">
+      <HintPath>..\..\src\Microservices\RoutineMicroservice\RoutineMS_Application\bin\Debug\net5.0\RoutineMS_Application.dll</HintPath>
+    </Reference>
+    <Reference Include="RoutineMS_Core">
+      <HintPath>..\..\src\Microservices\RoutineMicroservice\RoutineMS_Core\bin\Debug\net5.0\RoutineMS_Core.dll</HintPath>
+    </Reference>
+    <Reference Include="RoutineMS_Infraestructure">
+      <HintPath>..\..\src\Microservices\RoutineMicroservice\RoutineMS_Infraestructure\bin\Debug\net5.0\RoutineMS_Infraestructure.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
