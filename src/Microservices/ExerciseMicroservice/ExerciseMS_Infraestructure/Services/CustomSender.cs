@@ -2,6 +2,7 @@
 using ExerciseMS_Core.Models;
 using ExerciseMS_Core.Models.Responses;
 using ExerciseMS_Core.Services;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,27 +27,34 @@ namespace ExerciseMS_Infraestructure.Services
 
         public HateoasResponse SendError(Exception ex, IEnumerable<Link> links)
         {
-            if (ex is not ExerciseMSException)
-            
-                return new HateoasResponse
-                {
-                    Links = links,
-                    Succeeded = false,
-                    StatusCode = 500,
-                    Title = "Server error",
-                    Content = null,
-                };
-            
-            ExerciseMSException e = ex as ExerciseMSException;
-
-            return new HateoasResponse
+            HateoasResponse response = new()
             {
                 Links = links,
                 Succeeded = false,
-                StatusCode = e.StatusCode,
-                Title = (e.StatusCode == 500) ? "Server error" : e.Message,
-                Content = null,
+                Content = null
             };
+
+
+            if (ex is ExerciseMSException)
+            {
+                ExerciseMSException e = ex as ExerciseMSException;
+
+                response.StatusCode = e.StatusCode;
+                response.Title = (e.StatusCode == 500) ? "Server error" : e.Message;
+
+            }
+            else if (ex is ValidationException)
+            {
+                response.StatusCode = 400;
+                response.Title = $"Bad Request due to {ex.Message}";
+            }
+            else
+            {
+                response.StatusCode = 500;
+                response.Title = "Server error";
+            }
+
+            return response;
 
         }
  

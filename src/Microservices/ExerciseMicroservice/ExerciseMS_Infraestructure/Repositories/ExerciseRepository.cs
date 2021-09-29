@@ -50,7 +50,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public int GetIndexesCountAsync(Guid categoryId, int size)
+        public int GetIndexesCount(Guid categoryId, int size)
         {
             try
             {

@@ -24,7 +24,7 @@ namespace ExerciseMS_Application.Handlers.QueryHandlers
             {
                 await _validator.ValidateAndThrowAsync(request);
 
-                return _unitOfWork.Exercises.GetIndexesCountAsync(request.CategoryId, request.Size);
+                return _unitOfWork.Exercises.GetIndexesCount(request.CategoryId, request.Size);
             }
             catch (Exception)
             {
