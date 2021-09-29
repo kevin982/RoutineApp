@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoutineMS_Infraestructure.Extensions
+namespace RoutineMS_Application.Extensions
 {
     public static class DateExtensions
     {
@@ -14,14 +14,14 @@ namespace RoutineMS_Infraestructure.Extensions
 
             switch (day)
             {
-                case "monday": return 1; 
-                
-                case "tuesday":return 2;
-                
-                case "wednesday":return 3;
-                
-                case "thursday":return 4;
-                
+                case "monday": return 1;
+
+                case "tuesday": return 2;
+
+                case "wednesday": return 3;
+
+                case "thursday": return 4;
+
                 case "friday": return 5;
 
                 case "saturday": return 6;

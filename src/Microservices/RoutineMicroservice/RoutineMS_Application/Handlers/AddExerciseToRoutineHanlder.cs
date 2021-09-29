@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using RoutineMS_Application.Commands;
 using RoutineMS_Application.Validator;
+using RoutineMS_Core.Exceptions;
 using RoutineMS_Core.Models.Entities;
 using RoutineMS_Core.Models.Requests;
 using RoutineMS_Core.Services;
@@ -26,8 +27,7 @@ namespace RoutineMS_Application.Handlers
 
         private Exercise Exercise { get; set; }
         private Routine Routine{ get; set; }
-
-
+        private Guid UserId {  get; set; }
 
         public AddExerciseToRoutineHanlder(IUnitOfWork unitOfWork, IValidator<AddExerciseToRoutineCommand> validator, IUserService userService, IPublisherService publisherService, IConfiguration configuration)
         {
@@ -42,7 +42,14 @@ namespace RoutineMS_Application.Handlers
         {
             try
             {
+                UserId = new Guid(_userService.GetUserId());
+
                 await _validator.ValidateAndThrowAsync(request);
+                
+                var routine = await _unitOfWork.Routines.TheExerciseIsInRoutineAsync(request.Request.ExerciseId, UserId);
+                
+                if (routine) throw new RoutineMSException("The exercise is already in the routine!") { StatusCode = 400};
+                
                 await Map(request.Request);
 
                 await _unitOfWork.Exercises.CreateAsync(Exercise);
@@ -79,7 +86,7 @@ namespace RoutineMS_Application.Handlers
                 Routine = new Routine()
                 {
                     Id = Guid.NewGuid(),
-                    UserId = new Guid(_userService.GetUserId()),
+                    UserId = UserId,
                     Exercise = Exercise,
                     ExerciseId = request.ExerciseId,
                     Days = days,

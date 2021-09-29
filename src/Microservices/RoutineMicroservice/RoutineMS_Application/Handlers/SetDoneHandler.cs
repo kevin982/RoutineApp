@@ -33,12 +33,11 @@ namespace RoutineMS_Application.Handlers
                 Exercise exercise = await _unitOfWork.Exercises.GetByIdAsync(request.Request.ExerciseId);
 
                 await _unitOfWork.SetsDetails.DeleteOldDetailsAsync();
+                await _unitOfWork.CompleteAsync();
 
                 if (exercise.SetDetail is not null)
                 {
                     exercise.SetDetail.SetsCompleted++;
-
-                    await _unitOfWork.CompleteAsync();
                 }
                 else
                 {
@@ -47,9 +46,8 @@ namespace RoutineMS_Application.Handlers
                     await _unitOfWork.SetsDetails.CreateAsync(setDetail);
 
                     exercise.SetDetail = setDetail;
-
-                    await _unitOfWork.CompleteAsync();
                 }
+                await _unitOfWork.CompleteAsync();    
 
                 var setDone = new { ExerciseId = request.Request.ExerciseId, Weight = request.Request.PoundsLifted, Repetitions = request.Request.Repetitions, DayDone = DateTime.UtcNow};
 

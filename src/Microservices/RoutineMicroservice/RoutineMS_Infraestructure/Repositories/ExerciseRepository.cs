@@ -30,6 +30,6 @@ namespace RoutineMS_Infraestructure.Repositories
                 throw;
             }
         }
-
+  
     }
 }

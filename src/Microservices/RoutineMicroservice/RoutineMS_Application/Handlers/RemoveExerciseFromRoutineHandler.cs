@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using RoutineMS_Application.Commands;
+using RoutineMS_Core.Exceptions;
 using RoutineMS_Core.Services;
 using RoutineMS_Core.UoW;
 using System;
@@ -31,11 +32,17 @@ namespace RoutineMS_Application.Handlers
         {
             try
             {
-                await _unitOfWork.Routines.RemoveRoutineByExercise(request.ExerciseId);
+                Guid userId = new(_userService.GetUserId());
+
+                var routine = await _unitOfWork.Routines.TheExerciseIsInRoutineAsync(request.ExerciseId, userId);
+
+                if (!routine) throw new RoutineMSException("The exercise is not in the routine!") { StatusCode = 400 };
+
+                await _unitOfWork.Routines.RemoveRoutineByExerciseAsync(request.ExerciseId, userId);
 
                 await _unitOfWork.CompleteAsync();
 
-                _publisherService.PublishEvent(new { UserId = _userService.GetUserId(), ExerciseId = request.ExerciseId, NewValue = false }, Configuration["Events:UpdateExercise:Exchange"], Configuration["Events:UpdateExercise:RoutingKey"]);
+                _publisherService.PublishEvent(new { UserId = userId, ExerciseId = request.ExerciseId, NewValue = false }, Configuration["Events:UpdateExercise:Exchange"], Configuration["Events:UpdateExercise:RoutingKey"]);
 
                 return true;
             }

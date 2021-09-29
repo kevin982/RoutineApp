@@ -1,9 +1,11 @@
-﻿using RoutineMS_Core.Exceptions;
+﻿using FluentValidation;
+using RoutineMS_Core.Exceptions;
 using RoutineMS_Core.Models;
 using RoutineMS_Core.Models.Responses;
 using RoutineMS_Core.Services;
 using System;
 using System.Collections.Generic;
+ 
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,27 +28,34 @@ namespace RoutineMS_Infraestructure.Services
 
         public HateoasResponse SendError(Exception ex, IEnumerable<Link> links)
         {
-            if (ex is not RoutineMSException)
-
-                return new HateoasResponse
-                {
-                    Links = links,
-                    Succeeded = false,
-                    StatusCode = 500,
-                    Title = "Server error",
-                    Content = null,
-                };
-
-            RoutineMSException e = ex as RoutineMSException;
-
-            return new HateoasResponse
+            HateoasResponse response = new()
             {
                 Links = links,
                 Succeeded = false,
-                StatusCode = e.StatusCode,
-                Title = (e.StatusCode == 500) ? "Server error" : e.Message,
-                Content = null,
+                Content = null
             };
+
+
+            if (ex is RoutineMSException)
+            {
+                RoutineMSException e = ex as RoutineMSException;
+
+                response.StatusCode = e.StatusCode;
+                response.Title = (e.StatusCode == 500) ? "Server error" : e.Message;
+            
+            }
+            else if(ex is ValidationException)
+            {
+                response.StatusCode = 400;
+                response.Title = $"Bad Request due to {ex.Message}";
+            }
+            else
+            {
+                response.StatusCode = 500;
+                response.Title = "Server error";
+            }
+
+            return response;
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using RoutineMS_Application.Extensions;
 using RoutineMS_Application.Queries;
 using RoutineMS_Core.Dtos;
 using RoutineMS_Core.Services;
@@ -24,8 +25,9 @@ namespace RoutineMS_Application.Handlers
             try
             {
                 await _unitOfWork.SetsDetails.DeleteOldDetailsAsync();
+                await _unitOfWork.CompleteAsync();  
                 Guid userId = new(_userService.GetUserId());
-                return await _unitOfWork.Routines.GetExerciseToDoFromRoutineAsync(userId);
+                return await _unitOfWork.Routines.GetExerciseToDoFromRoutineAsync(userId, DateTime.UtcNow.GetDayOfWeek());
             }
             catch (Exception)
             {
