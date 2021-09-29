@@ -230,7 +230,7 @@ namespace ExerciseMS_Tests.Repositories
 
             //Assert
 
-            Assert.Throws<ExerciseMSException>(() => unitOfWork.Exercises.GetExerciseCountByCategory(categoryId));
+            Assert.Throws<ExerciseMSException>(() => unitOfWork.Exercises.GetIndexesCount(categoryId, 5));
         }
 
         [Fact]
@@ -250,11 +250,11 @@ namespace ExerciseMS_Tests.Repositories
 
             //Assert
 
-            Assert.Throws<ExerciseMSException>(() => unitOfWork.Exercises.GetExerciseCountByCategory(categoryId));
+            Assert.Throws<ExerciseMSException>(() => unitOfWork.Exercises.GetIndexesCount(categoryId, 5));
         }
 
         [Fact]
-        public async Task GetTheCorrectExercisesCountInGetExerciseCountByCategory()
+        public async Task GetTheCorrectIndexesCountAsync()
         {
             //Arrange
  
@@ -271,11 +271,11 @@ namespace ExerciseMS_Tests.Repositories
 
             unitOfWork = new(context, _userService.Object);
 
-            var result = unitOfWork.Exercises.GetExerciseCountByCategory(categoryId);
+            var result = unitOfWork.Exercises.GetIndexesCount(categoryId, size);
 
             //Assert
 
-            Assert.Equal(2, result);
+            Assert.Equal(1, result);
         }
 
         #endregion

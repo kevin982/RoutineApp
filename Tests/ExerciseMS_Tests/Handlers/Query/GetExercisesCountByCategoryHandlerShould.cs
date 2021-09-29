@@ -16,22 +16,22 @@ namespace ExerciseMS_Tests.Handlers.Query
 {
     public class GetExercisesCountByCategoryHandlerShould
     {
-        GetExercisesCountByCategoryHandler hanlder;
+        GetIndexesCountHandler hanlder;
 
         private readonly Mock<IUnitOfWork>_unitOfWork = new();
-        private readonly Mock<IValidator<GetExercisesCountByCategoryQuery>> _validator = new();
+        private readonly Mock<IValidator<GetIndexesCount>> _validator = new();
 
         [Fact]
         public async Task CallTheCorrectMethods()
         {
             //Arrange
 
-            GetExercisesCountByCategoryQuery query = new(Guid.NewGuid());
+            GetIndexesCount query = new(Guid.NewGuid(), 5);
             CancellationToken token = new();
 
             //Act
 
-            _unitOfWork.Setup(u => u.Exercises.GetExerciseCountByCategory(It.IsAny<Guid>())).Returns(5);
+            _unitOfWork.Setup(u => u.Exercises.GetIndexesCount(It.IsAny<Guid>(), It.IsAny<int>())).Returns(5);
 
             hanlder = new(_unitOfWork.Object, _validator.Object);
 
@@ -39,7 +39,7 @@ namespace ExerciseMS_Tests.Handlers.Query
 
             //Assert
 
-            _unitOfWork.Verify(u => u.Exercises.GetExerciseCountByCategory(It.IsAny<Guid>()));
+            _unitOfWork.Verify(u => u.Exercises.GetIndexesCount(It.IsAny<Guid>(), It.IsAny<int>()), Times.Once());
         }
     }
 }
