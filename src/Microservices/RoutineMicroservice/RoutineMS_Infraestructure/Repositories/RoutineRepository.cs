@@ -60,7 +60,7 @@ namespace RoutineMS_Infraestructure.Repositories
 
                 int setsLeft = 0;
 
-                foreach (var routine in routinesForToday)
+                foreach (var routine in routines)
                 {
                     if (routine.Exercise.SetDetail is null || routine.Exercise?.SetDetail?.SetsCompleted < routine.Sets)
                     {

@@ -33,18 +33,14 @@ namespace MVCRoutineAppClient.Controllers
         }
 
         [HttpPost("/v1/Routine")]
-        public async Task<string> AddExerciseToRoutine(AddExerciseToRoutineRequest request)
+        public async Task<string> AddExerciseToRoutine([FromBody]AddExerciseToRoutineRequest request)
         {
             try
             {
-                if(request is null)
+
+                if (request is null || (!request.IsValid()))
                 {
-                    var error = new {succeeded = false, title = "Bad request", statusCode = 400};
-                    return JsonSerializer.Serialize(error);
-                }
-                else if (!request.IsValid())
-                {   
-                    var error = new{succeeded = false, title = "Bad Request",statusCode = 400};
+                    var error = new { succeeded = false, title = "Bad request", statusCode = 400 };
                     return JsonSerializer.Serialize(error);
                 }
 
@@ -54,16 +50,7 @@ namespace MVCRoutineAppClient.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
-
-                var error = new
-                {
-                    succeeded = false,
-                    title = "Internal error",
-                    statusCode = 500
-                };
-
-                return JsonSerializer.Serialize(error);
+                return SendError(ex);
             }
         }
 
@@ -79,17 +66,60 @@ namespace MVCRoutineAppClient.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
-
-                var error = new
-                {
-                    succeeded = false,
-                    title = "Internal error",
-                    statusCode = 500
-                };
-
-                return JsonSerializer.Serialize(error);
+                return SendError(ex);
             }
+        }
+
+        [HttpGet("/v1/Routine/Workout")]
+        public IActionResult WorkOut()
+        {
+            return View();
+        }
+
+        [HttpGet("/v1/Routine/ExerciseToDo")]
+        public async Task<string> GetNextExerciseToDo()
+        {
+            try
+            {
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                return await _routineService.GetExerciseToDoAsync(accessToken);
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex);
+            }
+
+        }
+
+        [HttpPost("/v1/Routine/ExerciseDone")]
+        public async Task<string> SetDone([FromBody]ExerciseDoneRequestModel model)
+        {
+            try
+            {
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                return await _routineService.PostSetDoneAsync(model, accessToken);
+
+            }
+            catch (Exception ex)
+            {
+                return SendError(ex);
+            }
+        }
+
+        private string SendError(Exception ex)
+        {
+            _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
+
+            var error = new
+            {
+                succeeded = false,
+                title = "Internal error",
+                statusCode = 500
+            };
+
+            return JsonSerializer.Serialize(error);
         }
     }
 }

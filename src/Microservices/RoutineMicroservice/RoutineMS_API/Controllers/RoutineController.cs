@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace RoutineMS_API.Controllers
 {
- 
+    [ApiController]
     public class RoutineController : ControllerBase
     {
         private readonly IMediator _mediator;

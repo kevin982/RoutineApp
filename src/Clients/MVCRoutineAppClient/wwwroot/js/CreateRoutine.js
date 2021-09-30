@@ -3,6 +3,7 @@ let currentIndex = 1;
 
 const showMessage = (icon, title, errorMessage) => {
     Swal.fire({
+        background: 'black',
         position: 'top-center',
         icon: `${icon}`,
         title: `${title}`,
@@ -79,9 +80,7 @@ const addTheExercisesToTheDom = (exercises) => {
         for (let i = 0; i < exercises.length; i++) {
 
             let exercise = exercises[i];
-
-            console.log(exercise);
-
+ 
             let divRow = document.createElement("div");
             divRow.className = "row justify-content-center";
 
@@ -104,7 +103,7 @@ const addTheExercisesToTheDom = (exercises) => {
             let cardButton = document.createElement("button");
             cardButton.className = "btn-fill-animation mt-4 rounded";
             cardButton.textContent = action;
-            cardButton.setAttribute("id", "buttonExercise-" + action + "-" + exercise.id);
+            cardButton.setAttribute("id", "buttonExercise%" + action + "%" + exercise.id + "%" + exercise.exerciseName + "%" + document.getElementById("categoryCombo").options[document.getElementById("categoryCombo").selectedIndex].text + "%" + exercise.imageUrl);
 
             let division = document.createElement("hr");
             division.className = "bg-white mb-5";
@@ -327,16 +326,16 @@ document.addEventListener("click", async (e) => {
 
     let id = e.target.id;
 
-    let [elementName, action, exerciseId] = id.split('-');
+    let [elementName, action, exerciseId, exerciseName, categoryName, imageUrl] = id.split('%');
 
     if (elementName !== 'buttonExercise') return;
 
-    (action === "Add") ? await AddExercise(exerciseId) : await RemoveExercise(exerciseId);
+    (action === "Add") ? await AddExercise({ exerciseId: exerciseId, exerciseName: exerciseName, categoryName: categoryName, imageUrl: imageUrl }) : await RemoveExercise(exerciseId);
  
 
 });
 
-const AddExercise = async (exerciseId) => {
+const AddExercise = async (exercise) => {
 
     Swal.fire({
         background: 'black',
@@ -373,9 +372,12 @@ const AddExercise = async (exerciseId) => {
                 for (var i = 0; i < days.length; i++) days[i] = parseInt(days[i]);
 
                 const addExerciseModel = {
-                    ExerciseId: parseInt(exerciseId),
-                    Days: days,
-                    Sets: parseInt(sets)
+                    exerciseId: exercise.exerciseId,
+                    days: days,
+                    sets: parseInt(sets),
+                    exerciseName: exercise.exerciseName,
+                    categoryName: exercise.categoryName,
+                    imageUrl: exercise.imageUrl
                 };
 
                 const settings = {
@@ -408,6 +410,7 @@ const AddExercise = async (exerciseId) => {
 const RemoveExercise = async (exerciseId) => {
     Swal.fire({
         title: 'Are you sure?',
+        background: 'black',
         text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,

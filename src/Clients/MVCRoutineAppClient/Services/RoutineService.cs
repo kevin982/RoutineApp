@@ -78,5 +78,65 @@ namespace MVCRoutineAppClient.Services
                 throw;
             }
         }
+
+        public async Task<string> GetExerciseToDoAsync(string accessToken)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Ocelot");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var response = await client.GetAsync("/v1/Routine");
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(result)) return result;
+
+                var error = new
+                {
+                    statusCode = (int)response.StatusCode,
+                    title = response.ReasonPhrase,
+                    succeeded = false
+                };
+
+                return JsonSerializer.Serialize(error);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> PostSetDoneAsync(ExerciseDoneRequestModel model, string accessToken)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Ocelot");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                StringContent content = new(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("/v1/Routine/SetDone", content);
+
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (!string.IsNullOrEmpty(result)) return result;
+
+                var error = new
+                {
+                    statusCode = (int)response.StatusCode,
+                    title = response.ReasonPhrase,
+                    succeeded = false
+                };
+
+                return JsonSerializer.Serialize(error);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -27,7 +27,9 @@ namespace RoutineMS_Application.Handlers
                 await _unitOfWork.SetsDetails.DeleteOldDetailsAsync();
                 await _unitOfWork.CompleteAsync();  
                 Guid userId = new(_userService.GetUserId());
-                return await _unitOfWork.Routines.GetExerciseToDoFromRoutineAsync(userId, DateTime.UtcNow.GetDayOfWeek());
+                var result = await _unitOfWork.Routines.GetExerciseToDoFromRoutineAsync(userId, DateTime.UtcNow.GetDayOfWeek());
+
+                return result;
             }
             catch (Exception)
             {

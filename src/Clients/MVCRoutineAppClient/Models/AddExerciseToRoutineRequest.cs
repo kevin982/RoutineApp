@@ -13,10 +13,19 @@ namespace MVCRoutineAppClient.Models
         public Guid ExerciseId { get; set; }
 
         [Required, MinLength(1)]
-        public IEnumerable<string> Days { get; set; }
+        public IEnumerable<int> Days { get; set; }
 
         [Required, Range(1,10)]
         public int Sets { get; set; }
+
+        [Required]
+        public string ExerciseName { get; set; }
+
+        [Required]
+        public string CategoryName { get; set; }
+
+        [Required]
+        public string ImageUrl { get; set; }
 
         public bool IsValid()
         {
@@ -24,7 +33,7 @@ namespace MVCRoutineAppClient.Models
 
             if (Days.Count() == 0) return false;
 
-            if(Sets <= 0) return false;
+            if (Sets <= 0) return false;
 
             return true;
         }
