@@ -57,35 +57,6 @@ const showExerciseToDo = (exercise) => {
         }
 
         document.getElementById("ExerciseId").value = exercise.content.id;
-
-        //let card = document.createElement("div");
-        //card.className = "card mb-5 bg-dark justify-content-center";
-        //card.setAttribute("id", "exerciseCard");
-        //card.style = "width: 35rem;";
-
-        //let cardImage = document.createElement("img");
-        //cardImage.className = "card-img-top";
-        //cardImage.setAttribute("src", exercise.content.imageUrl);
-
-        //let cardBody = document.createElement("div");
-        //cardBody.className = "card-body gradient-background";
-
-        //let setsLeft = document.createElement("h2");
-        //setsLeft.className = "card-title text-white mt-3";
-        //setsLeft.textContent = `Sets left: ${exercise.content.setsLeft}`;
-
-        //let exerciseName = document.createElement("h5");
-        //exerciseName.className = "card-title text-white mt-3";
-        //exerciseName.textContent = exercise.content.name;
-
-        //exerciseContainer.appendChild(card);
-
-        //card.appendChild(cardImage);
-        //card.appendChild(cardBody);
-
-        //cardBody.appendChild(setsLeft);
-        //cardBody.appendChild(exerciseName);
-        //cardBody.appendChild(cardButton);
   
         const card = document.createElement("div");
         card.className = "card bg-dark border border-light";
@@ -131,15 +102,15 @@ const showExerciseToDo = (exercise) => {
     }
 }
 
-const removeExerciseDoneForm = () => {
+const removeExerciseDoneForm = (exercise) => {
     const result = document.getElementById("exerciseCard");
 
-    if (result !== null) return;
+    if (result !== null || exercise.content !== null) return;
 
     const form = document.getElementById("exerciseDoneForm");
 
     while (form.firstChild) {
-        container.removeChild(container.firstChild);
+        form.removeChild(form.firstChild);
     }
 }
 
@@ -189,18 +160,19 @@ const sendSetDone = async () => {
 
 window.addEventListener("load", async () => {
 
-    console.log("hola mundo!");
 
     try {
+        document.getElementById("spinner").className = "spinner-border centered text-white";
 
         let exerciseToDo = await getExerciseToDo();
 
         showExerciseToDo(exerciseToDo);
 
-        removeExerciseDoneForm();
+        removeExerciseDoneForm(exerciseToDo);
 
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
-
+        Swal.fire({ position: 'top-center', icon: 'error', title: 'Error', text: `Could not register set done due to ${e.message}`, });
     }
         
 });
@@ -208,6 +180,8 @@ window.addEventListener("load", async () => {
 document.getElementById("btnSetDone").addEventListener("click", async () => {
 
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
 
         let validData = validateData();
 
@@ -219,6 +193,7 @@ document.getElementById("btnSetDone").addEventListener("click", async () => {
  
         location.reload();
 
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     } catch (e) {
         Swal.fire({ position: 'top-center', icon: 'error', title: 'Error', text: `Could not register set done due to ${e.message}`, });

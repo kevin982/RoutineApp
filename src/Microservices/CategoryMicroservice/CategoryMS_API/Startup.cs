@@ -30,8 +30,7 @@ namespace CategoryMS_API
 
             services.AddInfrastructure(Configuration);
             services.AddApplication();
-
-            services.AddAntiforgery();
+ 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +46,7 @@ namespace CategoryMS_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+             
             app.UseAuthentication();
 
             app.UseAuthorization();

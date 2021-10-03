@@ -250,6 +250,9 @@ const addStatisticsToView = (response) =>{
 
 window.addEventListener("load", async () =>{
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         const categoriesResult = await getCategories();
         addCategoriesToSelect(categoriesResult);
         
@@ -259,7 +262,8 @@ window.addEventListener("load", async () =>{
         const statisticsResponse = await getStatistics();
         addStatisticsToView(statisticsResponse);
         
-        
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
+
     }catch (e){
         Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
     }
@@ -268,6 +272,9 @@ window.addEventListener("load", async () =>{
 document.getElementById("flexCheckChecked").addEventListener("change", async() =>{
    
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         const value = document.getElementById("flexCheckChecked").checked;
 
         (value)?removeFiltersForm():addFiltersForm();
@@ -275,6 +282,8 @@ document.getElementById("flexCheckChecked").addEventListener("change", async() =
         const statistics = await getStatistics();
 
         addStatisticsToView(statistics);
+
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     }catch(e){
         Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
@@ -284,10 +293,15 @@ document.getElementById("flexCheckChecked").addEventListener("change", async() =
 
 document.getElementById("categories").addEventListener("change", async () => {
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         const exercisesResult = await getExercises();
         addExercisesToSelect(exercisesResult);
         const statistics = await getStatistics();
         addStatisticsToView(statistics);
+
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     }catch(e){
         Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
     }
@@ -295,8 +309,10 @@ document.getElementById("categories").addEventListener("change", async () => {
 
 document.getElementById("exercises").addEventListener("change", async () => {
     try {
+        document.getElementById("spinner").className = "spinner-border centered text-white";
         const statistics = await getStatistics();
         addStatisticsToView(statistics);
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     }catch(e){
         Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
     }
@@ -304,8 +320,10 @@ document.getElementById("exercises").addEventListener("change", async () => {
 
 document.getElementById("type").addEventListener("change", async () => {
     try {
+        document.getElementById("spinner").className = "spinner-border centered text-white";
         const statistics = await getStatistics();
         addStatisticsToView(statistics);
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     } catch (e) {
         Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, });
@@ -314,9 +332,10 @@ document.getElementById("type").addEventListener("change", async () => {
 
 document.getElementById("months").addEventListener("change", async () => {
     try {
+        document.getElementById("spinner").className = "spinner-border centered text-white";
         const statistics = await getStatistics();
         addStatisticsToView(statistics);
-
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
         Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, });
     }
@@ -324,9 +343,10 @@ document.getElementById("months").addEventListener("change", async () => {
 
 document.getElementById("years").addEventListener("change", async () => {
     try {
+        document.getElementById("spinner").className = "spinner-border centered text-white";
         const statistics = await getStatistics();
         addStatisticsToView(statistics);
-
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
         Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, });
     }

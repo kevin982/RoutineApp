@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace MVCRoutineAppClient.Controllers
 {
     [Controller]
-    [AutoValidateAntiforgeryToken]
     public class RoutineController : Controller
     {
         private readonly IRoutineService _routineService;

@@ -18,7 +18,7 @@ namespace ExerciseMS_API.Controllers
     [ApiController]
     [Authorize(Roles = "user")]
     [Authorize(Policy = "ExerciseScope")]
-    [AutoValidateAntiforgeryToken]
+ 
     public class ExerciseController : ControllerBase
     {
         private readonly IMediator _mediator;

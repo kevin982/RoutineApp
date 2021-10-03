@@ -12,7 +12,7 @@ namespace StatisticsMS_API.Controllers
     [ApiController]
     [Authorize(Roles = "user")]
     [Authorize(Policy = "StatisticsScope")]
-    [AutoValidateAntiforgeryToken]
+ 
     public class StatisticController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -51,9 +51,11 @@ const getExercisesByCategoryAsync = async (categoryId, index, size) => {
 
         const result = await resp.json();
 
-        if (!result.succeeded) throw new Error(`We could not get the exercises due to ${result.title}`);
+        if (result.succeeded) return result.content;
 
-        return result.content;
+        if (result.statusCode === 404) return null;
+
+        throw new Error(`We could not get the exercises due to ${result.title}`);
 
     } catch (e) {
         throw e;
@@ -147,36 +149,36 @@ const thereAreNotExercises = () => {
 
         eliminatePastExercisesFromTheDom(container);
 
-        const row = document.createElement("div");
-        row.className = "row";
+        const rowCard = document.createElement("div");
+        rowCard.className = "row justify-content-center mb-5";
 
-        const errorTextContainer = document.createElement("div");
-        errorTextContainer.className = "col-6";
+        const card = document.createElement("div");
+        card.className = "card bg-dark border border-light";
+        card.style = "width: 28rem";
 
-        const errorTitle = document.createElement("h1");
-        errorTitle.textContent = "We are sorry";
-        errorTitle.className = "text-white d-inline-block mx-3";
+        const image = document.createElement("img");
+        image.className = "card-img-top";
+        image.setAttribute("src", "/Images/SadFace.png");
 
-        const errorText = document.createElement("p");
-        errorText.className = "text-white";
-        errorText.textContent = "You do not have exercises created in this category";
+        const bodyCard = document.createElement("div");
+        bodyCard.className = "card-body";
 
-        const imageErrorContainer = document.createElement("div");
-        imageErrorContainer.className = "col-6";
+        const hr = document.createElement("hr");
+        hr.className = "bg-white";
 
-        const imageError = document.createElement("img");
-        imageError.setAttribute("src", "https://res.cloudinary.com/di5zdosfc/image/upload/v1624831901/Sad_face_Monochromatic_1_z5wzyr.png");
+        const text = document.createElement("p");
+        text.className = "text-white text-center fs-4";
+        text.textContent = "There are no exercises for the specific category";
 
+        bodyCard.appendChild(text);
+        bodyCard.appendChild(hr);
 
-        row.appendChild(errorTextContainer);
-        row.appendChild(imageErrorContainer);
+        card.appendChild(bodyCard);
+        card.appendChild(image);
 
-        errorTextContainer.appendChild(errorTitle);
-        errorTextContainer.appendChild(errorText);
+        rowCard.appendChild(card);
 
-        imageErrorContainer.appendChild(imageError);
-
-        container.appendChild(row);
+        container.appendChild(rowCard);
     } catch (e) {
         throw e;
     }
@@ -226,6 +228,9 @@ const enableDisablePrivousNextBtns = () => {
 window.addEventListener("load", async () => {
 
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         await addCategoriesToCombo();
 
         document.getElementById("index").textContent = currentIndex;
@@ -238,6 +243,8 @@ window.addEventListener("load", async () => {
 
         enableDisablePrivousNextBtns();
 
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
+
     } catch (e) {
         showMessage('error', 'Error!', e.message);
     }
@@ -248,6 +255,8 @@ document.getElementById("categoryCombo").addEventListener("change", async () => 
 
     try {
 
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         currentIndex = 1;
 
         document.getElementById("index").textContent = currentIndex;
@@ -261,6 +270,8 @@ document.getElementById("categoryCombo").addEventListener("change", async () => 
         enableDisablePrivousNextBtns();
 
         scrollTo(0, 1000);
+
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
         showMessage('error', 'Error!', e.message);
     }
@@ -271,6 +282,8 @@ document.getElementById("size").addEventListener("change", async () => {
 
     try {
 
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         currentIndex = 1;
 
         document.getElementById("index").textContent = currentIndex;
@@ -285,6 +298,7 @@ document.getElementById("size").addEventListener("change", async () => {
 
         scrollTo(0, 1000);
 
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
         showMessage('error', 'Error!', e.message);
     }
@@ -293,6 +307,8 @@ document.getElementById("size").addEventListener("change", async () => {
 document.getElementById("btnPrevious").addEventListener("click", async () => {
 
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
 
         currentIndex -= 1;
 
@@ -308,6 +324,8 @@ document.getElementById("btnPrevious").addEventListener("click", async () => {
 
         scrollTo(0, 1000);
 
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
+
     } catch (e) {
         showMessage('error', 'Error!', e.message);
     }
@@ -316,6 +334,9 @@ document.getElementById("btnPrevious").addEventListener("click", async () => {
 document.getElementById("btnNext").addEventListener("click", async () => {
 
     try {
+
+        document.getElementById("spinner").className = "spinner-border centered text-white";
+
         currentIndex += 1;
 
         document.getElementById("index").textContent = currentIndex;
@@ -329,6 +350,8 @@ document.getElementById("btnNext").addEventListener("click", async () => {
         enableDisablePrivousNextBtns();
 
         scrollTo(0, 1000);
+
+        document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
         showMessage('error', 'Error!', e.message);
     }
@@ -346,11 +369,10 @@ document.addEventListener("click", async (e) => {
 
     (action === "Add") ? await AddExercise({ exerciseId: exerciseId, exerciseName: exerciseName, categoryName: categoryName, imageUrl: imageUrl }) : await RemoveExercise(exerciseId);
  
-
 });
 
 const AddExercise = async (exercise) => {
-
+     
     Swal.fire({
         background: 'black',
         title: 'Add Exercise',
@@ -429,11 +451,11 @@ const AddExercise = async (exercise) => {
 
 
     })
-
-
+     
 }
 
 const RemoveExercise = async (id) => {
+     
     Swal.fire({
         title: 'Are you sure?',
         background: 'black',
@@ -470,4 +492,6 @@ const RemoveExercise = async (id) => {
             enableDisablePrivousNextBtns();
         }
     })
+     
 }
+ 

@@ -104,3 +104,10 @@ body {
     background: rgb(92,23,148);
     background: linear-gradient(90deg, rgba(92,23,148,1) 0%, rgba(151,109,242,1) 100%);
 }
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 9;
+}
