@@ -135,5 +135,34 @@ namespace MVCRoutineAppClient.Services
 
         }
 
+        public async Task<string> GetExercisesNameAndIdByCategory(string accessToken, Guid categoryId)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Ocelot");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var response = await client.GetAsync($"/v1/Exercise/Category/NameAndId/{categoryId}");
+
+                string content = await response.Content.ReadAsStringAsync();
+
+                if(!string.IsNullOrEmpty(content)) return content;
+
+                var errorMessage = new 
+                {
+                    statusCode = (int)response.StatusCode,  
+                    title = response.ReasonPhrase,
+                    succeeded = false
+                };
+
+                return JsonConvert.SerializeObject(errorMessage);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

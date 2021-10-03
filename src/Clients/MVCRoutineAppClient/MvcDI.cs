@@ -52,7 +52,7 @@ namespace MVCRoutineAppClient
                     options.Scope.Add("categoryMs.all");
                     options.Scope.Add("exerciseMs.all");
                     options.Scope.Add("routineMs.all");
-                    options.Scope.Add("statistisMs.all");
+                    options.Scope.Add("statisticsMs.all");
 
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
 
@@ -91,6 +91,8 @@ namespace MVCRoutineAppClient
 
             services.AddScoped<IRoutineService, RoutineService>();
 
+            services.AddScoped<IStatisticsService, StatisticsService>();
+            
             return services;
         }
     }

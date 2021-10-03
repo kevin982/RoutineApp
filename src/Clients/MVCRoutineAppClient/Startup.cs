@@ -41,6 +41,8 @@ namespace MVCRoutineAppClient
             services.AddHttpContextAccessor();
 
             services.AddMvcClientServices(Configuration);
+
+            services.AddAntiforgery();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

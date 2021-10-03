@@ -82,43 +82,57 @@ const addTheExercisesToTheDom = (exercises) => {
             let exercise = exercises[i];
  
             let divRow = document.createElement("div");
-            divRow.className = "row justify-content-center";
+            divRow.className = "row justify-content-center mb-5";
 
-            let card = document.createElement("div");
-            card.className = "card col-8 mb-5 bg-dark";
+            const card = document.createElement("div");
+            card.className = "card bg-dark border border-light";
+            card.style = "width: 35rem";
 
-            let cardImage = document.createElement("img");
-            cardImage.className = "card-img-top";
-            cardImage.setAttribute("src", exercise.imageUrl);
+            const image = document.createElement("img");
+            image.className = "card-img-top";
+            image.setAttribute("src", exercise.imageUrl);
 
-            let cardBody = document.createElement("div");
-            cardBody.className = "card-body gradient-background";
+            const headerCard = document.createElement("div");
+            headerCard.className = "card-body";
 
-            let cardTitle = document.createElement("h2");
-            cardTitle.className = "card-title text-white mt-3";
-            cardTitle.textContent = exercise.exerciseName;
+            const hr = document.createElement("hr");
+            hr.className = "bg-white";
+
+            const text = document.createElement("p");
+            text.className = "text-white text-center fs-4";
+            text.textContent = exercise.exerciseName;
+
+            const cardBody = document.createElement("div");
+            cardBody.className = "card-body";
+
+            const rowButton = document.createElement("div");
+            rowButton.className = "row justify-content-center";
 
             let action = (exercise.isInTheRoutine) ? "Remove" : "Add";
 
             let cardButton = document.createElement("button");
-            cardButton.className = "btn-fill-animation mt-4 rounded";
+            cardButton.className = "btn btn-outline-light mt-4 rounded";
             cardButton.textContent = action;
             cardButton.setAttribute("id", "buttonExercise%" + action + "%" + exercise.id + "%" + exercise.exerciseName + "%" + document.getElementById("categoryCombo").options[document.getElementById("categoryCombo").selectedIndex].text + "%" + exercise.imageUrl);
 
-            let division = document.createElement("hr");
-            division.className = "bg-white mb-5";
 
+            headerCard.appendChild(text);
+            headerCard.appendChild(hr);
 
-            container.appendChild(divRow);
-            container.appendChild(division);
+            rowButton.appendChild(cardButton);
+            cardBody.appendChild(rowButton);
+
+            card.appendChild(headerCard);
+            card.appendChild(image);
+            card.appendChild(cardBody);
 
             divRow.appendChild(card);
 
-            card.appendChild(cardImage);
-            card.appendChild(cardBody);
+            container.appendChild(divRow);
 
-            cardBody.appendChild(cardTitle);
-            cardBody.appendChild(cardButton);
+
+
+
         }
     } catch (e) {
         throw e;
@@ -225,7 +239,7 @@ window.addEventListener("load", async () => {
         enableDisablePrivousNextBtns();
 
     } catch (e) {
-        showMessage('error', 'Error!', e.errorMessage);
+        showMessage('error', 'Error!', e.message);
     }
 
 });
@@ -248,7 +262,7 @@ document.getElementById("categoryCombo").addEventListener("change", async () => 
 
         scrollTo(0, 1000);
     } catch (e) {
-        showMessage('error', 'Error!', e.errorMessage);
+        showMessage('error', 'Error!', e.message);
     }
 
 });
@@ -272,7 +286,7 @@ document.getElementById("size").addEventListener("change", async () => {
         scrollTo(0, 1000);
 
     } catch (e) {
-        showMessage('error', 'Error!', e.errorMessage);
+        showMessage('error', 'Error!', e.message);
     }
 });
 
@@ -295,7 +309,7 @@ document.getElementById("btnPrevious").addEventListener("click", async () => {
         scrollTo(0, 1000);
 
     } catch (e) {
-        showMessage('error', 'Error!', e.errorMessage);
+        showMessage('error', 'Error!', e.message);
     }
 });
 
@@ -316,7 +330,7 @@ document.getElementById("btnNext").addEventListener("click", async () => {
 
         scrollTo(0, 1000);
     } catch (e) {
-        showMessage('error', 'Error!', e.errorMessage);
+        showMessage('error', 'Error!', e.message);
     }
 
     
@@ -398,16 +412,28 @@ const AddExercise = async (exercise) => {
 
             
         }
-    }).then((result) => {
+    }).then( async (result) => {
+
+        document.getElementById("index").textContent = currentIndex;
+
+        const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
+
+        (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
+
+        indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
+
+        enableDisablePrivousNextBtns();
 
         (result.value.succeeded) ? showMessage('success', 'Exercises added!', 'The exercise has been added to your routine successfully!') : showMessage('error', 'Error!', `The exercise could not added due to ${result.value.title}`);
+
+
 
     })
 
 
 }
 
-const RemoveExercise = async (exerciseId) => {
+const RemoveExercise = async (id) => {
     Swal.fire({
         title: 'Are you sure?',
         background: 'black',
@@ -425,12 +451,23 @@ const RemoveExercise = async (exerciseId) => {
                 method: 'DELETE'
             };
 
-            const response = await fetch(`https://localhost:9000/v1/Routine/{exerciseId}`, settings);
+            const uri = `https://localhost:9000/v1/Routine/${id}`;
+
+            const response = await fetch(`https://localhost:9000/v1/Routine/${id}`, settings);
 
             const content = await response.json();
 
             (content.succeeded) ? showMessage('success', 'Exercise removed!', 'The exercise has been removed from routine successfully!') : showMessage('error', 'Error!', `The exercise could not be removed from routine due to ${content.title}`);
 
+            document.getElementById("index").textContent = currentIndex;
+
+            const exercises = await getExercisesByCategoryAsync(document.getElementById("categoryCombo").value, document.getElementById("index").textContent, document.getElementById("size").value);
+
+            (exercises === null || exercises === undefined) ? thereAreNotExercises() : addTheExercisesToTheDom(exercises);
+
+            indexesCount = await getIndexes(document.getElementById("categoryCombo").value, document.getElementById("size").value);
+
+            enableDisablePrivousNextBtns();
         }
     })
 }

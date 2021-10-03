@@ -27,42 +27,101 @@ const showExerciseToDo = (exercise) => {
 
             Swal.fire({ background: 'black', position: 'top-center', icon: `success`, title: `Done`, text: `You are done for today!`, });
 
-            const message = document.createElement("h1");
-            message.className = "text-white text-center";
-            message.textContent = "You are done for today!";
-            exerciseContainer.appendChild(message);
+            const card = document.createElement("div");
+            card.className = "card bg-dark border border-light";
+            card.style = "width: 28rem";
+
+            const image = document.createElement("img");
+            image.className = "card-img-top";
+            image.setAttribute("src", "/Images/HappyFace.png");
+
+            const bodyCard = document.createElement("div");
+            bodyCard.className = "card-body";
+
+            const hr = document.createElement("hr");
+            hr.className = "bg-white";
+
+            const text = document.createElement("p");
+            text.className = "text-white text-center fs-4";
+            text.textContent = "Go and get rest!";
+
+            bodyCard.appendChild(text);
+            bodyCard.appendChild(hr);
+
+            card.appendChild(bodyCard);
+            card.appendChild(image);
+
+            exerciseContainer.appendChild(card);
+
             return;
         }
 
         document.getElementById("ExerciseId").value = exercise.content.id;
 
-        let card = document.createElement("div");
-        card.className = "card col-8 mb-5 bg-dark justify-content-center";
-        card.setAttribute("id", "exerciseCard");
+        //let card = document.createElement("div");
+        //card.className = "card mb-5 bg-dark justify-content-center";
+        //card.setAttribute("id", "exerciseCard");
+        //card.style = "width: 35rem;";
 
-        let cardImage = document.createElement("img");
-        cardImage.className = "card-img-top";
-        cardImage.setAttribute("src", exercise.content.imageUrl);
+        //let cardImage = document.createElement("img");
+        //cardImage.className = "card-img-top";
+        //cardImage.setAttribute("src", exercise.content.imageUrl);
 
-        let cardBody = document.createElement("div");
-        cardBody.className = "card-body gradient-background";
+        //let cardBody = document.createElement("div");
+        //cardBody.className = "card-body gradient-background";
 
-        let setsLeft = document.createElement("h2");
-        setsLeft.className = "card-title text-white mt-3";
+        //let setsLeft = document.createElement("h2");
+        //setsLeft.className = "card-title text-white mt-3";
+        //setsLeft.textContent = `Sets left: ${exercise.content.setsLeft}`;
+
+        //let exerciseName = document.createElement("h5");
+        //exerciseName.className = "card-title text-white mt-3";
+        //exerciseName.textContent = exercise.content.name;
+
+        //exerciseContainer.appendChild(card);
+
+        //card.appendChild(cardImage);
+        //card.appendChild(cardBody);
+
+        //cardBody.appendChild(setsLeft);
+        //cardBody.appendChild(exerciseName);
+        //cardBody.appendChild(cardButton);
+  
+        const card = document.createElement("div");
+        card.className = "card bg-dark border border-light";
+        card.style = "width: 35rem";
+
+        const image = document.createElement("img");
+        image.className = "card-img-top";
+        image.setAttribute("src", exercise.content.imageUrl);
+
+        const headerCard = document.createElement("div");
+        headerCard.className = "card-body";
+
+        const hr = document.createElement("hr");
+        hr.className = "bg-white";
+
+        const text = document.createElement("p");
+        text.className = "text-white text-center fs-4";
+        text.textContent = exercise.content.name;
+
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+
+        const setsLeft = document.createElement("p");
+        setsLeft.className = "text-white text-center fs-2";
         setsLeft.textContent = `Sets left: ${exercise.content.setsLeft}`;
 
-        let exerciseName = document.createElement("h5");
-        exerciseName.className = "card-title text-white mt-3";
-        exerciseName.textContent = exercise.content.name;
-
-        exerciseContainer.appendChild(card);
-
-        card.appendChild(cardImage);
-        card.appendChild(cardBody);
+        headerCard.appendChild(text);
+        headerCard.appendChild(hr);
 
         cardBody.appendChild(setsLeft);
-        cardBody.appendChild(exerciseName);
-        cardBody.appendChild(cardButton);
+
+        card.appendChild(headerCard);
+        card.appendChild(image);
+        card.appendChild(cardBody);
+ 
+        exerciseContainer.appendChild(card);
 
         return;
 

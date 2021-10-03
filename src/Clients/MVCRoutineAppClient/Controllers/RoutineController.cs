@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace MVCRoutineAppClient.Controllers
 {
-    [Authorize]
     [Controller]
+    [AutoValidateAntiforgeryToken]
     public class RoutineController : Controller
     {
         private readonly IRoutineService _routineService;
@@ -55,13 +55,13 @@ namespace MVCRoutineAppClient.Controllers
         }
 
         [HttpDelete("/v1/Routine/{id}")]
-        public async Task<string> RemoveExerciseFromRoutine(Guid exerciseId)
+        public async Task<string> RemoveExerciseFromRoutine(Guid id)
         {
             try
             {
                 string accessToken = await HttpContext.GetTokenAsync("access_token");
 
-                return await _routineService.RemoveExerciseFromRoutineAsync(accessToken, exerciseId);
+                return await _routineService.RemoveExerciseFromRoutineAsync(accessToken, id);
 
             }
             catch (Exception ex)

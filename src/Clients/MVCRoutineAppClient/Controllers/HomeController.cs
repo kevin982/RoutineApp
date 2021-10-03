@@ -14,27 +14,24 @@ namespace MVCRoutineAppClient.Controllers
         {
             _logger = logger;
         }
-
+ 
         public async Task<IActionResult> Index()
         {
             string accessToken = await HttpContext.GetTokenAsync("access_token");
             return View();
         }
-
+ 
         public IActionResult Privacy()
         {
             return View();
         }
-
+ 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
  
-        [HttpGet]
-        public async Task<string> GetAccessToken() => await HttpContext.GetTokenAsync("access_token");
-        
 
     }
 }

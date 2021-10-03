@@ -1,0 +1,115 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#5c1794" fill-opacity="1" d="M0,96L60,117.3C120,139,240,181,360,186.7C480,192,600,160,720,160C840,160,960,192,1080,192C1200,192,1320,160,1380,144L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+</svg>
+
+<div class="container">
+
+    <div id="form" class="row">
+
+        <div class="col-3">
+            <div class="container">
+                <div class="row">
+                    <label class="text-white text-center">Categories</label>
+                </div>
+                <div class="row">
+                    <select class="text-white bg-dark" id="categories"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="container">
+                <div class="row">
+                    <label class="text-white text-center">Exercises</label>
+                </div>
+                <div class="row">
+                    <select class="text-white bg-dark" id="exercises"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="container">
+                <div class="row">
+                    <label class="text-white text-center">Type</label>
+                </div>
+                <div class="row">
+                    <select class="text-white bg-dark" id="type">
+                        <option value="Weight">Weight</option>
+                        <option value="Repetitions">Repetitions</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="accordion bg-dark" id="">
+                <div class="accordion-item bg-dark">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button bg-dark text-white text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Filters
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="form-check mb-4" id="filtersContainer">
+
+                            <input class="form-check-input" type="checkbox" id="flexCheckChecked" checked>
+                            <label class="form-check-label text-white" for="flexCheckChecked">All the exercises</label>
+
+                            <hr class="bg-white d-none" id="limit"/>
+
+                            <p class="text-white d-none" id="instructions">Choose the statistics of a specific period of time.</p>
+
+                            <select class="bg-dark text-white d-none" id="months">
+                                <option class="text-white" value = "1">January</option>
+                                <option class="text-white" value = "2">February</option>
+                                <option class="text-white" value = "3">March</option>
+                                <option class="text-white" value = "4">April</option>
+                                <option class="text-white" value = "5">May</option>
+                                <option class="text-white" value = "6">June</option>
+                                <option class="text-white" value = "7">July</option>
+                                <option class="text-white" value = "8">August</option>
+                                <option class="text-white" value = "9">September</option>
+                                <option class="text-white" value = "10">October</option>
+                                <option class="text-white" value = "11">November</option>
+                                <option class="text-white" value = "12">December</option>
+                            </select>
+
+                            <select class="bg-dark text-white d-none" id="years">
+
+                                @{
+                                    int year = DateTime.UtcNow.Year;
+                                    for(int i = year; i >= year - 10; i--)
+                                    {
+                                        <option class="text-white" value = "@i">@i</option>
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="bg-white mt-5"/>
+
+    <div id="statistics" class="row justify-content-md-center mt-5">
+ 
+    </div>
+
+</div>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" class="mt-auto" viewBox="0 0 1440 320">
+    <path fill="#5c1794" fill-opacity="1" d="M0,288L60,240C120,192,240,96,360,90.7C480,85,600,171,720,186.7C840,203,960,149,1080,133.3C1200,117,1320,139,1380,149.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+</svg>
+
+<script src="~/js/Statistics.js"></script>

@@ -13,5 +13,6 @@ namespace MVCRoutineAppClient.Services
         Task<string> GetExercisesByCategory(string accessToken, Guid categoryId, int index, int size);
 
         Task<string> GetIndexesCount(string accessToken, Guid categoryId, int size);
+        Task<string> GetExercisesNameAndIdByCategory(string accessToken, Guid categoryId);
     }
 }

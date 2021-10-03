@@ -15,6 +15,7 @@ namespace MVCRoutineAppClient.Controllers
 {
     [Controller]
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public class ExerciseController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -112,6 +113,33 @@ namespace MVCRoutineAppClient.Controllers
 
                 return JsonSerializer.Serialize(error);
             }
+        }
+        
+        [UserAuthorizationFilter]
+        [HttpGet("/v1/Exercise/Category/NameAndId/{categoryId}")]
+        public async Task<string> GetExercisesNameAndIdByCategory(Guid categoryId)
+        {
+            try
+            {
+                string accessToken = await HttpContext.GetTokenAsync("access_token");
+
+                return await _exerciseService.GetExercisesNameAndIdByCategory(accessToken, categoryId);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An exception happend at {DateTime.UtcNow}. Error message {ex.Message}");
+
+                var error = new 
+                {
+                    succeeded = false,
+                    title = "Internal error",
+                    statusCode = 500
+                };
+
+                return JsonSerializer.Serialize(error);
+            }
+ 
         }
     }
 }

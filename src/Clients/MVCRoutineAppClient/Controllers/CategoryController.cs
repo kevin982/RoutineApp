@@ -13,6 +13,7 @@ namespace MVCRoutineAppClient.Controllers
 {
     [Authorize]
     [Controller]
+    [AutoValidateAntiforgeryToken]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
