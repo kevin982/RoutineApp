@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace RoutineMS_API.Controllers
 {
     [ApiController]
+    [AutoValidateAntiforgeryToken]
     public class RoutineController : ControllerBase
     {
         private readonly IMediator _mediator;

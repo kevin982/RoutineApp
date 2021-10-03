@@ -10,5 +10,7 @@ namespace ExerciseMS_Application.Mappers
         DtoExercise MapEntityToDto(Exercise exercise);
         IEnumerable<DtoExercise> MapEntityToDto(IEnumerable<Exercise> exercises);
         Exercise MapRequestToEntity(CreateExerciseRequest request);
+        IEnumerable<DtoExerciseSelect> MapEntityToDtoExerciseSelect(IEnumerable<Exercise> exercises);
+        DtoExerciseSelect MapEntityToDtoExerciseSelect(Exercise exercise);
     }
 }

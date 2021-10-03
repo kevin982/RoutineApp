@@ -18,6 +18,7 @@ namespace ExerciseMS_API.Controllers
     [ApiController]
     [Authorize(Roles = "user")]
     [Authorize(Policy = "ExerciseScope")]
+    [AutoValidateAntiforgeryToken]
     public class ExerciseController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -132,6 +133,28 @@ namespace ExerciseMS_API.Controllers
             }
 
         }
+
+        [HttpGet("/api/v1/Exercise/Category/NameAndId/{categoryId}")]
+        public async Task<ActionResult<HateoasResponse>> GetExercisesNameAndIdByCategory(Guid categoryId)
+        {
+            try
+            {
+                GetExercisesNameAndIdByCategoryQuery query = new(categoryId);
+
+                var result = await _mediator.Send(query);
+                
+                return Ok(_sender.SendResult(result, GenericLinks.GetExerciseLinks(), "The exercise count with that specific category has been reached!"));
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = _sender.SendError(ex, GenericLinks.GetExerciseLinks());
+
+                Response.StatusCode = errorResponse.StatusCode;
+
+                return errorResponse;
+            }
+        }
+        
 
         #endregion
 

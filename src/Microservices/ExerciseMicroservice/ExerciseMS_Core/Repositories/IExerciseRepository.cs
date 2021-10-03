@@ -13,6 +13,7 @@ namespace ExerciseMS_Core.Repositories
 
         int GetIndexesCount(Guid categoryId, int size);
 
-        Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId, Guid userId);
+        Task<bool> UpdateIsInTheRoutineAsync(bool newValue, Guid exerciseId, Guid userId);
+        Task<IEnumerable<Exercise>> GetExercisesNameAndIdByCategoryAsync(Guid userId, Guid categoryId);
     }
 }

@@ -18,6 +18,7 @@ namespace ExerciseMS_Application.Events
     public class SubscriberExerciseMS : BackgroundService
     {
         private readonly IServiceProvider _services;
+        
         private readonly ILogger<SubscriberExerciseMS> _logger;
 
         private IConnection _connection { get; set; }
@@ -90,7 +91,7 @@ namespace ExerciseMS_Application.Events
                 {
                     var repository = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-                    await repository.Exercises.UpdateIsInTheRoutine(request.NewValue, request.ExerciseId, request.UserId);
+                    await repository.Exercises.UpdateIsInTheRoutineAsync(request.NewValue, request.ExerciseId, request.UserId);
 
                     await repository.CompleteAsync();
 

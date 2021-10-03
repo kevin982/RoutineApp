@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 namespace CategoryMS_API.Controllers
 {
     [ApiController]
+    [AutoValidateAntiforgeryToken]
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediator;

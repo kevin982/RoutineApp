@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StatisticsMS_Application;
+using StatisticsMS_Application.Events;
+using StatisticsMS_Infraestructure;
+using StatisticsMS_Infraestructure.Data;
+using System;
 
 namespace StatisticsMS_API
 {
@@ -32,6 +31,15 @@ namespace StatisticsMS_API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StatisticsMS_API", Version = "v1" });
             });
+
+            services.AddHttpContextAccessor();
+
+            services.AddInfrastructure(Configuration);
+            services.AddApplication();
+
+            services.AddHostedService<SubscriberStatisticsMS>();
+
+            services.AddAntiforgery();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +55,8 @@ namespace StatisticsMS_API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

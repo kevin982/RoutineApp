@@ -98,7 +98,7 @@ namespace ExerciseMS_Infraestructure.Repositories
             }
         }
 
-        public async Task<bool> UpdateIsInTheRoutine(bool newValue, Guid exerciseId, Guid userId)
+        public async Task<bool> UpdateIsInTheRoutineAsync(bool newValue, Guid exerciseId, Guid userId)
         {
             try
             {
@@ -117,6 +117,23 @@ namespace ExerciseMS_Infraestructure.Repositories
                 throw;
             }
  
+        }
+
+        public async Task<IEnumerable<Exercise>> GetExercisesNameAndIdByCategoryAsync(Guid userId, Guid categoryId)
+        {
+            try
+            {
+                var result = await _context.Exercises.AsNoTracking()
+                    .Where(e => e.UserId == userId && e.CategoryId == categoryId).ToListAsync();
+
+                if (result is null || result.Count == 0) throw new ExerciseMSException($"The user has no exercises for category whose id is {categoryId}") {StatusCode = 404};
+                
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

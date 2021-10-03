@@ -14,9 +14,6 @@ namespace RoutineMS_Infraestructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-
-            #region Database
-
             services.AddDbContext<RoutineMsDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), sqlServerOptionsAction: sqlOptions =>
@@ -27,7 +24,6 @@ namespace RoutineMS_Infraestructure
 
             });
 
-            #endregion
 
             #region Services
 

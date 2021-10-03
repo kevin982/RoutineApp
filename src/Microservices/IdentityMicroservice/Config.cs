@@ -23,7 +23,7 @@ namespace IdentityMicroservice
             new ApiScope("categoryMs.all", "All crud operations for the category micro service"),
             new ApiScope("exerciseMs.all", "All crud operations for the catalog exercise micro service"),
             new ApiScope("routineMs.all", "All crud operations for the routine micro service"),
-            new ApiScope("statistisMs.all", "All crud operations for the statistics micro service"),
+            new ApiScope("statisticsMs.all", "All crud operations for the statistics micro service"),
             new ApiScope("role", "The user roles", new List<string>{ "role"})
        };
 
@@ -63,7 +63,7 @@ namespace IdentityMicroservice
                     "categoryMs.all",
                     "exerciseMs.all",
                     "routineMs.all",
-                    "statistisMs.all"
+                    "statisticsMs.all"
                 }
             }
         };

@@ -38,6 +38,8 @@ namespace RoutineMS_API
             services.AddHttpContextAccessor();
             services.AddInfrastructure(Configuration);
             services.AddApplication();
+
+            services.AddAntiforgery();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

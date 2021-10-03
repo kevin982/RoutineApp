@@ -18,18 +18,22 @@ namespace RoutineMS_Application.Handlers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPublisherService _publisherService;
         private readonly IConfiguration Configuration;
+        private readonly IUserService _userService;
 
-        public SetDoneHandler(IUnitOfWork unitOfWork, IPublisherService publisherService, IConfiguration configuration)
+        public SetDoneHandler(IUnitOfWork unitOfWork, IPublisherService publisherService, IConfiguration configuration, IUserService userService)
         {
             _unitOfWork = unitOfWork;
             _publisherService = publisherService;
             Configuration = configuration;
+            _userService = userService;
         }
 
         public async Task<bool> Handle(SetDoneCommand request, CancellationToken cancellationToken)
         {
             try
             {
+                Guid userId = new(_userService.GetUserId());
+
                 Exercise exercise = await _unitOfWork.Exercises.GetByIdAsync(request.Request.ExerciseId);
 
                 await _unitOfWork.SetsDetails.DeleteOldDetailsAsync();
@@ -49,7 +53,7 @@ namespace RoutineMS_Application.Handlers
                 }
                 await _unitOfWork.CompleteAsync();    
 
-                var setDone = new { ExerciseId = request.Request.ExerciseId, Weight = request.Request.PoundsLifted, Repetitions = request.Request.Repetitions, DayDone = DateTime.UtcNow};
+                var setDone = new {UserId = userId, Id = Guid.NewGuid(),ExerciseId = request.Request.ExerciseId, Weight = request.Request.PoundsLifted, Repetitions = request.Request.Repetitions, DayDone = DateTime.UtcNow};
 
                 _publisherService.PublishEvent(setDone, Configuration["Events:SetDone:Exchange"], Configuration["Events:SetDone:RoutingKey"]);
 

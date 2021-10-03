@@ -20,7 +20,8 @@ namespace ExerciseMS_API
                 new Link(){Name = "Create new exercise", Href = $"{AppUri}/api/v1/Exercise", Method = "POST"},
                 new Link(){Name = "Delete an existing exercise", Href = $"{AppUri}/api/v1/Exercise/[exerciseId]", Method = "DELETE"},
                 new Link(){Name = "Get all exercises by category", Href = $"{AppUri}/api/v1/Exercise/Category/[categoryId]/[index]/[size]", Method = "GET"},
-                new Link(){Name = "Get the exercises count by category", Href = $"{AppUri}/api/v1/Exercise/Category/[categoryId]", Method = "GET" }
+                new Link(){Name = "Get the exercises count by category", Href = $"{AppUri}/api/v1/Exercise/Category/[categoryId]", Method = "GET" },
+                new Link(){Name = "Get the exercises name and id by category", Href = $"{AppUri}/api/v1/Exercise/Category/NameAndId/[categoryId]", Method = "GET" }
             };
         }
     }

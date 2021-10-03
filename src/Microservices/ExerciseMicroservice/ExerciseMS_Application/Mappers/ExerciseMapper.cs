@@ -60,6 +60,27 @@ namespace ExerciseMS_Application.Mappers
                 throw;
             }
         }
- 
+
+        public IEnumerable<DtoExerciseSelect> MapEntityToDtoExerciseSelect(IEnumerable<Exercise> exercises)
+        {
+            List<DtoExerciseSelect> result = new();
+
+            foreach (var exercise in exercises)
+            {
+                result.Add(MapEntityToDtoExerciseSelect(exercise));
+            }
+            
+            return result;
+        }
+        
+        public DtoExerciseSelect MapEntityToDtoExerciseSelect(Exercise exercise)
+        {
+            return new DtoExerciseSelect()
+            {
+                ExerciseId = exercise.ExerciseId,
+                ExerciseName = exercise.ExerciseName
+            };
+        }
+
     }
 }

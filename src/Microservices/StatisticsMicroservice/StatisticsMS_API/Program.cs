@@ -21,6 +21,8 @@ namespace StatisticsMS_API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:8006", "https://localhost:9006");
+
                 });
     }
 }
