@@ -23,6 +23,7 @@ namespace RoutineMS_Tests.Handlers
         private readonly Mock<IUnitOfWork> _unitOfWork = new();
         private readonly Mock<IPublisherService> _publisherService = new();
         private readonly Mock<IConfiguration> Configuration = new();
+        private readonly Mock<IUserService> _userService = new();
 
         [Theory]
         [InlineData(true)]
@@ -41,7 +42,7 @@ namespace RoutineMS_Tests.Handlers
             _unitOfWork.Setup(u => u.CompleteAsync());
             _publisherService.Setup(p => p.PublishEvent(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            handler = new(_unitOfWork.Object, _publisherService.Object, Configuration.Object);
+            handler = new(_unitOfWork.Object, _publisherService.Object, Configuration.Object, _userService.Object);
 
             await handler.Handle(new SetDoneCommand(new SetDoneRequest()), new CancellationToken());
 
