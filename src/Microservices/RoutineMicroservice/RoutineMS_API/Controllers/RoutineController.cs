@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 namespace RoutineMS_API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "user")]
+    [Authorize(Policy = "RoutineScope")]
     [AutoValidateAntiforgeryToken]
     public class RoutineController : ControllerBase
     {

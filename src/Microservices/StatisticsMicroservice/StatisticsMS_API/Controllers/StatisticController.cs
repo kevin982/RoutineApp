@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StatisticsMS_Application.Queries;
 using StatisticsMS_Core.Models.Response;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 namespace StatisticsMS_API.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "user")]
+    [Authorize(Policy = "StatisticsScope")]
     [AutoValidateAntiforgeryToken]
     public class StatisticController : ControllerBase
     {
