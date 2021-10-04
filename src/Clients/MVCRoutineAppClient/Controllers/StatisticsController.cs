@@ -25,6 +25,7 @@ namespace MVCRoutineAppClient.Controllers
         }
 
         // GET
+        [HttpGet("/v1/Statistics")]
         public IActionResult ExerciseStatistics()
         {
             return View();
