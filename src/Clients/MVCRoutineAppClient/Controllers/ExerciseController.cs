@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCRoutineAppClient.Filters;
@@ -7,7 +8,9 @@ using MVCRoutineAppClient.Models;
 using MVCRoutineAppClient.Services;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -41,8 +44,8 @@ namespace MVCRoutineAppClient.Controllers
         public async Task<IActionResult> CreateExercise(CreateExerciseRequestModel model)
         {
             try
-            { 
-
+            {
+ 
                 model.FileContentType = model.Image.ContentType;
 
                 string accessToken = await HttpContext.GetTokenAsync("access_token");

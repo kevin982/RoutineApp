@@ -85,6 +85,8 @@ namespace MVCRoutineAppClient
 
         private static IServiceCollection AddMyOwnServices(this IServiceCollection services)
         {
+            services.AddScoped<IUserService, UserService>();
+            
             services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddScoped<IExerciseService, ExerciseService>();
@@ -92,6 +94,7 @@ namespace MVCRoutineAppClient
             services.AddScoped<IRoutineService, RoutineService>();
 
             services.AddScoped<IStatisticsService, StatisticsService>();
+            
             
             return services;
         }

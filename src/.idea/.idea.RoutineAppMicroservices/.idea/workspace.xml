@@ -19,55 +19,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbf7a2b9-3f3b-41aa-9222-1fe090035d72" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Tests/StatisticsMS_Tests/Data/FakeData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Tests/StatisticsMS_Tests/Handlers/GetExerciseStatisticsHandlerShould.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Tests/StatisticsMS_Tests/Repository/StatisticsRepositoryShould.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/StatisticsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Services/IStatisticsService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Services/StatisticsService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Statistics/ExerciseStatistics.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/wwwroot/js/Statistics.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Handlers/QueryHandlers/GetExercisesNameAndIdByCategoryHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Queries/GetExercisesNameAndIdByCategoryQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Core/Dtos/DtoExerciseSelect.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Tests/RoutineMS_Tests/Handlers/SetDoneHandlerShould.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Tests/RoutineMS_Tests/Handlers/SetDoneHandlerShould.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Tests/StatisticsMS_Tests/StatisticsMS_Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Tests/StatisticsMS_Tests/StatisticsMS_Tests.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Tests/StatisticsMS_Tests/UnitTest1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.RoutineAppMicroservices/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.RoutineAppMicroservices/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/ExerciseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/ExerciseController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/HomeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/RoutineController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Controllers/RoutineController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/MvcDI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/MvcDI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Services/ExerciseService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Services/ExerciseService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Services/IExerciseService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Services/IExerciseService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Routine/CreateRoutine.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Routine/CreateRoutine.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Routine/WorkOut.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Routine/WorkOut.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Shared/_Header.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/Views/Shared/_Header.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/wwwroot/js/CreateRoutine.js" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/wwwroot/js/CreateRoutine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/wwwroot/js/WorkOut.js" beforeDir="false" afterPath="$PROJECT_DIR$/Clients/MVCRoutineAppClient/wwwroot/js/WorkOut.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_API/Controllers/ExerciseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_API/Controllers/ExerciseController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_API/GenericLinks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_API/GenericLinks.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Events/SubscriberExerciseMS.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Events/SubscriberExerciseMS.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Mappers/ExerciseMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Mappers/ExerciseMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Mappers/IExerciseMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Application/Mappers/IExerciseMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Core/Repositories/IExerciseRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Core/Repositories/IExerciseRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Infraestructure/Repositories/ExerciseRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/ExerciseMicroservice/ExerciseMS_Infraestructure/Repositories/ExerciseRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/IdentityMicroservice/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/IdentityMicroservice/Config.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/RoutineMicroservice/RoutineMS_Application/Handlers/SetDoneHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/RoutineMicroservice/RoutineMS_Application/Handlers/SetDoneHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/RoutineMicroservice/RoutineMS_Infraestructure/InfraestructureDI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/RoutineMicroservice/RoutineMS_Infraestructure/InfraestructureDI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/Controllers/WeatherForecastController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/StatisticsMS_API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/StatisticsMS_API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_API/WeatherForecast.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Application/Class1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Application/StatisticsMS_Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Application/StatisticsMS_Application.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Core/Class1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Core/StatisticsMS_Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Core/StatisticsMS_Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Infraestructure/Class1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Infraestructure/StatisticsMS_Infraestructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Microservices/StatisticsMicroservice/StatisticsMS_Infraestructure/StatisticsMS_Infraestructure.csproj" afterDir="false" />
-    </list>
+    <list default="true" id="bbf7a2b9-3f3b-41aa-9222-1fe090035d72" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -100,6 +52,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.ApiGateway">
@@ -314,6 +267,7 @@
       <workItem from="1633136805312" duration="8770000" />
       <workItem from="1633186086168" duration="1235000" />
       <workItem from="1633219040757" duration="127000" />
+      <workItem from="1633385452018" duration="172000" />
     </task>
     <servers />
   </component>

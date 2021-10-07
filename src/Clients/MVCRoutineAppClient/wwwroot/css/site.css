@@ -40,3 +40,19 @@ body {
     left: 50%;
     z-index: 9;
 }
+
+#cover {
+    background-size: cover;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 65vh;
+}
+
+#cover-caption {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
