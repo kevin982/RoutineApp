@@ -172,7 +172,7 @@ window.addEventListener("load", async () => {
 
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
-        Swal.fire({ position: 'top-center', icon: 'error', title: 'Error', text: `Could not register set done due to ${e.message}`, });
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
     }
         
 });
@@ -196,7 +196,8 @@ document.getElementById("btnSetDone").addEventListener("click", async () => {
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     } catch (e) {
-        Swal.fire({ position: 'top-center', icon: 'error', title: 'Error', text: `Could not register set done due to ${e.message}`, });
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 
 });

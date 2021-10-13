@@ -265,7 +265,8 @@ window.addEventListener("load", async () =>{
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     }catch (e){
-        Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 })
 
@@ -286,7 +287,7 @@ document.getElementById("flexCheckChecked").addEventListener("change", async() =
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     }catch(e){
-        Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
+        Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: {title: 'text-white',text: 'text-white'}});
     }
    
 });
@@ -303,7 +304,8 @@ document.getElementById("categories").addEventListener("change", async () => {
 
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     }catch(e){
-        Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 });
 
@@ -314,7 +316,8 @@ document.getElementById("exercises").addEventListener("change", async () => {
         addStatisticsToView(statistics);
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     }catch(e){
-        Swal.fire({background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`,});
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 });
 
@@ -326,7 +329,8 @@ document.getElementById("type").addEventListener("change", async () => {
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
 
     } catch (e) {
-        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, });
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 });
 
@@ -337,7 +341,8 @@ document.getElementById("months").addEventListener("change", async () => {
         addStatisticsToView(statistics);
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
-        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, });
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 });
 
@@ -348,6 +353,7 @@ document.getElementById("years").addEventListener("change", async () => {
         addStatisticsToView(statistics);
         document.getElementById("spinner").className = "spinner-border centered text-white d-none";
     } catch (e) {
-        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, });
+        Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error`, text: `${e.message}`, customClass: { title: 'text-white', text: 'text-white' } });
+
     }
 });

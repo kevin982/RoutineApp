@@ -8,6 +8,10 @@ const showMessage = (icon, title, errorMessage) => {
         icon: `${icon}`,
         title: `${title}`,
         text: `${errorMessage}`,
+        customClass: {
+            title: 'text-white',
+            text: 'text-white'
+        }
     });
 }
 

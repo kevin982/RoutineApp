@@ -60,9 +60,13 @@
 					position: 'top-center',
 					icon: 'success',
 					background: 'black',
-					title: 'Exercise created successfully!',
+					title: 'Category created successfully!',
 					showConfirmButton: false,
-					timer: 1500
+					timer: 1500,
+					customClass: {
+						title: 'text-white',
+						text: 'text-white'
+					}
 				})
 			</script>
 
@@ -76,6 +80,10 @@
 					icon: 'error',
 					title: 'Error',
 					text: '@ViewBag.Result["title"]',
+					customClass: {
+						title: 'text-white',
+						text: 'text-white'
+					}
 				})
 			</script>
 		}
