@@ -15,10 +15,15 @@
 
 const showError = errorMessage => {
     Swal.fire({
+        background:'black',
         position: 'top-center',
         icon: 'error',
         title: 'Error',
         text: `We could not load the categories because of ${errorMessage}`,
+        customClass: {
+            'title': 'text-white',
+            'text':'text-white'
+        }
     });
 }
 

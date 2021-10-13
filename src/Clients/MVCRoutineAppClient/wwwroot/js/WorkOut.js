@@ -17,7 +17,7 @@ const showExerciseToDo = (exercise) => {
     try {
 
         if (!exercise.succeeded) {
-            Swal.fire({ background: 'black', position: 'top-center',icon: `error`,title: `Error!`,text: `${exercise.title}`,});
+            Swal.fire({ background: 'black', position: 'top-center', icon: `error`, title: `Error!`, text: `${exercise.title}`, customClass: {'title': 'text-white', 'text':'text-white'}});
             return;
         }
 
@@ -25,7 +25,7 @@ const showExerciseToDo = (exercise) => {
 
         if (exercise.content === null) {
 
-            Swal.fire({ background: 'black', position: 'top-center', icon: `success`, title: `Done`, text: `You are done for today!`, });
+            Swal.fire({ background: 'black', position: 'top-center', icon: `success`, title: `Done`, text: `You are done for today!`, customClass: { 'title': 'text-white', 'text': 'text-white' }});
 
             const card = document.createElement("div");
             card.className = "card bg-dark border border-light";
